@@ -1,0 +1,23 @@
+{
+	"name": "qvole",
+	"version": "0.1.0",
+	"description": "A node js chat app",
+	"main": "index.js",
+	"scripts": {
+		"start": "node index.js"
+	},
+	"dependencies": {
+    "azure-iothub-receiver": "^2.0.0",
+    "express": "^4.12.4",
+    "socket.io": "*"
+	},
+	"engines": {
+		"node": "8"
+	},
+	"keywords": [
+		"node",
+		"express",
+		"chat"
+	],
+	"license": "MIT"
+}
