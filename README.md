@@ -89,7 +89,7 @@ Fields:
 
 ### Button
 
-This card will give you a bug button to press that can map to any device method active on your device! Pretty cool. You can't send payloads yet, but that's coming soon!
+This card will give you a big button to press that can map to any device method active on your device! Pretty cool. You can't send payloads yet, but that's coming soon!
 
 Fields:
 
