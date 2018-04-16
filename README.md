@@ -29,9 +29,9 @@ You can also list your connections strings [via the command line](https://docs.m
 3. Open your [terminal](https://lifehacker.com/5633909/who-needs-a-mouse-learn-to-use-the-command-line-for-almost-anything) and run the following commands:
 	1. `git clone https://github.com/noopkat/electric-io.git && cd electric-io`
 	2. `npm install`
-	3. `npm start`
 4. Open the file `.env` in and fill in the `CONNECTION_STRING` property with your Azure IoT Hub connection string.
 5. Optional - specify the `CONSUMER_GROUP` in `.env`. _If in doubt, you can skip this step_.
+6. In your terminal again, run `npm start`
 6. Navigate to `http://localhost:3000` in your favourite modern browser and away you go! Try adding new cards via the settings pane on the right and click 'edit' to fill in the details!
 
 ## How to send the right data
