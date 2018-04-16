@@ -45,6 +45,7 @@ This application also features a simulator that features three 'devices' that se
 	2. `npm install`
 4. Navigate to the `.data` directory where you'll note a file called `dashboard.json.sim`. Copy this file to the same directory and name it `dashboard.json`. This will set you up with a pre-made dashboard layout with some cards already listening to data from the simulated devices 😎
 5. In your terminal, run `SIMULATING=true node index.js` from this project's root directory.
+	* On Windows, run `set SIMULATING=true`, then run `node index.js`.
 6. Navigate to `http://localhost:3000` in your favourite modern browser and away you go!
 
 #### The three simulated devices are as follows:
