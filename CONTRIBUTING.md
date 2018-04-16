@@ -96,17 +96,16 @@ This section will be rather informal, as is my code in this project 😉
  
 Just a couple of guidelines to please heed:
 
-### No build toolchains
+### Limited build setup
 
-You'll notice there are zero build / transpilation steps. This is intentional as I want this app to run as an easily remixable app on Glitch. As a result, please note:
+You'll notice there are zero build steps for Vue specifically. There is a bundling step to mostly address the sparse support for html module scripts at the present time, and to catch any accidental support issues with JavaScript syntax. This is intentional as I'd like any script building / bundling to be lightweight and easily removeable. As a result, please note:
 
 1. NodeJS 4+ is required (perhaps hold off on using async/await etc)
 2. SASS, Less, etc are not supported or preferred
 3. `.vue` single file components are not supported, but use my own single file component convention in this project please 🙏🏻
-4. Most modern browsers still support the included JS / CSS syntax, but check [caniuse.com](caniuse.com) first when trying anything 'fancy'
-5.  It's actually quite nice despite some small caveats 🌻
+4.  It's actually quite nice despite some small caveats 🌻
 
-If you want a build toolchain for transpiling for older browsers or bundling or for SASS, go for it! But do this in your own fork and keep it as your own project rather than trying to change this one 💜
+If you want a build toolchain for doing extra things like SASS or Vue related transpiling, go for it! But do this in your own fork and keep it as your own project rather than trying to change this one 💜
 
 ### CSS strategy
 
