@@ -1,52 +1,25 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Welcome to Glitch!</title>
-    <meta name="description" content="A cool thing made with Glitch">
+    <title>electric io</title>
+    <meta name="description" content="Device IO made easy with Glitch">
     <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="https://fonts.googleapis.com/css?family=Chivo|Nanum+Pen+Script" rel="stylesheet">   
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
-    <header>
-      <h1>
-        A Dream of the Future
-      </h1>
-    </header>
 
-    <main>
-      <p class="bold">Oh hi,</p>
-      <p>Tell me what data you want to plot:</p>
-      <form>
-        <select>
-          <option>Data 1</option>
-          <option>Data 2</option>
-          <option>Data 3</option>
-        </select>
-        <button type="submit">Save</button>
-      </form>
-      <section class="dreams">
-        <ul id="dreams">
-        </ul>
-      </section>
-      <canvas id="myChart" width="700" height="400"></canvas>
-      
-    </main>
+  <div id="app">
+    <main-app /> 
+  </div>
 
-    <footer>
-      <a href="https://glitch.com">
-        Remix this in Glitch
-      </a>
-    </footer>
-    
-
-
-
-  <script src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
   <script src="/socket.io/socket.io.js"></script>
-  <script src="/main.js"></script>
+  <script src="js/vendor/jquery-2.2.2.min.js"></script>
+  <script src="js/vendor/Chart.bundle.min.js"></script>
+  <script src="js/vendor/vue.js"></script>
+  <script type="module" src="js/application.js"></script>
 </body>
 </html>

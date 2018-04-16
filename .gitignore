@@ -1,0 +1,4 @@
+node_modules
+.data/dashboard.json
+.glitch-assets
+.DS_Store

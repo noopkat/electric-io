@@ -1,15 +1,18 @@
 {
-	"name": "qvole",
+	"name": "electric-io",
 	"version": "0.1.0",
-	"description": "A node js chat app",
+	"description": "an IoT Dashboard for Azure IoT Hub",
+	"author": "Suz Hinton",
 	"main": "index.js",
 	"scripts": {
 		"start": "node index.js"
 	},
 	"dependencies": {
-    "azure-iothub-receiver": "^2.0.0",
-    "express": "^4.12.4",
-    "socket.io": "*"
+		"azure-iothub": "^1.2.5",
+		"azure-iothub-receiver": "^2.0.0",
+		"dotenv": "^5.0.0",
+		"express": "^4.12.4",
+		"socket.io": "*"
 	},
 	"engines": {
 		"node": "8"
@@ -17,7 +20,7 @@
 	"keywords": [
 		"node",
 		"express",
-		"chat"
+		"iot"
 	],
 	"license": "MIT"
 }
