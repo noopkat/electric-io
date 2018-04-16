@@ -30,6 +30,10 @@ if (simulating === 'true') {
   const simulator = new Simulator(receiver);
   simulator.start();
 } else {
+  if (!connectionString) {
+    console.error(new Error("oops, you're missing a CONNECTION_STRING entry in ./.env!"));
+    process.exit();
+  }
   var {registry, client, Receiver} = liveHub(connectionString);
   var receiver = new Receiver(receiverOptions);
 }
