@@ -103,8 +103,6 @@ io.on('connection', function(socket){
 
 receiver.on('data', (message) => {
   console.log('firehose:', message);
-  console.log('annotations:', message.annotations);
-  console.log('body:', message.body);
   io.sockets.emit('message', message);
 });
 
