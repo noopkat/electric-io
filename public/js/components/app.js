@@ -19,8 +19,8 @@ const template = `
     </header>
 
     <main>
-      <dashboard-settings v-bind:dashboard="dashboard" v-on:save-settings="onSaveSettings" v-on:tile-create="onTileCreate"/>
-      <base-card :key="tile.id" v-for="tile in dashboard.tiles" v-bind:messages="messages.filter((m)=>m.deviceId===tile.deviceId)" v-bind:tile="tile" v-bind:deviceList="deviceList" v-bind:blockSize="dashboard.blockSize" v-on:tile-position="onTileChange" v-on:tile-settings="onTileChange" v-on:tile-delete="onTileDelete" />
+      <dashboard-settings v-if="showSettings" v-bind:dashboard="dashboard" v-on:save-settings="onSaveSettings" v-on:tile-create="onTileCreate"/>
+      <base-card :key="tile.id" v-for="tile in dashboard.tiles" v-bind:editMode="dashboard.editMode" v-bind:messages="messages.filter((m)=>m.deviceId===tile.deviceId)" v-bind:tile="tile" v-bind:deviceList="deviceList" v-bind:blockSize="dashboard.blockSize" v-on:tile-position="onTileChange" v-on:tile-settings="onTileChange" v-on:tile-delete="onTileDelete" />
     </main>
   </div>
 `;
@@ -47,6 +47,9 @@ export default Vue.component('main-app', {
     headingStyle: function() {
       const color = contrastColor(this.dashboard.bgColor, '#fff', '#000');
       return {color};
+    },
+    showSettings: function() {
+      return this.dashboard.editMode === 'unlocked';
     }
   },
   methods: {

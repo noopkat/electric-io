@@ -9,7 +9,7 @@ import FormCard from './form.js';
 const template = `
   <div class="card" v-bind:class="{'dragging': dragging}" v-bind:style="style" v-on:mousedown.stop="onMouseDown">
    <template v-if="showChildCard">
-     <div class="controls">
+     <div v-if="showControls" class="controls">
         <button class="edit" ref="editButton" v-on:click="onEdit">edit</button>
         <button class="delete" v-on:click="onDelete(tile.id)">X</button>
       </div>
@@ -21,7 +21,7 @@ const template = `
 
 export default Vue.component('card-base', {
   template,
-  props: ['tile', 'blockSize', 'deviceList', 'messages'],
+  props: ['tile', 'blockSize', 'deviceList', 'messages', 'editMode'],
   data: function() {
     return {
       editing: false,
@@ -35,7 +35,7 @@ export default Vue.component('card-base', {
   },
   methods: {
     onMouseDown: function(event) {
-      if (!this.dragging && event.target.tagName !== 'INPUT') {
+      if (!this.dragging && event.target.tagName !== 'INPUT' && this.editMode === 'unlocked') {
         this.dragging = true;
         this.offsetY = event.clientY - this.y;
         this.offsetX = event.clientX - this.x;
@@ -98,6 +98,9 @@ export default Vue.component('card-base', {
     },
     showForm: function() {
       return this.editing
+    },
+    showControls: function() {
+      return this.editMode === 'unlocked';
     }
   },
   mounted() {

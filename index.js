@@ -17,6 +17,7 @@ var Simulator = require('./lib/simulator/runSimulator');
 var simulating = process.env.SIMULATING;
 var connectionString = process.env.CONNECTION_STRING;
 var consumerGroup = process.env.CONSUMER_GROUP || '$Default';
+var editMode = process.env.EDIT_MODE || 'unlocked';
 
 const receiverOptions = {
   connectionString,
@@ -67,11 +68,14 @@ app.get('/api/dashboard', function (req, res) {
   console.log('dashboard requested');
   fs.readFile(__dirname + '/.data/dashboard.json', {encoding: 'utf8'}, (err, data) => {
     console.log(data, err);
-    res.send(data);    
+    let jsonData = JSON.parse(data);
+    jsonData.dashboard.editMode = editMode;
+    res.send(JSON.stringify(jsonData));    
   });
 });
 
 app.post('/api/dashboard', function (req, res) {
+  if (editMode === 'locked') return;
   console.log('dashboard save requested');
   const fileContents = `{ "dashboard": ${JSON.stringify(req.body)} }`;
   fs.writeFile(__dirname + '/.data/dashboard.json', fileContents, 'utf8', (error) => {
