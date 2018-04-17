@@ -46,10 +46,11 @@ export default Vue.component('dashboard-settings', {
     },
     onCreateCard: function(event) {
       const formData = new FormData(event.target);
+      const id = createGuid();
       const tileTemplate = templates[formData.get('type')];
-      tileTemplate.id = createGuid();
+      const newTile = Object.assign({}, tileTemplate, {id});
 
-      this.$emit('tile-create', tileTemplate);
+      this.$emit('tile-create', newTile);
     }
   }
 });
