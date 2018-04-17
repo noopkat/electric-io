@@ -17,21 +17,26 @@ Built with:
 This will be remixable on Glitch pretty soon, but if you want to run it locally you can!
 You'll need to have an Azure IoT Hub instance of your own running in Azure, as this is what the dashboard is designed for. If you'd like to see more IoT messaging providers, let me know by opening an issue!
 
-You'll need to have your Azure IoT Hub connection string handy. You can find it under your 'Shared Access Policies' section in the IoT Hub's Azure Portal blade. Choose a policy that allows 'registry read', 'service connect' and 'device connect' at the least. 
+You'll need to have your Azure IoT Hub connection string handy. You can find it under your 'Shared Access Policies' section in the IoT Hub's Azure Portal blade. Choose a policy that allows 'registry read', 'service connect' and 'device connect' at the least.
 
 You can also list your connections strings [via the command line](https://docs.microsoft.com/en-us/cli/azure/iot/hub?view=azure-cli-latest#az-iot-hub-show-connection-string)!
 
 **Now you're ready to install the app.**
 
 
-1. Install [NodeJS](https://nodejs.org)
-2. Install [git](https://git-scm.org)
+1. Install [NodeJS](https://nodejs.org).
+	* After installing, if you run `which node` in your terminal, it should print something like `/usr/local/bin/node`. If it prints nothing, there may be an issue with your Node install. First restart your terminal. If that still doesn't work, find out where on your system Node installed to, and then check your `$PATH` variable (`echo $PATH`) to see whether the Node install location is listed.
+2. Install [Git](https://git-scm.org).
+	* As above, `which git` should print something like `/usr/local/bin/git`. If it doesn't, you can follow the same troubleshooting steps as for NodeJS.
 3. Open your [terminal](https://lifehacker.com/5633909/who-needs-a-mouse-learn-to-use-the-command-line-for-almost-anything) and run the following commands:
-	1. `git clone https://github.com/noopkat/electric-io.git && cd electric-io`
-	2. `npm install`
+	1. `git clone https://github.com/noopkat/electric-io.git`
+		* If this fails with an error message, [have a look at this page](https://help.github.com/articles/https-cloning-errors/).
+	2. `cd electric-io`
+	3. `npm install`
+		* If this fails with an error message, [have a look at this page](https://docs.npmjs.com/troubleshooting/common-errors).
 4. Open the file `.env` in and fill in the `CONNECTION_STRING` property with your Azure IoT Hub connection string.
 5. Optional - specify the `CONSUMER_GROUP` in `.env`. _If in doubt, you can skip this step_.
-6. In your terminal again, run `npm start`
+6. In your terminal again, run `npm start`.
 6. Navigate to `http://localhost:3000` in your favourite modern browser and away you go! Try adding new cards via the settings pane on the right and click 'edit' to fill in the details!
 
 ## How to send the right data
@@ -52,7 +57,7 @@ Example:
 
 ### Sticker
 
-The simplest of them all! You can display a sticker on your dashboard. 
+The simplest of them all! You can display a sticker on your dashboard.
 
 Fields:
 
@@ -97,7 +102,6 @@ Fields:
 2. Device Id - the id of the device (from IoT Hub) that you want to call a method on
 3. Device Method Name - the name of the device method you want to call on your device
 4. Button text - the text you want your button to say, eg. "turn on LED"
-5. 
 
 〰️〰️〰️〰️〰️〰️
 
@@ -119,7 +123,3 @@ This might also be handy for when you're happy with how everything is and want t
 ## Contributing
 
 If you'd like to contribute to this repo, please read the [contributing guide](https://github.com/noopkat/electric-io/blob/master/CONTRIBUTING.md)!
-
-
-
-
