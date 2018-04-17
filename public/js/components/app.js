@@ -42,7 +42,16 @@ export default Vue.component('main-app', {
   data: initialData,
   computed: {
     dashStyle: function() {
-      return {backgroundColor: this.dashboard.bgColor};
+      // saveSettings() uses Formdata, which converts booleans to strings, so
+      // there's a chance we might get a string. Let's convert it back!
+      if (typeof this.dashboard.bgImageRepeat !== "undefined") {
+        var bgImageRepeatBool = JSON.parse(this.dashboard.bgImageRepeat);
+      }
+      return {
+        backgroundColor: this.dashboard.bgColor,
+        backgroundImage: this.dashboard.bgImageUrl ? `url(${this.dashboard.bgImageUrl})` : '',
+        backgroundRepeat: bgImageRepeatBool === true ? 'repeat' : 'no-repeat'
+      };
     },
     headingStyle: function() {
       const color = contrastColor(this.dashboard.bgColor, '#fff', '#000');

@@ -251,3 +251,18 @@ select {
   margin-bottom: 10px;
   height: 20px;
 }
+
+.settings__checkbox-label {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.settings__checkbox {
+  margin: 0 0 0 5px;
+  width: auto;
+}
