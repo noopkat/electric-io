@@ -103,6 +103,18 @@ Fields:
 
 Got ideas for more cards? Open an issue on this repo and let me know! 👀
 
+## Locking your dashboard
+
+A common thing you might want to do is to share your dashboard with folks without them changing things against your permission. If you'd like to temporarily 'lock' your dashboard, place the following line in your `./.env` file:
+
+```
+EDIT_MODE='locked'
+```
+
+This mode will show your cards and your telemetry, but won't let them create, edit, delete, or drag cards around. The dashboard settings will also not be available.
+
+This might also be handy for when you're happy with how everything is and want the dashboard to look a little cleaner.
+
 
 ## Contributing
 
