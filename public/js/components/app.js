@@ -58,7 +58,8 @@ export default Vue.component('main-app', {
       return {color};
     },
     showSettings: function() {
-      return this.dashboard.editMode === 'unlocked';
+      const allowedModes = ['unlocked', 'demo'];
+      return allowedModes.includes(this.dashboard.editMode);
     }
   },
   methods: {

@@ -76,7 +76,8 @@ app.get('/api/dashboard', function (req, res) {
 
 app.post('/api/dashboard', function (req, res) {
   console.log('dashboard save requested');
-  if (editMode === 'locked') return res.sendStatus(500);
+  const excludedModes = ['locked', 'demo'];
+  if (excludedModes.includes(editMode)) return res.sendStatus(500);
   const fileContents = `{ "dashboard": ${JSON.stringify(req.body)} }`;
   fs.writeFile(__dirname + '/.data/dashboard.json', fileContents, 'utf8', (error) => {
     if (error) return res.sendStatus(500);

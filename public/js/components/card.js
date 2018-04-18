@@ -35,7 +35,9 @@ export default Vue.component('card-base', {
   },
   methods: {
     onMouseDown: function(event) {
-      if (!this.dragging && event.target.tagName !== 'INPUT' && this.editMode === 'unlocked') {
+      const allowedModes = ['unlocked', 'demo'];
+      const excludedNodes = ['INPUT', 'SELECT', 'LABEL'];
+      if (!this.dragging && !excludedNodes.includes(event.target.tagName) && allowedModes.includes(this.editMode)) {
         this.dragging = true;
         this.offsetY = event.clientY - this.y;
         this.offsetX = event.clientX - this.x;
@@ -100,7 +102,8 @@ export default Vue.component('card-base', {
       return this.editing
     },
     showControls: function() {
-      return this.editMode === 'unlocked';
+      const allowedModes = ['unlocked', 'demo'];
+      return allowedModes.includes(this.editMode);
     }
   },
   mounted() {
