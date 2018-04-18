@@ -9,6 +9,13 @@ const template = `
       <label>Background Color
         <input type="text" name="bgColor" v-bind:value="dashboard.bgColor" />
       </label>
+      <label>Background Image URL
+        <input type="text" name="bgImageUrl" :value="dashboard.bgImageUrl" />
+      </label>
+      <label class="settings__checkbox-label">
+        <span>Repeat background image?</span>
+        <input class="settings__checkbox" type="checkbox" name="bgImageRepeat" :value="dashboard.bgImageRepeat" v-model="dashboard.bgImageRepeat" />
+      </label>
       <input type="submit" value="save"/>
     </form>
     <h3>New Card</h3>
@@ -41,7 +48,7 @@ export default Vue.component('dashboard-settings', {
       formData.forEach((value, name) => {
         eventData[name] = value;
       });
-
+      
       this.$emit('save-settings', eventData);
     },
     onCreateCard: function(event) {
