@@ -16,6 +16,7 @@ const template = `
   <div id="dashboard" v-bind:style="dashStyle">
     <header>
       <h1 v-bind:style="headingStyle"><span class="hemoji">⚡️</span>electric io</h1>
+      <div v-if="simulating" class="simulation-status">⚠️ Using simulated data</div>
     </header>
 
     <main>
@@ -33,6 +34,7 @@ const initialData = function() {
     },
     messages: [],
     deviceList: [],
+    simulating: SIMULATING
   }
 };
 
