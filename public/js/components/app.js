@@ -16,6 +16,7 @@ const template = `
   <div id="dashboard" v-bind:style="dashStyle">
     <header>
       <h1 v-bind:style="headingStyle"><span class="hemoji">⚡️</span>electric io</h1>
+      <div v-if="simulating" :style="headingStyle" class="simulation-status">⚠️ Using simulated data</div>
     </header>
 
     <main>
@@ -33,6 +34,7 @@ const initialData = function() {
     },
     messages: [],
     deviceList: [],
+    simulating: SIMULATING
   }
 };
 
@@ -42,7 +44,7 @@ export default Vue.component('main-app', {
   data: initialData,
   computed: {
     dashStyle: function() {
-      // saveSettings() uses Formdata, which converts booleans to strings, so
+      // saveSettings() uses FormData, which converts booleans to strings, so
       // there's a chance we might get a string. Let's convert it back!
       if (typeof this.dashboard.bgImageRepeat !== "undefined") {
         var bgImageRepeatBool = JSON.parse(this.dashboard.bgImageRepeat);

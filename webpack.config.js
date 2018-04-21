@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const path = require('path');
 const MinifyPlugin = require('babel-minify-webpack-plugin');
 const mode = process.env.NODE_ENV === 'development' ? 'development' : 'production';
@@ -14,6 +15,11 @@ module.exports = {
     rules: [
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' }
     ]
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'SIMULATING': process.env.SIMULATING
+    })
+  ]
 };
 
