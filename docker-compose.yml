@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    image: electic-io
+    container_name: electric-io
+    ports:
+      - 3000:3000
