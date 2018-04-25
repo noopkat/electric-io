@@ -15,7 +15,7 @@ import contrastColor from '../lib/colorContraster.js';
 const template = `
   <div id="dashboard" v-bind:style="dashStyle">
     <header>
-      <h1 v-bind:style="headingStyle"><span class="hemoji">⚡️</span>electric io</h1>
+      <h1 v-bind:style="headingStyle">{{this.dashboard.title}}</h1>
       <div v-if="simulating" :style="headingStyle" class="simulation-status">⚠️ Using simulated data</div>
     </header>
 
