@@ -3,3 +3,4 @@ node_modules
 .glitch-assets
 .DS_Store
 .cache
+.env

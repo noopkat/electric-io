@@ -7,15 +7,20 @@ The indenting in this file is also awful which can be fixed very quickly.
 
 - noopkat
 *********************************************************************************/
-import BaseCard from './card.js';
-import SettingsCard from './settings.js';
-import {saveDashboard, getDashboard, getDeviceList} from '../lib/configuration.js';
-import contrastColor from '../lib/colorContraster.js';
+import BaseCard from "./card.js";
+import SettingsCard from "./settings.js";
+import {
+  saveDashboard,
+  getDashboard,
+  getDeviceList
+} from "../lib/configuration.js";
+import contrastColor from "../lib/colorContraster.js";
+import { TITLE_EMOJI_REGEX } from "../utils/constants.js";
 
 const template = `
   <div id="dashboard" v-bind:style="dashStyle">
     <header>
-      <h1 v-bind:style="headingStyle">{{this.dashboard.title}}</h1>
+      <h1 v-bind:style="headingStyle" v-html="appTitle"></h1>
       <div v-if="simulating" :style="headingStyle" class="simulation-status">⚠️ Using simulated data</div>
     </header>
 
@@ -35,12 +40,12 @@ const initialData = function() {
     messages: [],
     deviceList: [],
     simulating: SIMULATING
-  }
+  };
 };
 
-export default Vue.component('main-app', {
+export default Vue.component("main-app", {
   template,
-  components: {BaseCard},
+  components: { BaseCard },
   data: initialData,
   computed: {
     dashStyle: function() {
@@ -51,59 +56,74 @@ export default Vue.component('main-app', {
       }
       return {
         backgroundColor: this.dashboard.bgColor,
-        backgroundImage: this.dashboard.bgImageUrl ? `url(${this.dashboard.bgImageUrl})` : '',
-        backgroundRepeat: bgImageRepeatBool === true ? 'repeat' : 'no-repeat'
+        backgroundImage: this.dashboard.bgImageUrl
+          ? `url(${this.dashboard.bgImageUrl})`
+          : "",
+        backgroundRepeat: bgImageRepeatBool === true ? "repeat" : "no-repeat"
       };
     },
     headingStyle: function() {
-      const color = contrastColor(this.dashboard.bgColor, '#fff', '#000');
-      return {color};
+      const color = contrastColor(this.dashboard.bgColor, "#fff", "#000");
+      return { color };
     },
     showSettings: function() {
-      const allowedModes = ['unlocked', 'demo'];
+      const allowedModes = ["unlocked", "demo"];
       return allowedModes.includes(this.dashboard.editMode);
+    },
+    appTitle: function() {
+      var title = TITLE_EMOJI_REGEX.exec(this.dashboard.title);
+      title = title
+        ? `<span class="hemoji">${title[1]}</span>${title[2]}`
+        : this.dashboard.title;
+      return title;
     }
   },
   methods: {
     onSaveSettings: function(event) {
       this.dashboard = Object.assign({}, this.dashboard, event);
-      saveDashboard(this.dashboard)
-        .then((r) => console.log(r.ok));
+      saveDashboard(this.dashboard).then(r => console.log(r.ok));
     },
     onTileChange: function(event) {
-      const tileIndex = this.dashboard.tiles.findIndex((t) => t.id === event.id);
-      const updatedTile  = Object.assign({}, this.dashboard.tiles[tileIndex], event);
+      const tileIndex = this.dashboard.tiles.findIndex(t => t.id === event.id);
+      const updatedTile = Object.assign(
+        {},
+        this.dashboard.tiles[tileIndex],
+        event
+      );
       const updatedTiles = this.dashboard.tiles.slice();
       updatedTiles[tileIndex] = updatedTile;
-      this.dashboard = Object.assign({}, this.dashboard, {tiles: updatedTiles});
+      this.dashboard = Object.assign({}, this.dashboard, {
+        tiles: updatedTiles
+      });
       // TODO: this needs to be handled properly in the UI
-      saveDashboard(this.dashboard)
-        .then((r) => console.log(r.ok));
+      saveDashboard(this.dashboard).then(r => console.log(r.ok));
     },
     onTileDelete: function(tileId) {
-      console.log('on tile delete');
-      const updatedTiles = this.dashboard.tiles.filter((t) => t.id !== tileId);
-      this.dashboard = Object.assign({}, this.dashboard, {tiles: updatedTiles});
+      console.log("on tile delete");
+      const updatedTiles = this.dashboard.tiles.filter(t => t.id !== tileId);
+      this.dashboard = Object.assign({}, this.dashboard, {
+        tiles: updatedTiles
+      });
       // TODO: this needs to be handled properly in the UI
-      saveDashboard(this.dashboard)
-        .then((r) => console.log(r.ok));
+      saveDashboard(this.dashboard).then(r => console.log(r.ok));
     },
     onTileCreate: function(event) {
       const updatedTiles = this.dashboard.tiles.slice();
       updatedTiles.push(event);
-      this.dashboard = Object.assign({}, this.dashboard, {tiles: updatedTiles});
+      this.dashboard = Object.assign({}, this.dashboard, {
+        tiles: updatedTiles
+      });
       // TODO: this needs to be handled properly in the UI
-      saveDashboard(this.dashboard)
-        .then((r) => console.log(r.ok));
+      saveDashboard(this.dashboard).then(r => console.log(r.ok));
     },
     onDeviceListReceived: function(deviceList) {
       this.deviceList = deviceList;
 
-        const socket = io();
-        socket.on('message', (message) => {
-        const deviceId = message.annotations['iothub-connection-device-id']; 
+      const socket = io();
+      socket.on("message", message => {
+        const deviceId = message.annotations["iothub-connection-device-id"];
         message.body.deviceId = deviceId;
-        message.body.enqueuedTime = message.annotations['iothub-enqueuedtime'];
+        message.body.enqueuedTime = message.annotations["iothub-enqueuedtime"];
         if (this.messages.length > 500) this.messages.shift();
         this.messages.push(message.body);
       });
@@ -111,8 +131,7 @@ export default Vue.component('main-app', {
   },
   created() {
     // TODO: handle errors here
-    getDashboard().then((r) => this.dashboard = r.dashboard);
-    getDeviceList().then((r) => this.onDeviceListReceived(r));
+    getDashboard().then(r => (this.dashboard = r.dashboard));
+    getDeviceList().then(r => this.onDeviceListReceived(r));
   }
 });
-
