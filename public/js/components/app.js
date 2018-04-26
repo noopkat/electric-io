@@ -7,15 +7,15 @@ The indenting in this file is also awful which can be fixed very quickly.
 
 - noopkat
 *********************************************************************************/
-import BaseCard from "./card.js";
-import SettingsCard from "./settings.js";
+import BaseCard from './card.js';
+import SettingsCard from './settings.js';
 import {
   saveDashboard,
   getDashboard,
   getDeviceList
-} from "../lib/configuration.js";
-import contrastColor from "../lib/colorContraster.js";
-import { TITLE_EMOJI_REGEX } from "../utils/constants.js";
+} from '../lib/configuration.js';
+import contrastColor from '../lib/colorContraster.js';
+import { TITLE_EMOJI_REGEX } from '../utils/constants.js';
 
 const template = `
   <div id="dashboard" v-bind:style="dashStyle">
@@ -43,7 +43,7 @@ const initialData = function() {
   };
 };
 
-export default Vue.component("main-app", {
+export default Vue.component('main-app', {
   template,
   components: { BaseCard },
   data: initialData,
@@ -51,23 +51,23 @@ export default Vue.component("main-app", {
     dashStyle: function() {
       // saveSettings() uses FormData, which converts booleans to strings, so
       // there's a chance we might get a string. Let's convert it back!
-      if (typeof this.dashboard.bgImageRepeat !== "undefined") {
+      if (typeof this.dashboard.bgImageRepeat !== 'undefined') {
         var bgImageRepeatBool = JSON.parse(this.dashboard.bgImageRepeat);
       }
       return {
         backgroundColor: this.dashboard.bgColor,
         backgroundImage: this.dashboard.bgImageUrl
           ? `url(${this.dashboard.bgImageUrl})`
-          : "",
-        backgroundRepeat: bgImageRepeatBool === true ? "repeat" : "no-repeat"
+          : '',
+        backgroundRepeat: bgImageRepeatBool === true ? 'repeat' : 'no-repeat'
       };
     },
     headingStyle: function() {
-      const color = contrastColor(this.dashboard.bgColor, "#fff", "#000");
+      const color = contrastColor(this.dashboard.bgColor, '#fff', '#000');
       return { color };
     },
     showSettings: function() {
-      const allowedModes = ["unlocked", "demo"];
+      const allowedModes = ['unlocked', 'demo'];
       return allowedModes.includes(this.dashboard.editMode);
     },
     appTitle: function() {
@@ -99,7 +99,7 @@ export default Vue.component("main-app", {
       saveDashboard(this.dashboard).then(r => console.log(r.ok));
     },
     onTileDelete: function(tileId) {
-      console.log("on tile delete");
+      console.log('on tile delete');
       const updatedTiles = this.dashboard.tiles.filter(t => t.id !== tileId);
       this.dashboard = Object.assign({}, this.dashboard, {
         tiles: updatedTiles
@@ -120,10 +120,10 @@ export default Vue.component("main-app", {
       this.deviceList = deviceList;
 
       const socket = io();
-      socket.on("message", message => {
-        const deviceId = message.annotations["iothub-connection-device-id"];
+      socket.on('message', message => {
+        const deviceId = message.annotations['iothub-connection-device-id'];
         message.body.deviceId = deviceId;
-        message.body.enqueuedTime = message.annotations["iothub-enqueuedtime"];
+        message.body.enqueuedTime = message.annotations['iothub-enqueuedtime'];
         if (this.messages.length > 500) this.messages.shift();
         this.messages.push(message.body);
       });
