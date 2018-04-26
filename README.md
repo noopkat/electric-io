@@ -94,7 +94,7 @@ Fields:
 
 ### Button
 
-This card will give you a big button to press that can map to any device method active on your device! Pretty cool. You can't send payloads yet, but that's coming soon!
+This card will give you a big button to press that can map to any [device method](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-direct-methods) active on your device! Pretty cool. You can't send payloads yet, but that's coming soon!
 
 Fields:
 
