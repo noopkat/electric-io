@@ -26,8 +26,6 @@ p {
 
 form {
   margin-bottom: 25px;
-  background-color: cyan;
-  padding: 15px;
   display: inline-block;
   width: 100%;
   max-width: 340px;
@@ -216,11 +214,11 @@ button.delete {
  }
 
  p.success {
-   color: #3fd640;
+   color: #199e1b;
  }
 
 
-.cardForm form {
+.cardform form {
   padding: 0;
   background-color: white;
   display: inline-block;

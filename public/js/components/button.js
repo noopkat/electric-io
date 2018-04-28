@@ -1,7 +1,7 @@
 const template = `
   <div>
     <button v-on:click="onClick">{{tile.buttonText}}</button>
-    <p v-bind:class="statusClass">{{statusText}}</p>
+    <p :class="statusClass">{{statusText}}</p>
   </div>`;
 
 export default Vue.component('card-button', {

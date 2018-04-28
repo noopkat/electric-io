@@ -17,6 +17,7 @@ const template = `
         <input class="settings__checkbox" type="checkbox" name="bgImageRepeat" :value="dashboard.bgImageRepeat" v-model="dashboard.bgImageRepeat" />
       </label>
       <input type="submit" value="save"/>
+      <p class="status" :class="saveStatusClass">{{saveStatusText}}</p>
     </form>
     <h3>New Card</h3>
     <form v-on:submit.prevent="onCreateCard">
@@ -36,12 +37,7 @@ const template = `
 
 export default Vue.component('dashboard-settings', {
   template,
-  props: ['dashboard'],
-  data: function() {
-    return {
-      status: ''
-    }
-  },
+  props: ['dashboard', 'saveStatusText', 'saveStatusClass'],
   methods: {
     onSaveSettings: function(event) {
       const formData = new FormData(event.target);

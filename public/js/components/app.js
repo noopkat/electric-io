@@ -20,7 +20,7 @@ const template = `
     </header>
 
     <main>
-      <dashboard-settings v-if="showSettings" v-bind:dashboard="dashboard" v-on:save-settings="onSaveSettings" v-on:tile-create="onTileCreate"/>
+      <dashboard-settings v-if="showSettings" v-bind:dashboard="dashboard" :saveStatusText="saveStatusText" :saveStatusClass="saveStatusClass" v-on:save-settings="onSaveSettings" v-on:tile-create="onTileCreate"/>
       <base-card :key="tile.id" v-for="tile in dashboard.tiles" v-bind:editMode="dashboard.editMode" v-bind:messages="messages.filter((m)=>m.deviceId===tile.deviceId)" v-bind:tile="tile" v-bind:deviceList="deviceList" v-bind:blockSize="dashboard.blockSize" v-on:tile-position="onTileChange" v-on:tile-settings="onTileChange" v-on:tile-delete="onTileDelete" />
     </main>
   </div>
@@ -34,7 +34,8 @@ const initialData = function() {
     },
     messages: [],
     deviceList: [],
-    simulating: SIMULATING
+    simulating: SIMULATING,
+    saveSuccess: null,
   }
 };
 
@@ -62,13 +63,23 @@ export default Vue.component('main-app', {
     showSettings: function() {
       const allowedModes = ['unlocked', 'demo'];
       return allowedModes.includes(this.dashboard.editMode);
+    },
+    saveStatusText: function() {
+      if (this.saveSuccess === null) return '';
+      return this.saveSuccess ? 'Saved!' : 'Oops! Something went wrong, try again?';
+    },
+    saveStatusClass: function() {
+      if (this.saveSuccess === null) return '';
+      return this.saveSuccess ? 'success' : 'error';
     }
   },
   methods: {
     onSaveSettings: function(event) {
       this.dashboard = Object.assign({}, this.dashboard, event);
       saveDashboard(this.dashboard)
-        .then((r) => console.log(r.ok));
+        .then((response) => {
+          this.saveSuccess = response.ok;
+        }).catch((error) => this.saveSuccess = false);
     },
     onTileChange: function(event) {
       const tileIndex = this.dashboard.tiles.findIndex((t) => t.id === event.id);
