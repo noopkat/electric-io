@@ -34,7 +34,7 @@ form {
   border-radius: 3px;
 }
 
-input {
+input, textarea {
   display: block;
   margin-bottom: 10px;
   padding: 5px;
@@ -43,7 +43,6 @@ input {
   border-radius: 3px;
   font-size: 16px;
 }
-
 
 li {
   margin-bottom: 5px;

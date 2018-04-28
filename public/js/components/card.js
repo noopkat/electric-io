@@ -5,6 +5,7 @@ import PieChartCard from './pieChart.js';
 import ButtonCard from './button.js';
 import NumberCard from './number.js';
 import FormCard from './form.js';
+import TextCard from './text.js';
 
 const template = `
   <div class="card" v-bind:class="{'dragging': dragging}" v-bind:style="style" v-on:mousedown.stop="onMouseDown">
@@ -36,7 +37,7 @@ export default Vue.component('card-base', {
   methods: {
     onMouseDown: function(event) {
       const allowedModes = ['unlocked', 'demo'];
-      const excludedNodes = ['INPUT', 'SELECT', 'LABEL'];
+      const excludedNodes = ['INPUT', 'TEXTAREA', 'SELECT', 'LABEL'];
       if (!this.dragging && !excludedNodes.includes(event.target.tagName) && allowedModes.includes(this.editMode)) {
         this.dragging = true;
         this.offsetY = event.clientY - this.y;

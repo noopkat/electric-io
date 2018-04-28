@@ -26,6 +26,7 @@ const template = `
           <option value="lineChart">line chart</option>
           <option value="number">number</option>
           <option value="sticker">sticker</option>
+          <option value="text">text</option>
         </select>
       </label>
       <input type="submit" value="create"/>

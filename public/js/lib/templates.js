@@ -32,5 +32,12 @@ export default {
     "property": "",
     "position": [0, 0],
     "size": [2, 1.5]
+  },
+  'text': {
+    "title": "Most Excellent Note",
+    "type": "text",
+    "tileText": "# Hello!",
+    "position": [0, 0],
+    "size": [1.2, 1]
   }
 }
