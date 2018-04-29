@@ -62,6 +62,9 @@ const template = `
       </label>
 
       <input type="submit" value="save" />
+      <button v-on:click.prevent="onCancel">cancel</button> <input type="submit" value="save" />
+
+      <p class="status" :class="saveStatusClass">{{saveStatusText}}</p>
     </form>
   </div>
 `;
@@ -94,6 +97,13 @@ export default Vue.component('card-form', {
     },
     showMarkdownInput: function() {
       return this.tile.type === "text";
+    },
+    saveStatusClass: function() {
+      return this.tile.saveSuccess ? 'success' : 'error';
+    },
+    saveStatusText: function() {
+      if (this.tile.saveSuccess === undefined) return '';
+      return this.tile.saveSuccess ? '' : 'Oops, didn\'t work. Try again?';
     }
   },
   methods: {
@@ -104,6 +114,9 @@ export default Vue.component('card-form', {
         eventData[name] = value;
       });
       this.$emit('save-settings', eventData);
+    },
+    onCancel: function() {
+      this.$emit('cancel-save-settings');
     }
   },
 });

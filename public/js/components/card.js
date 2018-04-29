@@ -17,7 +17,7 @@ const template = `
       <h2 v-if="tile.title">{{tile.title}} </h2>
       <component v-bind:is="childCard" v-bind:tile="tile" v-bind:blockSize="blockSize" v-bind:messages="messages"></component>
   </template>
-    <card-form v-if="showForm" v-bind:editing="editing" v-bind:tile="tile" v-bind:deviceList="deviceList" v-on:save-settings="onSaveSettings"></card-form>
+    <card-form v-if="showForm" v-bind:editing="editing" v-bind:tile="tile" v-bind:deviceList="deviceList" v-on:save-settings="onSaveSettings" v-on:cancel-save-settings="onCancelSave"></card-form>
   </div>`;
 
 export default Vue.component('card-base', {
@@ -73,9 +73,19 @@ export default Vue.component('card-base', {
     },
     onSaveSettings: function(event) {
       this.editing = false;
-      // focus on edit button
-      this.$nextTick(function(){ this.$refs.editButton.focus() });
       this.$emit('tile-settings', event);
+    },
+    onCancelSave: function() {
+      this.editing = false;
+      this.tile.saveSuccess = undefined;
+    }
+  },
+  watch: {
+    editing: function(value) {
+      if (!this.editing && this.saveSuccess === true) {
+        // focus on edit button
+        this.$nextTick(function(){ this.$refs.editButton.focus() });
+      } 
     }
   },
   computed: {
@@ -97,10 +107,10 @@ export default Vue.component('card-base', {
       return `card-${this.tile.type.toLowerCase()}`;
     },
     showChildCard: function() {
-      return !this.editing
+      return this.showForm === false;
     },
     showForm: function() {
-      return this.editing
+      return this.editing || (this.tile.saveSuccess === false);
     },
     showControls: function() {
       const allowedModes = ['unlocked', 'demo'];

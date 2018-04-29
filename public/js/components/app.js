@@ -21,7 +21,7 @@ const template = `
 
     <main>
       <dashboard-settings v-if="showSettings" v-bind:dashboard="dashboard" :saveStatusText="saveStatusText" :saveStatusClass="saveStatusClass" v-on:save-settings="onSaveSettings" v-on:tile-create="onTileCreate"/>
-      <base-card :key="tile.id" v-for="tile in dashboard.tiles" v-bind:editMode="dashboard.editMode" v-bind:messages="messages.filter((m)=>m.deviceId===tile.deviceId)" v-bind:tile="tile" v-bind:deviceList="deviceList" v-bind:blockSize="dashboard.blockSize" v-on:tile-position="onTileChange" v-on:tile-settings="onTileChange" v-on:tile-delete="onTileDelete" />
+      <base-card :key="tile.id" v-for="tile in dashboard.tiles" v-bind:editMode="dashboard.editMode" v-bind:messages="messages.filter((m)=>m.deviceId===tile.deviceId)" v-bind:tile="tile" v-bind:deviceList="deviceList" v-bind:blockSize="dashboard.blockSize" :saveSuccess="tile.saveSuccess"  v-on:tile-position="onTileChange" v-on:tile-settings="onTileChange" v-on:tile-delete="onTileDelete" />
     </main>
   </div>
 `;
@@ -86,10 +86,17 @@ export default Vue.component('main-app', {
       const updatedTile  = Object.assign({}, this.dashboard.tiles[tileIndex], event);
       const updatedTiles = this.dashboard.tiles.slice();
       updatedTiles[tileIndex] = updatedTile;
-      this.dashboard = Object.assign({}, this.dashboard, {tiles: updatedTiles});
+      const newDashboard = Object.assign({}, this.dashboard, {tiles: updatedTiles});
       // TODO: this needs to be handled properly in the UI
-      saveDashboard(this.dashboard)
-        .then((r) => console.log(r.ok));
+      saveDashboard(newDashboard)
+        .then((response) => {
+          newDashboard.tiles[tileIndex].saveSuccess = response.ok;
+          this.dashboard = Object.assign({}, newDashboard);
+        })
+        .catch((error) => {
+          newDashboard.tiles[tileIndex].saveSuccess = false;
+          this.dashboard = Object.assign({}, newDashboard);
+        })
     },
     onTileDelete: function(tileId) {
       console.log('on tile delete');
