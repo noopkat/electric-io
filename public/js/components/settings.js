@@ -30,7 +30,7 @@ const template = `
           <option value="text">text</option>
         </select>
       </label>
-      <input type="submit" value="create"/>
+      <input class="save" type="submit" value="create"/>
     </form>
   </div>
 `;

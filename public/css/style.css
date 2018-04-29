@@ -118,7 +118,7 @@ h1 .hemoji {
   font-family: 'Chivo', sans-serif;
 }
 
-.card button, .card .button, .card input[type=submit] {
+.card button, .card .button, .card .save {
   font-family: 'Chivo', sans-serif;
   border: 0;
   background: #5786c1;
@@ -136,7 +136,7 @@ h1 .hemoji {
   box-shadow: 1px 0px #3a587f, 0px 1px #4171ae, 2px 1px #3a587f, 1px 2px #4171ae, 3px 2px #3a587f, 2px 3px #4171ae, 4px 3px #3a587f, 3px 4px #4171ae, 5px 4px #3a587f, 4px 5px #4171ae, 6px 5px #3a587f, 5px 6px #4171ae;
 }
 
-.card button:hover, .card .button:hover, .card .button.hover, .card input[type=submit]:hover, .card input[type=submit].hover {
+.card button:hover, .card .button:hover, .card .save:hover  {
   transform: translate(2px, 2px);
   box-shadow: 1px 0px #3a587f, 0px 1px #4171ae, 2px 1px #3a587f, 1px 2px #4171ae, 3px 2px #3a587f, 2px 3px #4171ae, 4px 3px #3a587f, 3px 4px #4171ae;
 }
@@ -145,7 +145,7 @@ h1 .hemoji {
   border: 2px solid #333;
 }
 
-.card button:active, .card .button:active, .card .button.active, .card input[type=submit]:active, .card input[type=submit].active {
+.card button:active, .card .button:active, .card .button.active, .card .save:active, .card .save:active {
   transform: translate(4px, 4px);
   box-shadow: 0px 0px;
 }
@@ -166,10 +166,19 @@ h1 .hemoji {
   width: 100%;
 }
 
-.card form input[type=submit] {
+#settings form input.save {
   padding: 5px;
   font-size: 14px;
   width: 97%;
+}
+
+.card form input.save {
+  padding: 5px;
+  font-size: 14px;
+  float: left;
+  width: 50%;
+  font-size: 13px;
+  display: inline;
 }
 
 .card .controls {
@@ -180,17 +189,39 @@ h1 .hemoji {
   display: inline;
  }
 
-button.edit {
+.card form .controls {
+  float: right;
+  width: 150px;
+  margin: 0;
+}
+
+button.edit, button.cancel {
   color: #0000ff;
 }
 
-button.edit, button.edit:hover, button.delete, button.delete:hover {
+.card form button.cancel {
   transform: none;
   background-color: white;
   border: none;
   cursor: pointer;
   box-shadow: none;
+  float: left;
+  font-size: 13px;
+  display: inline;
+}
+
+button.cancel:hover {
+  box-shadow: none;
+  text-decoration: underline;
+}
+
+button.edit, button.edit:hover, button.delete, button.delete:hover {
   font-size: 10px;
+  transform: none;
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  box-shadow: none;
   float: left;
   padding: 5px;
  }

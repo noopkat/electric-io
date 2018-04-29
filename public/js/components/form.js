@@ -60,9 +60,11 @@ const template = `
       <label v-if="showMarkdownInput">This supports <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">markdown</a>!
           <textarea name="tileText" :value="tile.tileText" ></textarea>
       </label>
-
-      <input type="submit" value="save" />
-      <button v-on:click.prevent="onCancel">cancel</button> <input type="submit" value="save" />
+      
+      <div class="controls">
+        <button class="cancel" v-on:click.prevent="onCancel">cancel</button> 
+        <input class="save" type="submit" value="save" />
+      </div>
 
       <p class="status" :class="saveStatusClass">{{saveStatusText}}</p>
     </form>
