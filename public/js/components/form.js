@@ -57,6 +57,10 @@ const template = `
         <input type="text" name="textColor" v-bind:value="tile.textColor"/>
       </label>
 
+      <label v-if="showMarkdownInput">This supports <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">markdown</a>!
+          <textarea name="tileText" :value="tile.tileText" ></textarea>
+      </label>
+
       <input type="submit" value="save" />
     </form>
   </div>
@@ -68,7 +72,7 @@ export default Vue.component('card-form', {
   props: ["tile", "deviceList", "editing"],
   computed: {
     showPropInput: function() {
-      return this.tile.type !== "sticker" && this.tile.type !== "button";
+      return this.tile.type !== "sticker" && this.tile.type !== "button" && this.tile.type !== "text";
     },
     showMethodInput: function() {
       return this.tile.type === "button";
@@ -77,7 +81,7 @@ export default Vue.component('card-form', {
       return this.tile.type === "lineChart";
     },
     showDeviceList: function() {
-      return this.tile.type !== "sticker";
+      return this.tile.type !== "sticker" && this.tile.type !== "text";
     },
     showUrlInput: function() {
       return this.tile.type === "sticker";
@@ -87,6 +91,9 @@ export default Vue.component('card-form', {
     },
     showTextColorInput: function() {
       return this.tile.type === "number";
+    },
+    showMarkdownInput: function() {
+      return this.tile.type === "text";
     }
   },
   methods: {
