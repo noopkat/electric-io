@@ -46,10 +46,11 @@
     "collectCoverage": true,
     "collectCoverageFrom": [
 			"lib/**/*.js",
-			"public/js/**.*.js"
+			"public/js/**/*.js",
+			"!public/js/{dist,vendor}/*.js"
     ],
     "roots": [
       "lib", "public/js"
     ]
-}
+	}
 }
