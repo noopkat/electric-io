@@ -7,10 +7,10 @@ const template = `
     <h2>Settings</h2>
     <form v-on:submit.prevent="onSaveSettings">
       <label>App Title
-        <input type="text" name="title" v-bind:value="dashboard.title" />
+        <input type="text" name="title" :value="dashboard.title" />
       </label>
       <label>Background Color
-        <input type="text" name="bgColor" v-bind:value="dashboard.bgColor" />
+        <input type="text" name="bgColor" :value="dashboard.bgColor" />
       </label>
       <label>Background Image URL
         <input type="text" name="bgImageUrl" :value="dashboard.bgImageUrl" />
