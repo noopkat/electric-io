@@ -71,10 +71,19 @@ export default Vue.component('main-app', {
       return allowedModes.includes(this.dashboard.editMode);
     },
     appTitle: function() {
-      var title = TITLE_EMOJI_REGEX.exec(this.dashboard.title);
-      title = title
-        ? `<span class="hemoji">${title[1]}</span>${title[2]}`
-        : this.dashboard.title;
+      var appTitle =
+        typeof this.dashboard.title === 'undefined'
+          ? '\u26a1electric io'
+          : this.dashboard.title;
+
+      var title = TITLE_EMOJI_REGEX.exec(appTitle);
+
+      if (title) {
+        title = `<span class="hemoji">${title[1]}</span>${title[2]}`;
+        this.dashboard.title = appTitle;
+      } else {
+        title = this.dashboard.title;
+      }
       return title;
     }
   },
