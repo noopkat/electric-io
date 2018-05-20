@@ -55,27 +55,16 @@ Example:
 
 ## Types of cards and their settings
 
-### Sticker
+### Button
 
-The simplest of them all! You can display a sticker on your dashboard.
-
-Fields:
-
-1. Title - text displayed at the top of the card
-2. Url - a full url link to the picture you want to display on the sticker. GIFs will work!
-
-〰️〰️〰️〰️〰️〰️
-
-### Number
-
-This card will display the last value it received from a **numeric** property you're watching
+This card will give you a big button to press that can map to any [device method](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-direct-methods) active on your device! Pretty cool. You can't send payloads yet, but that's coming soon!
 
 Fields:
 
 1. Title - text displayed at the top of the card
-2. Device Id - the id of the device (from IoT Hub) that you want to display telemetry for
-3. Data Property - the name of the device payload property you want to display the value of (eg. `humidity`)
-4. Text Color - the color you'd like the number to be. Accepts `#00ff00`, `rgb(0,255,0)`, and `salmonpink` color formats 🌈
+2. Device Id - the id of the device (from IoT Hub) that you want to call a method on
+3. Device Method Name - the name of the device method you want to call on your device
+4. Button text - the text you want your button to say, eg. "turn on LED"
 
 〰️〰️〰️〰️〰️〰️
 
@@ -92,18 +81,40 @@ Fields:
 
 〰️〰️〰️〰️〰️〰️
 
-### Button
+### Number
 
-This card will give you a big button to press that can map to any device method active on your device! Pretty cool. You can't send payloads yet, but that's coming soon!
+This card will display the last value it received from a **numeric** property you're watching
 
 Fields:
 
 1. Title - text displayed at the top of the card
-2. Device Id - the id of the device (from IoT Hub) that you want to call a method on
-3. Device Method Name - the name of the device method you want to call on your device
-4. Button text - the text you want your button to say, eg. "turn on LED"
+2. Device Id - the id of the device (from IoT Hub) that you want to display telemetry for
+3. Data Property - the name of the device payload property you want to display the value of (eg. `humidity`)
+4. Text Color - the color you'd like the number to be. Accepts `#00ff00`, `rgb(0,255,0)`, and `salmonpink` color formats 🌈
 
 〰️〰️〰️〰️〰️〰️
+
+### Sticker
+
+This card will display a sticker on your dashboard.
+
+Fields:
+
+1. Title - text displayed at the top of the card
+2. Url - a full url link to the picture you want to display on the sticker. GIFs will work!
+
+〰️〰️〰️〰️〰️〰️
+
+### Text
+
+The simplest of them all! This card will display text.
+
+Fields: 
+
+1. Title - text displayed at the top of the card
+2. Text - text to be displayed on the card. [Markdown syntax](https://guides.github.com/features/mastering-markdown/) is supported!
+
+️〰️〰️〰️〰️〰️
 
 Got ideas for more cards? Open an issue on this repo and let me know! 👀
 
