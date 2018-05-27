@@ -5,5 +5,12 @@ services:
     build: .
     image: electic-io
     container_name: electric-io
+    command: npm run start
     ports:
       - 3000:3000
+    volumes: # For file editing, watching, etc
+      - ./public:/usr/app/public
+      - ./lib:/usr/app/lib
+      - ./.data/dashboard.json.sim:/usr/app/.data/dashboard.json.sim
+      - ./.config:/usr/app/.config
+      - ./index.js:/usr/app/index.js
