@@ -48,8 +48,7 @@ export default Vue.component('dashboard-settings', {
   data: function() {
     return {
       status: '',
-      settingsPanelOpen: true,
-      temp: '➡️'
+      settingsPanelOpen: true
     }
   },
   methods: {
