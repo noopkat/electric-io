@@ -157,17 +157,6 @@ h1 .hemoji {
   user-select: none;
 }
 
-#settings {
-  right: 0px;
-  top: 50px;
-  min-width: 280px;
-}
-
-#settings select {
-  height: 30px;
-  width: 100%;
-}
-
 .card form input[type=submit] {
   padding: 5px;
   font-size: 14px;
@@ -251,6 +240,76 @@ select {
   height: 20px;
 }
 
+
+/* -------------- */
+/* Settings panel */
+/* -------------- */
+
+.settings {
+  min-width: 280px;
+  right: 0px;
+  top: 50px;
+}
+
+.settings__header {
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.settings--closed {
+  min-width: auto;
+}
+
+.settings--closed .settings__header {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.settings--closed .settings__title {
+  display: none;
+  margin: 0 15px 0 0;
+}
+
+.settings--closed .settings__body {
+  display: none;
+}
+
+.settings .settings__toggle-btn {
+  background-color: transparent;
+  border: 2px solid #fff;
+  border-radius: 0;
+  box-shadow: none;
+  color: #000;
+  padding: 2px;
+}
+
+.settings .settings__toggle-btn:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.settings__toggle-btn:hover + .settings__title,
+.settings__toggle-btn:focus + .settings__title {
+  display: block;
+}
+
+.settings select {
+  height: 30px;
+  width: 100%;
+}
+
 .settings__checkbox-label {
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -272,4 +331,19 @@ select {
   position: absolute;
   top: 5px;
   right: 10px;
+}
+
+/* -------------- */
+/* Helper classes */
+/* -------------- */
+
+.screen-reader-only {
+  border: 0; 
+  clip: rect(0 0 0 0); 
+  height: 1px; 
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
 }
