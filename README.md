@@ -118,6 +118,17 @@ Fields:
 
 Got ideas for more cards? Open an issue on this repo and let me know! 👀
 
+## Transferring dashboard settings
+
+electric-io saves your dashboard configuration to `./.data/dashboard.json`. To safely transfer this elsewhere, stop the source and destination electric-io instances and copy `dashboard.json` across.
+
+```
+# With both the source and destination electric-io instances stopped
+cp ./electric-io-testing/.data/dashboard.json ./electric-io-production/.data/dashboard.json
+```
+
+The transferred settings should show up when electric-io is started again.
+
 ## Locking your dashboard
 
 A common thing you might want to do is to share your dashboard with folks without them changing things against your permission. If you'd like to temporarily 'lock' your dashboard, place the following line in your `./.env` file:
