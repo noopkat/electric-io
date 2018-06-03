@@ -5,4 +5,4 @@ coverage
 .DS_Store
 .cache
 .env
-public/js/dist
+public/js/dist/
