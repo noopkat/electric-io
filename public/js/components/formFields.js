@@ -4,3 +4,4 @@ export default Vue.component('form-fields', {
     this.$options.template = this.$options.propsData.tile.template;
   }
 });
+
