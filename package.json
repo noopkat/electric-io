@@ -20,8 +20,9 @@
 		"socket.io": "*"
 	},
 	"engines": {
-		"node": "8"
+		"node": ">= 6"
 	},
+	"engineStrict": true,
 	"keywords": [
 		"node",
 		"express",

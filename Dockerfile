@@ -1,4 +1,4 @@
-FROM node:8.11-alpine
+FROM node:6.14.2-alpine
 
 # Set up our workspace
 WORKDIR /usr/app
