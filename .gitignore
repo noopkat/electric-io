@@ -4,3 +4,5 @@ coverage
 .glitch-assets
 .DS_Store
 .cache
+.env
+public/js/dist/

@@ -111,7 +111,6 @@ io.on('connection', function(socket){
 });
 
 receiver.on('data', (message) => {
-  console.log('firehose:', message);
   io.sockets.emit('message', message);
 });
 
