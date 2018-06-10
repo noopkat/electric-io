@@ -1,49 +1,58 @@
-import {saveDashboard} from '../lib/configuration.js';
-import templates from '../lib/templates.js';
-import createGuid from '../lib/guid.js';
+import { saveDashboard } from "../lib/configuration.js";
+import templates from "../lib/templates.js";
+import createGuid from "../lib/guid.js";
 
 const template = `
-  <div class="card" id="settings">
-    <h2>Settings</h2>
-    <form v-on:submit.prevent="onSaveSettings">
-      <label>App Title
-        <input type="text" name="title" :value="dashboard.title" />
-      </label>
-      <label>Background Color
-        <input type="text" name="bgColor" :value="dashboard.bgColor" />
-      </label>
-      <label>Background Image URL
-        <input type="text" name="bgImageUrl" :value="dashboard.bgImageUrl" />
-      </label>
-      <label class="settings__checkbox-label">
-        <span>Repeat background image?</span>
-        <input class="settings__checkbox" type="checkbox" name="bgImageRepeat" :value="dashboard.bgImageRepeat" v-model="dashboard.bgImageRepeat" />
-      </label>
-      <input type="submit" value="save"/>
-    </form>
-    <h3>New Card</h3>
-    <form v-on:submit.prevent="onCreateCard">
-      <label>Card Type
-        <select name="type">
-          <option value="button">button</option>
-          <option value="lineChart">line chart</option>
-          <option value="number">number</option>
-          <option value="sticker">sticker</option>
-          <option value="text">text</option>
-        </select>
-      </label>
-      <input type="submit" value="create"/>
-    </form>
+  <div class="card settings" :class="{'settings--closed': !settingsPanelOpen}">
+    <div class="settings__header">
+      <button class="settings__toggle-btn" @click="onToggleSettingsPanel" :aria-expanded="settingsPanelOpen ? 'true' : 'false'" aria-labelledby="settings-toggle-label">
+        <span class="screen-reader-only" id="settings-toggle-label">{{ settingsPanelOpen ? 'Close settings panel' : 'Open settings panel' }}</span>
+        <span aria-hidden="true">{{ settingsPanelOpen ? '&rarr;' : '⚙️' }}</span>
+      </button>
+      <h2 class="settings__title">Settings</h2>
+    </div>
+    <div class="settings__body">
+      <form v-on:submit.prevent="onSaveSettings">
+        <label>App Title
+          <input type="text" name="title" :value="dashboard.title" />
+        </label>
+        <label>Background Color
+          <input type="text" name="bgColor" v-bind:value="dashboard.bgColor" />
+        </label>
+        <label>Background Image URL
+          <input type="text" name="bgImageUrl" :value="dashboard.bgImageUrl" />
+        </label>
+        <label class="settings__checkbox-label">
+          <span>Repeat background image?</span>
+          <input class="settings__checkbox" type="checkbox" name="bgImageRepeat" :value="dashboard.bgImageRepeat" v-model="dashboard.bgImageRepeat" />
+        </label>
+        <input type="submit" value="save"/>
+      </form>
+      <h3>New Card</h3>
+      <form v-on:submit.prevent="onCreateCard">
+        <label>Card Type
+          <select name="type">
+            <option value="button">button</option>
+            <option value="lineChart">line chart</option>
+            <option value="number">number</option>
+            <option value="sticker">sticker</option>
+            <option value="text">text</option>
+          </select>
+        </label>
+        <input type="submit" value="create"/>
+      </form>
+    </div>
   </div>
 `;
 
-export default Vue.component('dashboard-settings', {
+export default Vue.component("dashboard-settings", {
   template,
-  props: ['dashboard'],
+  props: ["dashboard"],
   data: function() {
     return {
-      status: ''
-    }
+      status: "",
+      settingsPanelOpen: true
+    };
   },
   methods: {
     onSaveSettings: function(event) {
@@ -52,17 +61,19 @@ export default Vue.component('dashboard-settings', {
       formData.forEach((value, name) => {
         eventData[name] = value;
       });
-      
-      this.$emit('save-settings', eventData);
+
+      this.$emit("save-settings", eventData);
     },
     onCreateCard: function(event) {
       const formData = new FormData(event.target);
       const id = createGuid();
-      const tileTemplate = templates[formData.get('type')];
-      const newTile = Object.assign({}, tileTemplate, {id});
+      const tileTemplate = templates[formData.get("type")];
+      const newTile = Object.assign({}, tileTemplate, { id });
 
-      this.$emit('tile-create', newTile);
+      this.$emit("tile-create", newTile);
+    },
+    onToggleSettingsPanel() {
+      this.settingsPanelOpen = this.settingsPanelOpen === true ? false : true;
     }
   }
 });
-
