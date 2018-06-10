@@ -12,6 +12,7 @@ services:
       - .env
     environment:
       - SIMULATING
+      - DEBUG
     volumes: # For file editing, watching, etc
       - ./public:/usr/app/public
       - ./lib:/usr/app/lib

@@ -8,6 +8,7 @@ require('dotenv').config();
 var express = require('express');
 var fs = require('fs');
 var http = require('http');
+var debug = require('debug')('server');
 var socket = require('socket.io');
 var helpers = require('./lib/helpers');
 var liveHub = require('./lib/liveHub');
@@ -56,18 +57,18 @@ app.use(express.static('public'));
 app.use(express.json());
 
 app.get('/api/devices/list', function (req, res) {
-  console.log('device list requested');
+  debug('device list requested');
   registry.list((error, list) => {
     var names = list.map((d) => d.deviceId);
-    console.log(error, names);
+    debug(error, names);
     res.send(names)
   });
 });
 
 app.get('/api/dashboard', function (req, res) {
-  console.log('dashboard requested');
+  debug('dashboard requested');
   fs.readFile(__dirname + '/.data/dashboard.json', {encoding: 'utf8'}, (err, data) => {
-    console.log(data, err);
+    debug(data, err);
     let jsonData = JSON.parse(data);
     jsonData.dashboard.editMode = editMode;
     res.send(JSON.stringify(jsonData));    
@@ -75,7 +76,7 @@ app.get('/api/dashboard', function (req, res) {
 });
 
 app.post('/api/dashboard', function (req, res) {
-  console.log('dashboard save requested');
+  debug('dashboard save requested');
   const excludedModes = ['locked', 'demo'];
   if (excludedModes.includes(editMode)) return res.sendStatus(500);
   const fileContents = `{ "dashboard": ${JSON.stringify(req.body)} }`;
@@ -86,7 +87,7 @@ app.post('/api/dashboard', function (req, res) {
 });
 
 app.post('/api/device/:deviceId/method/:deviceMethod', function (req, res) {
-  console.log('device method requested');
+  debug('device method requested');
   var methodParams = {
     methodName: req.params.deviceMethod,
     payload: 'hello world',
@@ -98,19 +99,20 @@ app.post('/api/device/:deviceId/method/:deviceMethod', function (req, res) {
         console.error('Failed to invoke method \'' + methodParams.methodName + '\': ' + err.message);
         res.sendStatus(500);
     } else {
-        console.log(methodParams.methodName + ' on ' + req.params.deviceId + ':');
-        console.log(JSON.stringify(result, null, 2));
+        debug(methodParams.methodName + ' on ' + req.params.deviceId + ':');
+        debug(JSON.stringify(result, null, 2));
         res.sendStatus(200);
     }
   });
 });
 
 io.on('connection', function(socket){
-  console.log('a user connected');
+  debug('a user connected');
   socket.emit('hello');
 });
 
 receiver.on('data', (message) => {
+  debug('firehose:', message.body); 
   io.sockets.emit('message', message);
 });
 
