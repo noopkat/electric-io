@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    image: electic-io
+    container_name: electric-io
+    command: npm run start
+    ports:
+      - 3000:3000
+    env_file:
+      - .env
+    environment:
+      - SIMULATING
+    volumes: # For file editing, watching, etc
+      - ./public:/usr/app/public
+      - ./lib:/usr/app/lib
+      - ./.data/dashboard.json.sim:/usr/app/.data/dashboard.json.sim
+      - ./.config:/usr/app/.config
+      - ./index.js:/usr/app/index.js

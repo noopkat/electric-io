@@ -12,6 +12,15 @@ Built with:
 + [Azure IoT Hub](https://docs.microsoft.com/en-us/azure/iot-hub)
 + [Love](https://media.giphy.com/media/26ufcYAkp8e66vanu/giphy.gif) ❤️
 
+## Sections
+
++ [Installation](#installation)
++ [How to send the right data](#how-to-send-the-right-data)
++ [Types of cards and their settings](#types-of-cards-and-their-settings)
++ [Locking your dashboard](#locking-your-dashboard)
++ [Contributing](#contributing)
++ [Code of Conduct](#code-of-conduct)
+
 ## Installation
 
 This will be remixable on Glitch pretty soon, but if you want to run it locally you can!
@@ -23,8 +32,11 @@ You can also list your connections strings [via the command line](https://docs.m
 
 **Now you're ready to install the app.**
 
+We have 2 different ways you can do this. You can do this via the [native installation](#native-installation) method below, or you can [use Docker, mentioned a bit lower](#docker-installation).!
 
-1. Install [NodeJS](https://nodejs.org).
+### Native Installation
+
+1. Install [NodeJS](https://nodejs.org). You can see the recommended version in the "engines" entry in package.json.
 	* After installing, if you run `which node` in your [terminal](https://lifehacker.com/5633909/who-needs-a-mouse-learn-to-use-the-command-line-for-almost-anything), it should print something like `/usr/local/bin/node`. If it prints nothing, there may be an issue with your Node install. First restart your terminal. If that still doesn't work, find out where on your system Node installed to, and then check your `$PATH` variable (`echo $PATH`) to see whether the Node install location is listed.
 2. Install [Git](https://git-scm.org).
 	* As above, `which git` should print something like `/usr/local/bin/git`. If it doesn't, you can follow the same troubleshooting steps as for NodeJS.
@@ -39,6 +51,51 @@ You can also list your connections strings [via the command line](https://docs.m
 6. In your terminal again, run `npm start`.
 6. Navigate to `http://localhost:3000` in your favourite modern browser and away you go! Try adding new cards via the settings pane on the right and click 'edit' to fill in the details!
 
+### Docker Installation Method
+
++ Install Docker
++ Git clone this repository
++ Install, build, and run this project
+
+#### Docker Installation
+
+Docker is a container technology. There are native applications available for Windows and Mac. And Docker is fully supported on Linux. If you are in the latter group, this part of the guide is probably not for you. [You can get Docker for Mac, Windows, Linux right over here.](https://www.docker.com/community-edition)
+
+#### Git Cloning this Repo
+
+You can install GIT using the instructions in the Native installation section above.
+
+```bash
+git clone https://github.com/noopkat/electric-io.git && cd electric-io
+```
+
+#### Build and run this project
+
+```bash
+docker-compose up --build
+```
+
+You should now see log ouput. If you `CTL-C` this will stop the container. If you would rather run this in the background, and tail the container's log output you can run the following
+
+```bash
+docker-compose up --build -d
+docker logs -f electric-io
+```
+
+#### Build and run project in simulating mode
+
+The docker compose file has been configured to read from the .env file, or you can pass in your own override for whether to run in simulating mode with the following:
+
+```bash
+SIMULATING=true docker-compose up --build
+```
+
+#### Shut down the Docker Compose stack
+
+```bash
+docker-compose down
+```
+
 ## How to send the right data
 
 For this dashboard to work, all data payloads coming in from device to Azure IoT Hub should be in json format and properties should not be nested. If you'd like to see nested properties, pull requests are welcome! 😇
@@ -51,7 +108,6 @@ Example:
   "temperature": 27.3
 }
 ```
-
 
 ## Types of cards and their settings
 
@@ -109,7 +165,7 @@ Fields:
 
 The simplest of them all! This card will display text.
 
-Fields: 
+Fields:
 
 1. Title - text displayed at the top of the card
 2. Text - text to be displayed on the card. [Markdown syntax](https://guides.github.com/features/mastering-markdown/) is supported!
@@ -133,7 +189,7 @@ The transferred settings should show up when electric-io is started again.
 
 A common thing you might want to do is to share your dashboard with folks without them changing things against your permission. If you'd like to temporarily 'lock' your dashboard, place the following line in your `./.env` file:
 
-```
+```bash
 EDIT_MODE='locked'
 ```
 
@@ -141,7 +197,10 @@ This mode will show your cards and your telemetry, but won't let them create, ed
 
 This might also be handy for when you're happy with how everything is and want the dashboard to look a little cleaner.
 
-
 ## Contributing
 
-If you'd like to contribute to this repo, please read the [contributing guide](https://github.com/noopkat/electric-io/blob/master/CONTRIBUTING.md)!
+If you'd like to contribute to this repo, please read the [Contributing Guide](CONTRIBUTING.md)!
+
+## Code of Conduct
+
+To participate, please read and follow the [Code of Conduct](CODE_OF_CONDUCT.md) agreement.
