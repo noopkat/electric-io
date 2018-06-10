@@ -1,7 +1,7 @@
 import colorNames from './colorNames.js';
 
 // default export function source: https://stackoverflow.com/a/41491220
-// I modified it a little bit and write the parsing functions below it.
+// I modified it a little bit and wrote the parsing functions below it.
 // this function takes a hex color code and figures out whether whether a dark or light color should be laid over the top of it
 // - noopkat
 
@@ -21,7 +21,7 @@ export default function pickTextColorBasedOnBgColor(bgColor, lightColor, darkCol
 
 function parseColor(color) {
   if (color.charAt(0) === '#') return parseHex(color);
-  if (color.indexOf('rgb') === 0) return parseRGB(color);
+  if (color.toLowerCase().indexOf('rgb') === 0) return parseRGB(color);
   else return parseName(color);
 }
 
@@ -40,7 +40,7 @@ function parseRGB(color) {
   // rgb(23,255,8)
   const justColor = color.substring(4, color.length -1).replace(/\s/g, '');
   const colorParts = justColor.split(',').map((n) => parseInt(n)); 
-  return {r: colorParts[0], b: colorParts[1], g: colorParts[2]};
+  return {r: colorParts[0], g: colorParts[1], b: colorParts[2]};
 }
 
 function parseName(color) {
