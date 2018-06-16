@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Number card renders with color and number value 1`] = `"<p class=\\"number\\" style=\\"color: blue;\\">1</p>"`;
