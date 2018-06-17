@@ -122,9 +122,9 @@ It's really fine I promise.
 
 ### Tests
 
-There are currently no tests 😱 Yes this is a priority for me going forward! I like Tape for backend tests and Jest for front-end tests but I am open to suggestions!
+[Jest](https://facebook.github.io/jest/) 🃏 is used for testing, and the tests are saved beside the code being tested, in a folder called `specs`. **Vue Test Utils** is used to help make testing the Vue components easier and it has lots of [documentation](https://vue-test-utils.vuejs.org/) to help you out. 
 
-If you're struggling to set up tests without build tools like webpack / babel / gulp / vue-cli I am happy to talk to you about this.
+There is not much coverage yet, so please add some more tests. Writing tests is very good for your welbeing 😉, and maybe you'll find a little bug to fix! 🐛
 
 
 ### Mobile support
