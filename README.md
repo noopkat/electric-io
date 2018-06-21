@@ -8,7 +8,7 @@ Built with:
 
 + [Glitch](https://glitch.com)
 + [Vue](https://vuejs.org)
-+ [Chart.js](http://www.chartjs.org/)
++ [Chart.js](https://www.chartjs.org/)
 + [Azure IoT Hub](https://docs.microsoft.com/en-us/azure/iot-hub)
 + [Love](https://media.giphy.com/media/26ufcYAkp8e66vanu/giphy.gif) ❤️
 
