@@ -1,20 +1,23 @@
-const template = `
+<template>
   <div>
     <div v-html="compiledMarkdown"></div>
-  </div>`;
+  </div>
+</template>
 
-export default Vue.component('card-text', {
+<script>
+export default {
+  name: 'card-text',
   template,
-  props: ["tile"],
+  props: ['tile'],
   data: function() {
     return {
       tileText: ''
-    }
+    };
   },
   computed: {
     compiledMarkdown: function() {
-      return marked(this.tile.tileText, {sanitize: true})
+      return marked(this.tile.tileText, { sanitize: true });
     }
   }
-});
-
+};
+</script>

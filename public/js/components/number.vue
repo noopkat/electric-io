@@ -1,7 +1,14 @@
-const template = `<p class="number" v-bind:style="numberStyle">{{ number }}</p>`;
+<template>
+  <p 
+    class="number" 
+    v-bind:style="numberStyle">
+      {{ number }}
+    </p>
+</template>
 
-export default Vue.component('card-number', {
-  template,
+<script>
+export default {
+  name: 'card-number',
   props: {
     tile: {
       default: () => ({})
@@ -29,5 +36,5 @@ export default Vue.component('card-number', {
       return {color: this.tile.textColor}
     }
   }
-});
-
+}
+</script>

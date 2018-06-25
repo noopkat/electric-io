@@ -7,30 +7,49 @@ The indenting in this file is also awful which can be fixed very quickly.
 
 - noopkat
 *********************************************************************************/
-import BaseCard from './card.js';
-import SettingsCard from './settings.js';
+
+<template>
+  <div id="dashboard" :style="dashStyle">
+    <header>
+      <h1 v-bind:style="headingStyle" v-html="appTitle"></h1>
+      <div 
+        v-if="simulating" 
+        :style="headingStyle" 
+        class="simulation-status">⚠️ Using simulated data</div>
+    </header>
+
+    <main>
+      <dashboard-settings 
+        v-if="showSettings" 
+        :dashboard="dashboard" 
+        v-on:save-settings="onSaveSettings" 
+        v-on:tile-create="onTileCreate"/>
+      <base-card 
+        :key="tile.id" 
+        v-for="tile in dashboard.tiles" 
+        :editMode="dashboard.editMode" 
+        :messages="messages.filter((m)=>m.deviceId===tile.deviceId)" 
+        :tile="tile" 
+        :deviceList="deviceList" 
+        :blockSize="dashboard.blockSize" 
+        v-on:tile-position="onTileChange" 
+        v-on:tile-settings="onTileChange" 
+        v-on:tile-delete="onTileDelete" />
+    </main>
+  </div>
+</template>
+
+<script>
+import BaseCard from './card';
+import SettingsCard from './settings';
 import {
   saveDashboard,
   getDashboard,
   getDeviceList
 } from '../lib/configuration.js';
+
 import contrastColor from '../lib/colorContraster.js';
 import { TITLE_EMOJI_REGEX } from '../utils/constants.js';
-
-const template = `
-  <div id="dashboard" :style="dashStyle">
-    <header>
-      <h1 v-bind:style="headingStyle" v-html="appTitle"></h1>
-      <div v-if="simulating" :style="headingStyle" class="simulation-status">⚠️ Using simulated data</div>
-    </header>
-
-    <main>
-      <dashboard-settings v-if="showSettings" :dashboard="dashboard" v-on:save-settings="onSaveSettings" v-on:tile-create="onTileCreate"/>
-      <base-card :key="tile.id" v-for="tile in dashboard.tiles" :editMode="dashboard.editMode" :messages="messages.filter((m)=>m.deviceId===tile.deviceId)" :tile="tile" :deviceList="deviceList" :blockSize="dashboard.blockSize" v-on:tile-position="onTileChange" v-on:tile-settings="onTileChange" v-on:tile-delete="onTileDelete" />
-    </main>
-  </div>
-`;
-
 const initialData = function() {
   return {
     dashboard: {
@@ -43,8 +62,8 @@ const initialData = function() {
   };
 };
 
-export default Vue.component('main-app', {
-  template,
+export default {
+  name: 'main-app',
   components: { BaseCard },
   data: initialData,
   computed: {
@@ -134,4 +153,5 @@ export default Vue.component('main-app', {
     getDashboard().then(r => (this.dashboard = r.dashboard));
     getDeviceList().then(r => this.onDeviceListReceived(r));
   }
-});
+};
+</script>

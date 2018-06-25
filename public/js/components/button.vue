@@ -1,11 +1,13 @@
-const template = `
+<template>
   <div>
     <button v-on:click="onClick">{{tile.buttonText}}</button>
     <p v-bind:class="statusClass">{{statusText}}</p>
-  </div>`;
+  </div>
+</template>
 
-export default Vue.component('card-button', {
-  template,
+<script>
+export default {
+  name: 'card-button',
   props: ["tile"],
   data: function() {
     return {
@@ -29,5 +31,5 @@ export default Vue.component('card-button', {
         }).catch((error) => this.statusText = 'something went wrong...');
     }
   }
-});
-
+}
+</script>

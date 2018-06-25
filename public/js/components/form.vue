@@ -1,7 +1,4 @@
-// focus management mixin
-import {focus} from '../vendor/vue-focus.js';
-import FormFields from './formFields';
-const template = `
+<template>
   <div class="cardForm">
     <h2>Settings</h2>
 
@@ -17,13 +14,20 @@ const template = `
       <input type="submit" value="save" />
     </form>
   </div>
-`;
+</template>
 
-export default Vue.component('card-form', {
-  directives: {focus},
-  components: {FormFields},
+<script>
+// focus management mixin
+import { focus } from '../vendor/vue-focus.js';
+import FormFields from './formFields';
+import { Script } from 'vm';
+
+export default {
+  name: 'card-form',
+  directives: { focus },
+  components: { FormFields },
   template,
-  props: ["tile", "deviceList", "editing"],
+  props: ['tile', 'deviceList', 'editing'],
   methods: {
     onSubmit: function(event) {
       let eventData = {};
@@ -33,6 +37,6 @@ export default Vue.component('card-form', {
       });
       this.$emit('save-settings', eventData);
     }
-  },
-});
-
+  }
+}
+</script>

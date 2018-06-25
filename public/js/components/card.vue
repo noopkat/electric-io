@@ -1,27 +1,45 @@
 // conditional imports would be great however we're not using webpack
-import StickerCard from './sticker.js';
-import LineChartCard from './lineChart.js';
-import PieChartCard from './pieChart.js';
-import ButtonCard from './button.js';
-import NumberCard from './number.js';
-import FormCard from './form.js';
-import TextCard from './text.js';
-
-const template = `
-  <div class="card" v-bind:class="{'dragging': dragging}" v-bind:style="style" v-on:mousedown.stop="onMouseDown">
-   <template v-if="showChildCard">
+<template>
+  <div 
+    class="card" 
+    v-bind:class="{'dragging': dragging}" 
+    v-bind:style="style" 
+    v-on:mousedown.stop="onMouseDown">
+   <div v-if="showChildCard">
      <div v-if="showControls" class="controls">
-        <button class="edit" ref="editButton" v-on:click="onEdit">edit</button>
+        <button class="edit" 
+          ref="editButton" 
+          v-on:click="onEdit">edit</button>
         <button class="delete" v-on:click="onDelete(tile.id)">X</button>
       </div>
       <h2 v-if="tile.title">{{tile.title}} </h2>
-      <component v-bind:is="childCard" v-bind:tile="tile" v-bind:blockSize="blockSize" v-bind:messages="messages"></component>
-  </template>
-    <card-form v-if="showForm" v-bind:editing="editing" v-bind:tile="tile" v-bind:deviceList="deviceList" v-on:save-settings="onSaveSettings"></card-form>
-  </div>`;
+      <component 
+        v-bind:is="childCard" 
+        v-bind:tile="tile" 
+        v-bind:blockSize="blockSize" 
+        v-bind:messages="messages">
+      </component>
+    </div>
+    <card-form v-if="showForm" 
+      v-bind:editing="editing" 
+      v-bind:tile="tile" 
+      v-bind:deviceList="deviceList" 
+      v-on:save-settings="onSaveSettings">
+    </card-form>
+  </div>
+</template>
 
-export default Vue.component('card-base', {
-  template,
+<script>
+import StickerCard from './sticker';
+import LineChartCard from './lineChart';
+import PieChartCard from './pieChart';
+import ButtonCard from './button';
+import NumberCard from './number';
+import FormCard from './form';
+import TextCard from './text';
+
+export default {
+  name: 'base-card',
   props: ['tile', 'blockSize', 'deviceList', 'messages', 'editMode'],
   data: function() {
     return {
@@ -32,13 +50,17 @@ export default Vue.component('card-base', {
       x: this.tile.position[0],
       offsetY: 0,
       offsetX: 0
-    }
+    };
   },
   methods: {
     onMouseDown: function(event) {
       const allowedModes = ['unlocked', 'demo'];
       const excludedNodes = ['INPUT', 'TEXTAREA', 'SELECT', 'LABEL'];
-      if (!this.dragging && !excludedNodes.includes(event.target.tagName) && allowedModes.includes(this.editMode)) {
+      if (
+        !this.dragging &&
+        !excludedNodes.includes(event.target.tagName) &&
+        allowedModes.includes(this.editMode)
+      ) {
         this.dragging = true;
         this.offsetY = event.clientY - this.y;
         this.offsetX = event.clientX - this.x;
@@ -53,7 +75,7 @@ export default Vue.component('card-base', {
     onMouseUp: function(event) {
       window.removeEventListener('mousemove', this.onMouseMove, true);
       if (this.dragging && this.mouseMoved) {
-        const newPosition = {position: [this.x, this.y]};
+        const newPosition = { position: [this.x, this.y] };
         const eventData = Object.assign({}, this.tile, newPosition);
 
         this.$emit('tile-position', eventData);
@@ -74,7 +96,9 @@ export default Vue.component('card-base', {
     onSaveSettings: function(event) {
       this.editing = false;
       // focus on edit button
-      this.$nextTick(function(){ this.$refs.editButton.focus() });
+      this.$nextTick(function() {
+        this.$refs.editButton.focus();
+      });
       this.$emit('tile-settings', event);
     }
   },
@@ -86,8 +110,8 @@ export default Vue.component('card-base', {
       return `${this.x}px`;
     },
     style: function() {
-      return { 
-        top: this.top, 
+      return {
+        top: this.top,
         left: this.left,
         width: `${this.blockSize[0] * this.tile.size[0]}px`,
         minHeight: `${this.blockSize[1] * this.tile.size[1]}px`
@@ -97,10 +121,10 @@ export default Vue.component('card-base', {
       return `card-${this.tile.type.toLowerCase()}`;
     },
     showChildCard: function() {
-      return !this.editing
+      return !this.editing;
     },
     showForm: function() {
-      return this.editing
+      return this.editing;
     },
     showControls: function() {
       const allowedModes = ['unlocked', 'demo'];
@@ -110,5 +134,5 @@ export default Vue.component('card-base', {
   mounted() {
     window.addEventListener('mouseup', this.onMouseUp, false);
   }
-});
-
+};
+</script>

@@ -1,8 +1,4 @@
-import { saveDashboard } from "../lib/configuration.js";
-import templates from "../lib/templates.js";
-import createGuid from "../lib/guid.js";
-
-const template = `
+<template>
   <div class="card settings" :class="{'settings--closed': !settingsPanelOpen}">
     <div class="settings__header">
       <button class="settings__toggle-btn" @click="onToggleSettingsPanel" :aria-expanded="settingsPanelOpen ? 'true' : 'false'" aria-labelledby="settings-toggle-label">
@@ -43,14 +39,19 @@ const template = `
       </form>
     </div>
   </div>
-`;
+</template>
 
-export default Vue.component("dashboard-settings", {
-  template,
-  props: ["dashboard"],
+<script>
+import { saveDashboard } from '../lib/configuration.js';
+import templates from '../lib/templates.js';
+import createGuid from '../lib/guid.js';
+
+export default {
+  name: 'settings-card',
+  props: ['dashboard'],
   data: function() {
     return {
-      status: "",
+      status: '',
       settingsPanelOpen: true
     };
   },
@@ -62,18 +63,19 @@ export default Vue.component("dashboard-settings", {
         eventData[name] = value;
       });
 
-      this.$emit("save-settings", eventData);
+      this.$emit('save-settings', eventData);
     },
     onCreateCard: function(event) {
       const formData = new FormData(event.target);
       const id = createGuid();
-      const tileTemplate = templates[formData.get("type")];
+      const tileTemplate = templates[formData.get('type')];
       const newTile = Object.assign({}, tileTemplate, { id });
 
-      this.$emit("tile-create", newTile);
+      this.$emit('tile-create', newTile);
     },
     onToggleSettingsPanel() {
       this.settingsPanelOpen = this.settingsPanelOpen === true ? false : true;
     }
   }
-});
+};
+</script>
