@@ -157,7 +157,7 @@ This card will display a sticker on your dashboard.
 Fields:
 
 1. Title - text displayed at the top of the card
-2. Url - a full url link to the picture you want to display on the sticker. GIFs will work!
+2. Url - a full url link to the picture you want to display on the sticker. GIFs will work! MJPEG streams are also supported. You may be able to install [mjpg-streamer](https://github.com/jacksonliam/mjpg-streamer) or [ffmpeg/ffserver](https://www.ffmpeg.org/ffserver.html) on your device (e.g. Raspberry Pi) to stream MJPEG via HTTP.
 
 〰️〰️〰️〰️〰️〰️
 
