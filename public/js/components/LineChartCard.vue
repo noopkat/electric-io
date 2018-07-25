@@ -6,9 +6,11 @@
 </template>
 
 <script>
+import Chart from 'chart.js';
 import chartOptions from '../lib/chartOptions.js';
+
 export default {
-  name: 'card-linechart',
+  name: 'line-chart-card',
   props: ['tile', 'blockSize', 'messages'],
   data: function() {
     return {

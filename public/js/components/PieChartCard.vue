@@ -8,8 +8,7 @@
 
 <script>
 export default {
-  name: 'card-piechard',
-  template,
+  name: 'pie-chart-card',
   props: ['tile', 'messages']
-}
+};
 </script>

@@ -30,17 +30,24 @@
 </template>
 
 <script>
-import StickerCard from './sticker';
-import LineChartCard from './lineChart';
-import PieChartCard from './pieChart';
-import ButtonCard from './button';
-import NumberCard from './number';
-import FormCard from './form';
-import TextCard from './text';
+import ButtonCard from './ButtonCard';
+import CardForm from './CardForm';
+import LineChartCard from './LineChartCard';
+import NumberCard from './NumberCard';
+import StickerCard from './StickerCard';
+import TextCard from './TextCard';
 
 export default {
   name: 'base-card',
   props: ['tile', 'blockSize', 'deviceList', 'messages', 'editMode'],
+  components: {
+    ButtonCard,
+    CardForm,
+    LineChartCard,
+    NumberCard,
+    StickerCard,
+    TextCard
+  },
   data: function() {
     return {
       editing: false,
@@ -118,7 +125,7 @@ export default {
       };
     },
     childCard: function() {
-      return `card-${this.tile.type.toLowerCase()}`;
+      return `${this.tile.type.toLowerCase()}-card`;
     },
     showChildCard: function() {
       return !this.editing;

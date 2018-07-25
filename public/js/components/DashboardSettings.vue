@@ -47,7 +47,7 @@ import templates from '../lib/templates.js';
 import createGuid from '../lib/guid.js';
 
 export default {
-  name: 'settings-card',
+  name: 'dashboard-settings',
   props: ['dashboard'],
   data: function() {
     return {

@@ -6,8 +6,7 @@
 
 <script>
 export default {
-  name: 'card-text',
-  template,
+  name: 'text-card',
   props: ['tile'],
   data: function() {
     return {

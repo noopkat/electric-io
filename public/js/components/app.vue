@@ -1,13 +1,3 @@
-/*********************************************************************************
-So this is starting to become the gigantic component file that 'does everything'
-It would be great to perhaps introduce one more layer of component so that this 
-component is not doing so much.
-
-The indenting in this file is also awful which can be fixed very quickly.
-
-- noopkat
-*********************************************************************************/
-
 <template>
   <div id="dashboard" :style="dashStyle">
     <header>
@@ -40,8 +30,9 @@ The indenting in this file is also awful which can be fixed very quickly.
 </template>
 
 <script>
-import BaseCard from './card';
-import SettingsCard from './settings';
+import io from 'socket.io-client';
+import BaseCard from './BaseCard';
+import DashboardSettings from './DashboardSettings';
 import {
   saveDashboard,
   getDashboard,
@@ -64,7 +55,7 @@ const initialData = function() {
 
 export default {
   name: 'main-app',
-  components: { BaseCard },
+  components: { BaseCard, DashboardSettings },
   data: initialData,
   computed: {
     dashStyle: function() {

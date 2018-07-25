@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'card-sticker',
+  name: 'sticker-card',
   props: ['tile']
 };
 </script>

@@ -18,7 +18,7 @@
 
 <script>
 // focus management mixin
-import { focus } from '../vendor/vue-focus.js';
+import { focus } from 'vue-focus';
 import FormFields from './formFields';
 import { Script } from 'vm';
 
@@ -26,7 +26,6 @@ export default {
   name: 'card-form',
   directives: { focus },
   components: { FormFields },
-  template,
   props: ['tile', 'deviceList', 'editing'],
   methods: {
     onSubmit: function(event) {
@@ -38,5 +37,5 @@ export default {
       this.$emit('save-settings', eventData);
     }
   }
-}
+};
 </script>

@@ -7,22 +7,30 @@ const mode =
 
 module.exports = {
   mode: mode,
-  entry: './public/js/application.js',
+  entry: './public/js/main.js',
   output: {
     path: path.resolve(__dirname, 'public', 'js', 'dist'),
+    publicPath: '/dist/',
     filename: 'application.js'
   },
-  devtool: mode === 'production' ? '' : 'inline-source-map',
+  devtool: mode === 'production' ? '' : 'source-map',
   resolve: {
     extensions: ['.js', '.vue'],
     alias: {
-     'vue$': 'vue/dist/vue.esm/js'
+      vue$: 'vue/dist/vue.esm.js'
     }
   },
   module: {
     rules: [
-      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
-      { test: /\.vue$/, loader: 'vue-loader' }
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        exclude: /node_modules/
+      }
     ]
   },
   plugins: [
@@ -30,5 +38,8 @@ module.exports = {
     new webpack.DefinePlugin({
       SIMULATING: process.env.SIMULATING
     })
-  ]
+  ],
+  node: {
+    fs: 'empty'
+  }
 };
