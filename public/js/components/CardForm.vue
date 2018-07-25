@@ -19,7 +19,7 @@
 <script>
 // focus management mixin
 import { focus } from 'vue-focus';
-import FormFields from './formFields';
+import FormFields from './FormFields';
 import { Script } from 'vm';
 
 export default {
