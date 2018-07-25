@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const MinifyPlugin = require('babel-minify-webpack-plugin');
 const mode =
   process.env.NODE_ENV === 'development' ? 'development' : 'production';
 
@@ -11,9 +10,15 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'public', 'js', 'dist'),
     publicPath: '/dist/',
-    filename: 'application.js'
+    chunkFilename: '[name].bundle.js',
+    filename: '[name].bundle.js'
   },
-  devtool: mode === 'production' ? '' : 'source-map',
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
+  },
+  devtool: mode === 'production' ? '' : 'eval-source-map',
   resolve: {
     extensions: ['.js', '.vue'],
     alias: {

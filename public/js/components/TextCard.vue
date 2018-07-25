@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import marked from 'marked';
 export default {
   name: 'text-card',
   props: ['tile'],
