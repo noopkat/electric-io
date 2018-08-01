@@ -1,36 +1,46 @@
-/*********************************************************************************
-So this is starting to become the gigantic component file that 'does everything'
-It would be great to perhaps introduce one more layer of component so that this 
-component is not doing so much.
+<template>
+  <div id="dashboard" :style="dashStyle">
+    <header>
+      <h1 v-bind:style="headingStyle" v-html="appTitle"></h1>
+      <div 
+        v-if="simulating" 
+        :style="headingStyle" 
+        class="simulation-status">⚠️ Using simulated data</div>
+    </header>
 
-The indenting in this file is also awful which can be fixed very quickly.
+    <main>
+      <dashboard-settings 
+        v-if="showSettings" 
+        :dashboard="dashboard" 
+        v-on:save-settings="onSaveSettings" 
+        v-on:tile-create="onTileCreate"/>
+      <base-card 
+        :key="tile.id" 
+        v-for="tile in dashboard.tiles" 
+        :editMode="dashboard.editMode" 
+        :messages="messages.filter((m)=>m.deviceId===tile.deviceId)" 
+        :tile="tile" 
+        :deviceList="deviceList" 
+        :blockSize="dashboard.blockSize" 
+        v-on:tile-position="onTileChange" 
+        v-on:tile-settings="onTileChange" 
+        v-on:tile-delete="onTileDelete" />
+    </main>
+  </div>
+</template>
 
-- noopkat
-*********************************************************************************/
-import BaseCard from './card.js';
-import SettingsCard from './settings.js';
+<script>
+import io from 'socket.io-client';
+import BaseCard from './BaseCard';
+import DashboardSettings from './DashboardSettings';
 import {
   saveDashboard,
   getDashboard,
   getDeviceList
 } from '../lib/configuration.js';
+
 import contrastColor from '../lib/colorContraster.js';
 import { TITLE_EMOJI_REGEX } from '../utils/constants.js';
-
-const template = `
-  <div id="dashboard" :style="dashStyle">
-    <header>
-      <h1 v-bind:style="headingStyle" v-html="appTitle"></h1>
-      <div v-if="simulating" :style="headingStyle" class="simulation-status">⚠️ Using simulated data</div>
-    </header>
-
-    <main>
-      <dashboard-settings v-if="showSettings" :dashboard="dashboard" v-on:save-settings="onSaveSettings" v-on:tile-create="onTileCreate"/>
-      <base-card :key="tile.id" v-for="tile in dashboard.tiles" :editMode="dashboard.editMode" :messages="messages.filter((m)=>m.deviceId===tile.deviceId)" :tile="tile" :deviceList="deviceList" :blockSize="dashboard.blockSize" v-on:tile-position="onTileChange" v-on:tile-settings="onTileChange" v-on:tile-delete="onTileDelete" />
-    </main>
-  </div>
-`;
-
 const initialData = function() {
   return {
     dashboard: {
@@ -43,9 +53,9 @@ const initialData = function() {
   };
 };
 
-export default Vue.component('main-app', {
-  template,
-  components: { BaseCard },
+export default {
+  name: 'main-app',
+  components: { BaseCard, DashboardSettings },
   data: initialData,
   computed: {
     dashStyle: function() {
@@ -134,4 +144,5 @@ export default Vue.component('main-app', {
     getDashboard().then(r => (this.dashboard = r.dashboard));
     getDeviceList().then(r => this.onDeviceListReceived(r));
   }
-});
+};
+</script>

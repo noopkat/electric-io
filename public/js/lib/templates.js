@@ -71,7 +71,7 @@ export default {
   },
   lineChart: {
     title: 'Line Chart',
-    type: 'lineChart',
+    type: 'line-chart',
     lineColor: '#FF6384',
     deviceId: '',
     property: '',

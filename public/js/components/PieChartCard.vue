@@ -2,10 +2,13 @@
 // but if you find a use case for it feel free to code a solution for this component!
 // - noopkat
 
-const template = `<div>I'm a pie chart but I'm not finished yet</div>`;
+<template>
+  <div>I'm a pie chart but I'm not finished yet</div>
+</template>
 
-export default Vue.component('card-piechart', {
-  template,
+<script>
+export default {
+  name: 'pie-chart-card',
   props: ['tile', 'messages']
-});
-
+};
+</script>

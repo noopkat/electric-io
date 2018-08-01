@@ -1,25 +1,50 @@
 const webpack = require('webpack');
 const path = require('path');
-const MinifyPlugin = require('babel-minify-webpack-plugin');
-const mode = process.env.NODE_ENV === 'development' ? 'development' : 'production';
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const mode =
+  process.env.NODE_ENV === 'development' ? 'development' : 'production';
 
 module.exports = {
-	mode: mode,
-  entry: './public/js/application.js',
+  mode: mode,
+  entry: './public/js/main.js',
   output: {
     path: path.resolve(__dirname, 'public', 'js', 'dist'),
-    filename: 'application.js',
+    publicPath: '/dist/',
+    chunkFilename: '[name].bundle.js',
+    filename: '[name].bundle.js'
   },
- devtool: mode === 'production' ? '' : 'inline-source-map',
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
+  },
+  devtool: mode === 'production' ? '' : 'eval-source-map',
+  resolve: {
+    extensions: ['.js', '.vue'],
+    alias: {
+      vue$: 'vue/dist/vue.esm.js'
+    }
+  },
   module: {
     rules: [
-      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' }
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        exclude: /node_modules/
+      }
     ]
   },
   plugins: [
+    new VueLoaderPlugin(),
     new webpack.DefinePlugin({
-      'SIMULATING': process.env.SIMULATING
+      SIMULATING: process.env.SIMULATING
     })
-  ]
+  ],
+  node: {
+    fs: 'empty'
+  }
 };
-
