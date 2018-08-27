@@ -25,7 +25,7 @@ export default {
     messages: function() {
       const lastMessage = this.messages.pop();
       this.number = lastMessage
-        ? lastMessage[this.tile.property].toFixed(1)
+        ? parseFloat(lastMessage[this.tile.property]).toFixed(1)
         : 0;
     }
   },
