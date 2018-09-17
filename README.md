@@ -32,7 +32,7 @@ You can also list your connections strings [via the command line](https://docs.m
 
 **Now you're ready to install the app.**
 
-We have 2 different ways you can do this. You can do this via the [native installation](#native-installation) method below, or you can [use Docker, mentioned a bit lower](#docker-installation).!
+We have 2 different ways you can do this. You can do this via the [native installation](#native-installation) method below, or you can [use Docker, mentioned a bit lower](#docker-installation)!
 
 ### Native Installation
 
