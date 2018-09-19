@@ -6,16 +6,14 @@ services:
     image: electic-io
     container_name: electric-io
     command: npm run start
-    ports:
+    ports: # Can override if you have port collisions with something else
       - 3000:3000
-    env_file:
+    env_file: # Expose to docker environment
       - .env
-    environment:
+    environment: # Expose to docker environment override
       - SIMULATING
       - DEBUG
+      - CONSUMER_GROUP
     volumes: # For file editing, watching, etc
-      - ./public:/usr/app/public
-      - ./lib:/usr/app/lib
-      - ./.data/dashboard.json.sim:/usr/app/.data/dashboard.json.sim
-      - ./.config:/usr/app/.config
-      - ./index.js:/usr/app/index.js
+      - ./:/usr/app
+      - /usr/app/node_modules
