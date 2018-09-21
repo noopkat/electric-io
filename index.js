@@ -44,7 +44,9 @@ var port = process.env.PORT || 3000;
 
 var app = express();
 var server = http.createServer(app);
-var io = socket(server);
+var io = require('socket.io')(server,{
+  perMessageDeflate :false
+});
 
 helpers.createDashboardFileIfNotExists(function() {
   server.listen(port, function () {
