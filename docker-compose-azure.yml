@@ -10,6 +10,7 @@ services:
       - SIMULATING=false
       - DEBUG
       - CONSUMER_GROUP
+      - PLATFORM=azure
       - CONNECTION_STRING=<IoTHubConnectionString>
     volumes: # For file editing, watching, etc
       - /home/site/wwwroot:/usr/app
