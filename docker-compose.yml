@@ -13,5 +13,5 @@ services:
       - CONSUMER_GROUP
       - CONNECTION_STRING=<IoTHubConnectionString>
     volumes: # For file editing, watching, etc
-      - ./:/usr/app
+      - /home/site/wwwroot:/usr/app
       - /usr/app/node_modules
