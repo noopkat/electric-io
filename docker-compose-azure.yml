@@ -1,19 +1,19 @@
 version: "3"
-
 services:
   app:
-    build: .
-    image: electic-io
+    image: noopkat/electric-io
     container_name: electric-io
     command: npm run start
     ports: # Can override if you have port collisions with something else
       - 3000:3000
-    env_file: # Expose to docker environment
-      - .env
     environment: # Expose to docker environment override
-      - SIMULATING
+      - SIMULATING=false
       - DEBUG
       - CONSUMER_GROUP
+      - PLATFORM=azure
+      - CONNECTION_STRING=<IoTHubConnectionString>
+      - EDIT_MODE=unlocked
     volumes: # For file editing, watching, etc
-      - ./:/usr/app
+      - electric-io:/usr/app
       - /usr/app/node_modules
+volumes: electric-io
