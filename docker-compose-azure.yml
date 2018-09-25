@@ -16,4 +16,4 @@ services:
     volumes: # For file editing, watching, etc
       - electric-io:/usr/app
       - /usr/app/node_modules
-volumes: electric-io
+volumes: electric-io:
