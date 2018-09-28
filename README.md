@@ -199,6 +199,8 @@ This might also be handy for when you're happy with how everything is and want t
 
 ## Contributing
 
+**We gladly accept contributions!**
+
 If you'd like to contribute to this repo, please read the [Contributing Guide](CONTRIBUTING.md)!
 
 ## Code of Conduct
