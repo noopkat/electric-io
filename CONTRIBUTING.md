@@ -11,7 +11,7 @@ This page should get you up and running with how to run locally and how to adher
    - [Tests](#tests)
    - [Mobile support](#mobile-support)
 3. [Pull Requests](#pull-requests)
-   - [Avoiding merge conflicts](#avoiding-merge-conflicts)
+   - [Avoiding merge conflicts](#merge-conflicts)
 
 ## Installation
 
