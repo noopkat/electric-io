@@ -5,13 +5,17 @@ Hey thanks for your interest in contributing to this project! I really appreciat
 This page should get you up and running with how to run locally and how to adhere to this project's style guide also.
 
 1. [Installation](#installation)
-   1. [With a real Azure IoT Hub](#with-a-real-azure-iot-hub)
-   2. [With the device and hub simulator](#with-the-built-in-device-and-hub-simulator)
-2. [Style Guide](#style-guide-for-contributing-code)
+   - [With a real Azure IoT Hub](#with-a-real-azure-iot-hub)
+   - [With the device and hub simulator](#with-the-built-in-device-and-hub-simulator)
+2. [Style Guide](#style-guide)
+   - [Tests](#tests)
+   - [Mobile support](#mobile-support)
+3. [Pull Requests](#pull-requests)
+   - [Avoiding merge conflicts](#merge-conflicts)
 
 ## Installation
 
-When developing electric-dreams locally, you have two options for ensuring you can test your code with incoming data. You can use a real Azure IoT Hub for connecting to, or you can use the ready made simulator instead.
+When developing electric-io locally, you have two options for ensuring you can test your code with incoming data. You can use a real Azure IoT Hub for connecting to, or you can use the ready made simulator instead.
 
 ### With a real Azure IoT Hub
 
@@ -88,7 +92,7 @@ Example payload:
 }
 ```
 
-## Code Style
+## Style Guide
 
 ESLint is installed by default with this repository, and many IDEs will automatically "fix" your code to match the expected style. Don't worry if your editor doesn't do this as there is also a git pre-commit hook that will run the linter when you commit.
 
