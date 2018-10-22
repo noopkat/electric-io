@@ -7,6 +7,7 @@
 require("dotenv").config();
 var express = require("express");
 var fs = require("fs");
+var path = require("path");
 var http = require("http");
 var debug = require("debug")("server");
 var socket = require("socket.io");
@@ -63,7 +64,7 @@ helpers.createDashboardFileIfNotExists(function() {
 });
 
 // Routing
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
 app.get("/api/devices/list", function(req, res) {

@@ -8,10 +8,12 @@
     "start": "npm run watch",
     "watch": "npm-run-all --parallel watch:server watch:build",
     "watch:build": "webpack --progress --colors --watch",
-    "watch:server": "nodemon index.js",
+    "watch:server": "nodemon server.js",
     "test": "jest",
     "test:watch": "jest --watchAll",
-    "precommit": "pretty-quick --staged"
+    "precommit": "pretty-quick --staged",
+    "build": "webpack --progress --colors",
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "azure-iothub": "1.7.1",
