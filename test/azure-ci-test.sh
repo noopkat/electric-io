@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-node ./azure-puppeteer.js
+node ./test/azure-puppeteer.js
