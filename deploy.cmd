@@ -101,8 +101,10 @@ call :SelectNodeVersion
 :: 3. Install npm packages
 IF EXIST "%DEPLOYMENT_TARGET%\package.json" (
   pushd "%DEPLOYMENT_TARGET%"
+  call :ExecuteCmd !NPM_CMD! config set scripts-prepend-node-path true
   call :ExecuteCmd !NPM_CMD! install --production
   call :ExecuteCmd !NPM_CMD! install --only=dev
+  call :ExecuteCmd !NPM_CMD! run build
   IF !ERRORLEVEL! NEQ 0 goto error
   popd
 )

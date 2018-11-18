@@ -12,8 +12,7 @@
     "test": "jest",
     "test:watch": "jest --watchAll",
     "precommit": "pretty-quick --staged",
-    "build": "webpack --progress --colors",
-    "postinstall": "npm run build"
+    "build": "webpack --progress --colors"
   },
   "dependencies": {
     "azure-iothub": "1.7.1",
