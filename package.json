@@ -15,8 +15,8 @@
     "build": "webpack --progress --colors"
   },
   "dependencies": {
+    "@azure/event-hubs": "^1.0.7",
     "azure-iothub": "1.7.1",
-    "azure-iothub-receiver": "2.0.0",
     "babel-runtime": "6.26.0",
     "chart.js": "2.7.2",
     "dotenv": "5.0.0",
