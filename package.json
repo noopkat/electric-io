@@ -18,16 +18,18 @@
     "@azure/event-hubs": "^1.0.7",
     "azure-iothub": "1.8.2",
     "babel-runtime": "6.26.0",
+    "body-parser": "^1.18.3",
     "chart.js": "2.7.2",
     "dotenv": "5.0.0",
     "express": "4.16.0",
+    "express-sanitizer": "^1.0.4",
     "marked": "0.4.0",
     "socket.io": "2.1.1",
     "vue": "2.5.16",
     "vue-focus": "2.1.0"
   },
   "engines": {
-    "node": ">= 6"
+    "node": ">= 10"
   },
   "engineStrict": true,
   "keywords": [

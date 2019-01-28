@@ -4,6 +4,8 @@ const http = require("http");
 const debug = require("debug")("server");
 const express = require("express");
 const socket = require("socket.io");
+const expressSanitizer = require("express-sanitizer");
+const bodyParser = require("body-parser");
 
 const helpers = require("./lib/helpers");
 const liveHub = require("./lib/liveHub");
@@ -56,7 +58,9 @@ hub
 
 function startServer(hubService) {
   app.use(express.static(path.join(__dirname, "public")));
-  app.use(express.json());
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(expressSanitizer());
   app.use("/", routes({ io, hubService }));
 
   io.on("connection", function(socket) {
