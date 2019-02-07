@@ -1,40 +1,43 @@
-const webpack = require('webpack');
-const path = require('path');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const webpack = require("webpack");
+const path = require("path");
+const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const mode =
-  process.env.NODE_ENV === 'development' ? 'development' : 'production';
+  process.env.NODE_ENV === "development" ? "development" : "production";
 
 module.exports = {
   mode: mode,
-  entry: './public/js/main.js',
+  entry: "./public/js/main.js",
   output: {
-    path: path.resolve(__dirname, 'public', 'js', 'dist'),
-    publicPath: '/dist/',
-    chunkFilename: '[name].bundle.js',
-    filename: '[name].bundle.js'
+    path: path.resolve(__dirname, "public", "js", "dist"),
+    publicPath: "/dist/",
+    chunkFilename: "[name].bundle.js",
+    filename: "[name].bundle.js"
   },
   optimization: {
     splitChunks: {
-      chunks: 'all'
+      chunks: "all"
     }
   },
-  devtool: mode === 'production' ? '' : 'eval-source-map',
+  devtool: mode === "production" ? "" : "eval-source-map",
   resolve: {
-    extensions: ['.js', '.vue'],
+    extensions: [".js", ".vue"],
     alias: {
-      vue$: 'vue/dist/vue.esm.js'
+      vue$: "vue/dist/vue.esm.js"
     }
   },
   module: {
     rules: [
       {
         test: /\.vue$/,
-        loader: 'vue-loader'
+        loader: "vue-loader"
       },
       {
         test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/
+        loader: "babel-loader",
+        exclude: /node_modules/,
+        options: {
+          presets: ["@babel/preset-env"]
+        }
       }
     ]
   },
@@ -45,6 +48,6 @@ module.exports = {
     })
   ],
   node: {
-    fs: 'empty'
+    fs: "empty"
   }
 };
