@@ -1,8 +1,8 @@
 export default {
   sticker: {
-    title: 'Sticker Time',
-    type: 'sticker',
-    url: 'https://i.giphy.com/lEnCWZXT4eHSg.gif',
+    title: "Sticker Time",
+    type: "sticker",
+    url: "https://i.giphy.com/lEnCWZXT4eHSg.gif",
     position: [0, 0],
     size: [1, 1],
     template: `
@@ -14,11 +14,11 @@ export default {
     `
   },
   number: {
-    title: 'Number',
-    type: 'number',
-    deviceId: '',
-    textColor: '#000',
-    property: '',
+    title: "Number",
+    type: "number",
+    deviceId: "",
+    textColor: "#000",
+    property: "",
     position: [0, 0],
     size: [1, 1],
     template: `
@@ -42,11 +42,12 @@ export default {
     `
   },
   button: {
-    title: 'Cool Button',
-    type: 'button',
-    buttonText: 'Click Me',
-    deviceId: '',
-    deviceMethod: '',
+    title: "Cool Button",
+    type: "button",
+    buttonText: "Click Me",
+    deviceId: "",
+    deviceMethod: "",
+    deviceMethodPayload: "",
     position: [0, 0],
     size: [0.8, 0.7],
     template: `
@@ -62,6 +63,10 @@ export default {
         <label>Method Name
           <input type="text" name="deviceMethod" v-bind:value="tile.deviceMethod"/>
         </label>
+
+        <label>Method Payload (must be valid JSON pls!)
+          <textarea name="devicePayload" v-bind:value="tile.devicePayload"></textarea>
+        </label>
         
         <label>Button Text
           <input type="text" name="buttonText" v-bind:value="tile.buttonText"/>
@@ -70,11 +75,11 @@ export default {
    `
   },
   lineChart: {
-    title: 'Line Chart',
-    type: 'line-chart',
-    lineColor: '#FF6384',
-    deviceId: '',
-    property: '',
+    title: "Line Chart",
+    type: "line-chart",
+    lineColor: "#FF6384",
+    deviceId: "",
+    property: "",
     position: [0, 0],
     size: [2, 1.5],
     template: `
@@ -98,9 +103,9 @@ export default {
     `
   },
   text: {
-    title: 'Most Excellent Note',
-    type: 'text',
-    tileText: '# Hello!',
+    title: "Most Excellent Note",
+    type: "text",
+    tileText: "# Hello!",
     position: [0, 0],
     size: [1.2, 1],
     template: `
