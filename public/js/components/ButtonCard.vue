@@ -23,9 +23,9 @@ export default {
       this.statusText = "calling device method...";
 
       const payloadExists =
-        this.tile.devicePayload && this.tile.devicePayload.length;
+        this.tile.deviceMethodPayload && this.tile.deviceMethodPayload.length;
       const body = payloadExists
-        ? { devicePayload: this.tile.devicePayload }
+        ? { devicePayload: this.tile.deviceMethodPayload }
         : {};
       const headers = {
         "Content-Type": "application/json"
