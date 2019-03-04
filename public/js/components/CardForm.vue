@@ -3,10 +3,16 @@
     <h2>Settings</h2>
 
     <form v-on:submit.prevent="onSubmit">
-      <input name="id" type="hidden" v-bind:value="tile.id"/>
+      <input name="id" type="hidden" v-bind:value="tile.id" />
 
-      <label>Title
-        <input v-focus="editing" type="text" name="title" v-bind:value="tile.title"/>
+      <label
+        >Title
+        <input
+          v-focus="editing"
+          type="text"
+          name="title"
+          v-bind:value="tile.title"
+        />
       </label>
 
       <form-fields :tile="tile" :deviceList="deviceList" />
@@ -18,15 +24,15 @@
 
 <script>
 // focus management mixin
-import { focus } from 'vue-focus';
-import FormFields from './FormFields';
-import { Script } from 'vm';
+import { focus } from "vue-focus";
+import FormFields from "./FormFields";
+import { Script } from "vm";
 
 export default {
-  name: 'card-form',
+  name: "card-form",
   directives: { focus },
   components: { FormFields },
-  props: ['tile', 'deviceList', 'editing'],
+  props: ["tile", "deviceList", "editing"],
   methods: {
     onSubmit: function(event) {
       let eventData = {};
@@ -34,7 +40,7 @@ export default {
       formData.forEach((value, name) => {
         eventData[name] = value;
       });
-      this.$emit('save-settings', eventData);
+      this.$emit("save-settings", eventData);
     }
   }
 };
