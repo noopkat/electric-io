@@ -20,7 +20,7 @@ export default {
     textColor: '#000',
     property: '',
     position: [0, 0],
-    size: [1, 1],
+    size: [0.98, 0.73],
     template: `
       <div>
         <label>Device Id
