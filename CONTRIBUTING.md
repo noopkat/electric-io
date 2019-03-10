@@ -98,7 +98,7 @@ ESLint is installed by default with this repository, and many IDEs will automati
 
 This said, some caveats remain in order to keep this approachable:
 
-1. Target NodeJS 4+ - no async/await etc.
+1. Target NodeJS 8+
 2. Stick to plain CSS. SASS/SCSS is probably a little much for this project anyway.
 3. Idiomatic Vue style. This is way less scary than it might sound - just keep things looking like the documentation. 🌻
 
