@@ -18,7 +18,7 @@
     "@azure/event-hubs": "^1.0.8",
     "@babel/runtime": "^7.3.1",
     "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0-beta.2",
-    "azure-iothub": "1.9.3",
+    "azure-iothub": "1.9.4",
     "body-parser": "^1.18.3",
     "chart.js": "2.7.3",
     "dotenv": "6.2.0",
