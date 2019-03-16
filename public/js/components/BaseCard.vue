@@ -7,10 +7,25 @@
   >
     <div v-if="showChildCard">
       <div v-if="showControls" class="controls">
-        <button class="edit" ref="editButton" v-on:click="onEdit">edit</button>
-        <button class="delete" v-on:click="onDelete(tile.id)">X</button>
+        <button
+          class="inline-button edit-button"
+          ref="editButton"
+          v-on:click="onEdit"
+        >
+          edit
+        </button>
+
+        <button
+          class="inline-button delete-button"
+          aria-label="Remove card"
+          @click="openCardDeleteModal()"
+        >
+          X
+        </button>
       </div>
+
       <h2 v-if="tile.title">{{ tile.title }}</h2>
+
       <component
         v-bind:is="childCard"
         v-bind:tile="tile"
@@ -19,6 +34,7 @@
       >
       </component>
     </div>
+
     <card-form
       v-if="showForm"
       v-bind:editing="editing"
@@ -28,6 +44,39 @@
       v-on:save-settings="onSaveSettings"
     >
     </card-form>
+
+    <a11y-dialog
+      id="app-dialog"
+      app-root="#app"
+      dialog-root="#dialog-root"
+      :class-names="{
+        base: 'modal',
+        title: 'modal__title',
+        closeButton: 'inline-button modal__close-button'
+      }"
+      @dialog-ref="assignDialogRef"
+      close-button-label="Close the “Remove card” dialog"
+    >
+      <template v-slot:title>
+        <span>Remove card</span>
+      </template>
+
+      <template v-slot:closeButtonContent>
+        <span>X</span>
+      </template>
+
+      <div>
+        <p>Oh, do you really want to remove this card?</p>
+
+        <button
+          class="button action-button"
+          type="button"
+          @click="deleteTile(tile.id)"
+        >
+          Yes, remove it
+        </button>
+      </div>
+    </a11y-dialog>
   </div>
 </template>
 
@@ -50,7 +99,7 @@ export default {
     StickerCard,
     TextCard
   },
-  data: function() {
+  data() {
     return {
       editing: false,
       dragging: false,
@@ -58,10 +107,15 @@ export default {
       y: this.tile.position[1],
       x: this.tile.position[0],
       offsetY: 0,
-      offsetX: 0
+      offsetX: 0,
+      dialog: null
     };
   },
   methods: {
+    assignDialogRef(dialog) {
+      this.dialog = dialog;
+    },
+
     onMouseDown: function(event) {
       const allowedModes = ["unlocked", "demo"];
       const excludedNodes = ["INPUT", "TEXTAREA", "SELECT", "LABEL"];
@@ -95,12 +149,13 @@ export default {
     onEdit: function() {
       this.editing = true;
     },
-    onDelete: function(tileId) {
-      const message = "Oh, do you really want to remove this card?";
-      const confirm = window.confirm(message);
-      if (confirm) {
-        this.$emit("tile-delete", tileId);
+    openCardDeleteModal() {
+      if (this.dialog) {
+        this.dialog.show();
       }
+    },
+    deleteTile(tileId) {
+      this.$emit("tile-delete", tileId);
     },
     onSaveSettings: function(event) {
       this.editing = false;
