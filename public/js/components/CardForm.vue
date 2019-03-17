@@ -17,7 +17,7 @@
 
       <form-fields :tile="tile" :deviceList="deviceList" />
 
-      <input type="submit" value="save" />
+      <input class="action-button" type="submit" value="save" />
     </form>
   </div>
 </template>

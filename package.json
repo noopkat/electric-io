@@ -27,6 +27,7 @@
     "marked": "0.6.0",
     "socket.io": "2.2.0",
     "vue": "2.6.3",
+    "vue-a11y-dialog": "^0.4.2",
     "vue-focus": "2.1.0"
   },
   "engines": {
