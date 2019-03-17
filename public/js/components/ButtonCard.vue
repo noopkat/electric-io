@@ -1,6 +1,8 @@
 <template>
   <div>
-    <button v-on:click="onClick">{{ tile.buttonText }}</button>
+    <button class="action-button" v-on:click="onClick">
+      {{ tile.buttonText }}
+    </button>
     <p v-bind:class="statusClass">{{ statusText }}</p>
   </div>
 </template>

@@ -24,13 +24,16 @@ p {
 }
 
 form {
-  margin-bottom: 25px;
   background-color: cyan;
   padding: 15px;
   display: inline-block;
   width: 100%;
   max-width: 340px;
   border-radius: 3px;
+}
+
+form:not(:last-child) {
+  margin-bottom: 25px;
 }
 
 input,
@@ -123,12 +126,54 @@ h1 .hemoji {
   font-family: "Chivo", sans-serif;
 }
 
-.card button,
-.card .button,
-.card input[type="submit"] {
+button {
+  -webkit-appearance: none;
+  appearance: none;
+  padding: 0;
+  border: none;
+  color: currentColor;
+  background-color: #fff;
+  font: inherit;
+}
+
+button::-moz-focus-inner {
+  padding: 0;
+  border-style: none;
+}
+
+.inline-button {
+  padding: 5px;
+  border: 1px solid #fff;
+  border-radius: 3px;
+  font-size: 10px;
+}
+
+/*
+1. Stops following elements from covering the focus outline.
+*/
+.inline-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px goldenrod;
+  transform: rotate(0); /* 1. */
+}
+
+.inline-button:hover {
+  border-color: currentColor;
+}
+
+.edit-button {
+  color: #00f;
+}
+
+.delete-button {
+  color: #da2727;
+  font-weight: bold;
+}
+
+.action-button {
   font-family: "Chivo", sans-serif;
-  border: 0;
-  background: #5786c1;
+  border: none;
+  background-color: #5786c1;
   color: white;
   padding: 8px 14px;
   font-weight: normal;
@@ -140,35 +185,24 @@ h1 .hemoji {
   cursor: pointer;
   /* needed for anchors */
   position: relative;
-  box-shadow: 1px 0px #3a587f, 0px 1px #4171ae, 2px 1px #3a587f, 1px 2px #4171ae,
+  box-shadow: 1px 0 #3a587f, 0 1px #4171ae, 2px 1px #3a587f, 1px 2px #4171ae,
     3px 2px #3a587f, 2px 3px #4171ae, 4px 3px #3a587f, 3px 4px #4171ae,
     5px 4px #3a587f, 4px 5px #4171ae, 6px 5px #3a587f, 5px 6px #4171ae;
 }
 
-.card button:hover,
-.card .button:hover,
-.card .button.hover,
-.card input[type="submit"]:hover,
-.card input[type="submit"].hover {
+.action-button:hover {
   transform: translate(2px, 2px);
-  box-shadow: 1px 0px #3a587f, 0px 1px #4171ae, 2px 1px #3a587f, 1px 2px #4171ae,
+  box-shadow: 1px 0 #3a587f, 0 1px #4171ae, 2px 1px #3a587f, 1px 2px #4171ae,
     3px 2px #3a587f, 2px 3px #4171ae, 4px 3px #3a587f, 3px 4px #4171ae;
 }
 
-.card button:focus,
-.card button.focus,
-.card .button.focus,
-.card .button:focus {
+.action-button:focus {
   border: 2px solid #333;
 }
 
-.card button:active,
-.card .button:active,
-.card .button.active,
-.card input[type="submit"]:active,
-.card input[type="submit"].active {
+.action-button:active {
   transform: translate(4px, 4px);
-  box-shadow: 0px 0px;
+  box-shadow: none;
 }
 
 .card.dragging:hover {
@@ -187,32 +221,7 @@ h1 .hemoji {
   margin-top: -12px;
   margin-right: -10px;
   float: right;
-  display: inline;
-}
-
-button.edit {
-  color: #0000ff;
-}
-
-button.edit,
-button.edit:hover,
-button.delete,
-button.delete:hover {
-  transform: none;
-  background-color: white;
-  border: none;
-  cursor: pointer;
-  box-shadow: none;
-  font-size: 10px;
-  float: left;
-  padding: 5px;
-}
-
-button.edit:focus,
-button.delete:focus,
-button.edit:hover,
-button.delete:hover {
-  border: 1px solid #0000ff;
+  display: flex;
 }
 
 .card p.status {
@@ -221,13 +230,13 @@ button.delete:hover {
   font-size: 12px;
 }
 
-p.error,
-button.delete {
-  color: #da2727;
+.card p.status:empty {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
-button.delete {
-  font-weight: bold;
+p.error {
+  color: #da2727;
 }
 
 p.success {
@@ -369,4 +378,79 @@ select {
   padding: 0;
   position: absolute;
   width: 1px;
+}
+
+/*
+a11y-dialog styling layer
+http://edenspiekermann.github.io/a11y-dialog/#styling-layer
+*/
+
+.modal-wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.modal {
+  pointer-events: all;
+}
+
+.modal__title {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.modal__close-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+dialog {
+  position: relative;
+  padding: 15px;
+  border: 2px solid #222;
+  border-radius: 6px;
+}
+
+/**
+ * When the native `<dialog>` element is supported, the overlay is implied and
+ * can be styled with `::backdrop`, which means the DOM one should be removed.
+ *
+ * The `data-a11y-dialog-native` attribute is set by the script when the
+ * `<dialog>` element is properly supported.
+ *
+ * Feel free to replace `:first-child` with the overlay selector you prefer.
+ */
+[data-a11y-dialog-native] > :first-child {
+  display: none;
+}
+
+/**
+ * When the `<dialog>` element is not supported, its default display is `inline`
+ * which can cause layout issues. This makes sure the dialog is correctly
+ * displayed when open.
+ */
+dialog[open] {
+  display: block;
+}
+
+/**
+ * When the native `<dialog>` element is not supported, the script toggles the
+ * `aria-hidden` attribute on the container. If `aria-hidden` is set to `true`,
+ * the container should be hidden entirely.
+ *
+ * Feel free to replace `.dialog-container` with the container selector you
+ * prefer.
+ */
+.dialog-container[aria-hidden="true"] {
+  display: none;
 }
