@@ -11,10 +11,9 @@
 body {
   position: relative;
   font-family: helvetica, arial, sans-serif;
- width: 100%;
- height: 100%; 
+  width: 100%;
+  height: 100%;
 }
-
 
 .bold {
   font-weight: bold;
@@ -34,14 +33,15 @@ form {
   border-radius: 3px;
 }
 
-input, textarea {
+input,
+textarea {
   display: block;
   margin-bottom: 10px;
   padding: 5px;
   width: 100%;
   border: 1px solid lightgrey;
   border-radius: 3px;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 li {
@@ -55,7 +55,7 @@ footer {
 }
 
 footer > a {
-  color: #BBBBBB;
+  color: #bbbbbb;
 }
 
 .nicejob {
@@ -65,14 +65,17 @@ footer > a {
 /*******************************************************************************************/
 /* this below is Suz code please forgive or improve */
 
-html, body, main, #app {
+html,
+body,
+main,
+#app {
   margin: 0;
 }
 
 h1 {
   font-weight: bold;
   color: black;
-  font-family: 'Nanum Pen Script', sans-serif;
+  font-family: "Nanum Pen Script", sans-serif;
   font-size: 50px;
   margin-top: 0px;
 }
@@ -82,11 +85,11 @@ h1 .hemoji {
 }
 
 #dashboard {
- margin: 0px;
- padding: 25px;
- width: 100vw;
- height: 100vh;
- overflow: auto;
+  margin: 0px;
+  padding: 25px;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
 }
 
 .card {
@@ -94,7 +97,7 @@ h1 .hemoji {
   padding: 15px;
   border: 2px solid #222;
   border-radius: 6px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   background-color: white;
 }
 
@@ -102,12 +105,12 @@ h1 .hemoji {
   padding: 0px;
   margin: 0px 0px 15px 0px;
   font-size: 20px;
-  font-family: 'Chivo', sans-serif;
+  font-family: "Chivo", sans-serif;
   word-wrap: break-word;
 }
 
 .card h3 {
-  font-family: 'Chivo', sans-serif;
+  font-family: "Chivo", sans-serif;
   font-size: 18px;
 }
 
@@ -115,13 +118,15 @@ h1 .hemoji {
   font-size: 72px;
   font-weight: bold;
   text-align: center;
-  padding:0px;
-  margin:0px;
-  font-family: 'Chivo', sans-serif;
+  padding: 0px;
+  margin: 0px;
+  font-family: "Chivo", sans-serif;
 }
 
-.card button, .card .button, .card input[type=submit] {
-  font-family: 'Chivo', sans-serif;
+.card button,
+.card .button,
+.card input[type="submit"] {
+  font-family: "Chivo", sans-serif;
   border: 0;
   background: #5786c1;
   color: white;
@@ -135,19 +140,33 @@ h1 .hemoji {
   cursor: pointer;
   /* needed for anchors */
   position: relative;
-  box-shadow: 1px 0px #3a587f, 0px 1px #4171ae, 2px 1px #3a587f, 1px 2px #4171ae, 3px 2px #3a587f, 2px 3px #4171ae, 4px 3px #3a587f, 3px 4px #4171ae, 5px 4px #3a587f, 4px 5px #4171ae, 6px 5px #3a587f, 5px 6px #4171ae;
+  box-shadow: 1px 0px #3a587f, 0px 1px #4171ae, 2px 1px #3a587f, 1px 2px #4171ae,
+    3px 2px #3a587f, 2px 3px #4171ae, 4px 3px #3a587f, 3px 4px #4171ae,
+    5px 4px #3a587f, 4px 5px #4171ae, 6px 5px #3a587f, 5px 6px #4171ae;
 }
 
-.card button:hover, .card .button:hover, .card .button.hover, .card input[type=submit]:hover, .card input[type=submit].hover {
+.card button:hover,
+.card .button:hover,
+.card .button.hover,
+.card input[type="submit"]:hover,
+.card input[type="submit"].hover {
   transform: translate(2px, 2px);
-  box-shadow: 1px 0px #3a587f, 0px 1px #4171ae, 2px 1px #3a587f, 1px 2px #4171ae, 3px 2px #3a587f, 2px 3px #4171ae, 4px 3px #3a587f, 3px 4px #4171ae;
+  box-shadow: 1px 0px #3a587f, 0px 1px #4171ae, 2px 1px #3a587f, 1px 2px #4171ae,
+    3px 2px #3a587f, 2px 3px #4171ae, 4px 3px #3a587f, 3px 4px #4171ae;
 }
 
-.card button:focus, .card button.focus, .card .button.focus, .card .button:focus {
+.card button:focus,
+.card button.focus,
+.card .button.focus,
+.card .button:focus {
   border: 2px solid #333;
 }
 
-.card button:active, .card .button:active, .card .button.active, .card input[type=submit]:active, .card input[type=submit].active {
+.card button:active,
+.card .button:active,
+.card .button.active,
+.card input[type="submit"]:active,
+.card input[type="submit"].active {
   transform: translate(4px, 4px);
   box-shadow: 0px 0px;
 }
@@ -157,7 +176,7 @@ h1 .hemoji {
   user-select: none;
 }
 
-.card form input[type=submit] {
+.card form input[type="submit"] {
   padding: 5px;
   font-size: 14px;
   width: 97%;
@@ -169,13 +188,16 @@ h1 .hemoji {
   margin-right: -10px;
   float: right;
   display: inline;
- }
+}
 
 button.edit {
   color: #0000ff;
 }
 
-button.edit, button.edit:hover, button.delete, button.delete:hover {
+button.edit,
+button.edit:hover,
+button.delete,
+button.delete:hover {
   transform: none;
   background-color: white;
   border: none;
@@ -184,30 +206,33 @@ button.edit, button.edit:hover, button.delete, button.delete:hover {
   font-size: 10px;
   float: left;
   padding: 5px;
- }
+}
 
- button.edit:focus, button.delete:focus, button.edit:hover, button.delete:hover {
-   border: 1px solid #0000ff;
- }
+button.edit:focus,
+button.delete:focus,
+button.edit:hover,
+button.delete:hover {
+  border: 1px solid #0000ff;
+}
 
- .card p.status {
-   position: relative;
-   margin-top: 20px;
-   font-size: 12px;
- }
+.card p.status {
+  position: relative;
+  margin-top: 20px;
+  font-size: 12px;
+}
 
- p.error, button.delete {
-   color: #da2727;
- }
+p.error,
+button.delete {
+  color: #da2727;
+}
 
 button.delete {
-   font-weight: bold;
- }
+  font-weight: bold;
+}
 
- p.success {
-   color: #3fd640;
- }
-
+p.success {
+  color: #3fd640;
+}
 
 .cardForm form {
   padding: 0;
@@ -227,7 +252,6 @@ input {
   font-size: 13px;
 }
 
-
 label {
   font-size: 13px;
   display: block;
@@ -239,7 +263,6 @@ select {
   margin-bottom: 10px;
   height: 20px;
 }
-
 
 /* -------------- */
 /* Settings panel */
@@ -326,7 +349,7 @@ select {
 }
 
 .simulation-status {
-  font-family: 'Chivo', sans-serif;
+  font-family: "Chivo", sans-serif;
   font-size: 0.875rem;
   position: absolute;
   top: 5px;
@@ -338,9 +361,9 @@ select {
 /* -------------- */
 
 .screen-reader-only {
-  border: 0; 
-  clip: rect(0 0 0 0); 
-  height: 1px; 
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
   margin: -1px;
   overflow: hidden;
   padding: 0;
