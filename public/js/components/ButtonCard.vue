@@ -25,7 +25,7 @@ export default {
       const payloadExists =
         this.tile.deviceMethodPayload && this.tile.deviceMethodPayload.length;
       const body = payloadExists
-        ? { devicePayload: this.tile.deviceMethodPayload }
+        ? { deviceMethodPayload: this.tile.deviceMethodPayload }
         : {};
       const headers = {
         "Content-Type": "application/json"
