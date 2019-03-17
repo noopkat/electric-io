@@ -1,45 +1,47 @@
-// conditional imports would be great however we're not using webpack
 <template>
-  <div 
-    class="card" 
-    v-bind:class="{'dragging': dragging}" 
-    v-bind:style="style" 
-    v-on:mousedown.stop="onMouseDown">
-   <div v-if="showChildCard">
-     <div v-if="showControls" class="controls">
-        <button class="edit" 
-          ref="editButton" 
-          v-on:click="onEdit">edit</button>
+  <div
+    class="card"
+    v-bind:class="{ dragging: dragging }"
+    v-bind:style="style"
+    v-on:mousedown.stop="onMouseDown"
+  >
+    <div v-if="showChildCard">
+      <div v-if="showControls" class="controls">
+        <button class="edit" ref="editButton" v-on:click="onEdit">edit</button>
         <button class="delete" v-on:click="onDelete(tile.id)">X</button>
       </div>
-      <h2 v-if="tile.title">{{tile.title}} </h2>
-      <component 
-        v-bind:is="childCard" 
-        v-bind:tile="tile" 
-        v-bind:blockSize="blockSize" 
-        v-bind:messages="messages">
+      <h2 v-if="tile.title">{{ tile.title }}</h2>
+      <component
+        v-bind:is="childCard"
+        v-bind:tile="tile"
+        v-bind:blockSize="blockSize"
+        v-bind:messages="messages"
+      >
       </component>
     </div>
-    <card-form v-if="showForm" 
-      v-bind:editing="editing" 
-      v-bind:tile="tile" 
-      v-bind:deviceList="deviceList" 
-      v-on:save-settings="onSaveSettings">
+    <card-form
+      v-if="showForm"
+      v-bind:editing="editing"
+      v-bind:tile="tile"
+      v-bind:deviceList="deviceList"
+      v-bind:cardType="childCard"
+      v-on:save-settings="onSaveSettings"
+    >
     </card-form>
   </div>
 </template>
 
 <script>
-import ButtonCard from './ButtonCard';
-import CardForm from './CardForm';
-import LineChartCard from './LineChartCard';
-import NumberCard from './NumberCard';
-import StickerCard from './StickerCard';
-import TextCard from './TextCard';
+import ButtonCard from "./ButtonCard";
+import CardForm from "./CardForm";
+import LineChartCard from "./LineChartCard";
+import NumberCard from "./NumberCard";
+import StickerCard from "./StickerCard";
+import TextCard from "./TextCard";
 
 export default {
-  name: 'base-card',
-  props: ['tile', 'blockSize', 'deviceList', 'messages', 'editMode'],
+  name: "base-card",
+  props: ["tile", "blockSize", "deviceList", "messages", "editMode"],
   components: {
     ButtonCard,
     CardForm,
@@ -61,8 +63,8 @@ export default {
   },
   methods: {
     onMouseDown: function(event) {
-      const allowedModes = ['unlocked', 'demo'];
-      const excludedNodes = ['INPUT', 'TEXTAREA', 'SELECT', 'LABEL'];
+      const allowedModes = ["unlocked", "demo"];
+      const excludedNodes = ["INPUT", "TEXTAREA", "SELECT", "LABEL"];
       if (
         !this.dragging &&
         !excludedNodes.includes(event.target.tagName) &&
@@ -71,7 +73,7 @@ export default {
         this.dragging = true;
         this.offsetY = event.clientY - this.y;
         this.offsetX = event.clientX - this.x;
-        window.addEventListener('mousemove', this.onMouseMove, true);
+        window.addEventListener("mousemove", this.onMouseMove, true);
       }
     },
     onMouseMove: function(event) {
@@ -80,12 +82,12 @@ export default {
       this.x = event.clientX - this.offsetX;
     },
     onMouseUp: function(event) {
-      window.removeEventListener('mousemove', this.onMouseMove, true);
+      window.removeEventListener("mousemove", this.onMouseMove, true);
       if (this.dragging && this.mouseMoved) {
         const newPosition = { position: [this.x, this.y] };
         const eventData = Object.assign({}, this.tile, newPosition);
 
-        this.$emit('tile-position', eventData);
+        this.$emit("tile-position", eventData);
       }
       this.dragging = false;
       this.mouseMoved = false;
@@ -94,10 +96,10 @@ export default {
       this.editing = true;
     },
     onDelete: function(tileId) {
-      const message = 'Oh, do you really want to remove this card?';
+      const message = "Oh, do you really want to remove this card?";
       const confirm = window.confirm(message);
       if (confirm) {
-        this.$emit('tile-delete', tileId);
+        this.$emit("tile-delete", tileId);
       }
     },
     onSaveSettings: function(event) {
@@ -106,7 +108,7 @@ export default {
       this.$nextTick(function() {
         this.$refs.editButton.focus();
       });
-      this.$emit('tile-settings', event);
+      this.$emit("tile-settings", event);
     }
   },
   computed: {
@@ -134,12 +136,12 @@ export default {
       return this.editing;
     },
     showControls: function() {
-      const allowedModes = ['unlocked', 'demo'];
+      const allowedModes = ["unlocked", "demo"];
       return allowedModes.includes(this.editMode);
     }
   },
   mounted() {
-    window.addEventListener('mouseup', this.onMouseUp, false);
+    window.addEventListener("mouseup", this.onMouseUp, false);
   }
 };
 </script>

@@ -2,29 +2,30 @@
   <div id="dashboard" :style="dashStyle">
     <header>
       <h1 v-bind:style="headingStyle" v-html="appTitle"></h1>
-      <div 
-        v-if="simulating" 
-        :style="headingStyle" 
-        class="simulation-status">⚠️ Using simulated data</div>
+      <div v-if="simulating" :style="headingStyle" class="simulation-status">
+        ⚠️ Using simulated data
+      </div>
     </header>
 
     <main>
-      <dashboard-settings 
-        v-if="showSettings" 
-        :dashboard="dashboard" 
-        v-on:save-settings="onSaveSettings" 
-        v-on:tile-create="onTileCreate"/>
-      <base-card 
-        :key="tile.id" 
-        v-for="tile in dashboard.tiles" 
-        :editMode="dashboard.editMode" 
-        :messages="messages.filter((m)=>m.deviceId===tile.deviceId)" 
-        :tile="tile" 
-        :deviceList="deviceList" 
-        :blockSize="dashboard.blockSize" 
-        v-on:tile-position="onTileChange" 
-        v-on:tile-settings="onTileChange" 
-        v-on:tile-delete="onTileDelete" />
+      <dashboard-settings
+        v-if="showSettings"
+        :dashboard="dashboard"
+        v-on:save-settings="onSaveSettings"
+        v-on:tile-create="onTileCreate"
+      />
+      <base-card
+        :key="tile.id"
+        v-for="tile in dashboard.tiles"
+        :editMode="dashboard.editMode"
+        :messages="messages.filter(m => m.deviceId === tile.deviceId)"
+        :tile="tile"
+        :deviceList="deviceList"
+        :blockSize="dashboard.blockSize"
+        v-on:tile-position="onTileChange"
+        v-on:tile-settings="onTileChange"
+        v-on:tile-delete="onTileDelete"
+      />
     </main>
   </div>
 </template>
