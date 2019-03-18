@@ -1,17 +1,17 @@
-import { shallowMount } from '@vue/test-utils';
-import NumberCard from '../NumberCard';
+import { shallowMount } from "@vue/test-utils";
+import NumberCard from "../NumberCard";
 
-describe('Number card', () => {
-  test('component can mount', () => {
+describe("Number card", () => {
+  test("component can mount", () => {
     const wrapper = shallowMount(NumberCard);
     expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
-  test('renders with color and number value', () => {
+  test("renders with color and number value", () => {
     const wrapper = shallowMount(NumberCard, {
       propsData: {
         tile: {
-          textColor: 'blue'
+          textColor: "blue"
         }
       },
       data: () => ({
