@@ -5,8 +5,8 @@
     <form v-on:submit.prevent="onSubmit">
       <input name="id" type="hidden" v-bind:value="tile.id" />
 
-      <label
-        >Title
+      <label>
+        Title
         <input
           v-focus="editing"
           type="text"

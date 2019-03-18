@@ -10,29 +10,36 @@
         :aria-expanded="settingsPanelOpen ? 'true' : 'false'"
         aria-labelledby="settings-toggle-label"
       >
-        <span class="screen-reader-only" id="settings-toggle-label">{{
-          settingsPanelOpen ? "Close settings panel" : "Open settings panel"
-        }}</span>
-        <span aria-hidden="true">{{
-          settingsPanelOpen ? "&rarr;" : "⚙️"
-        }}</span>
+        <span class="screen-reader-only" id="settings-toggle-label">
+          {{
+            settingsPanelOpen ? "Close settings panel" : "Open settings panel"
+          }}
+        </span>
+        <span aria-hidden="true">
+          {{ settingsPanelOpen ? "&rarr;" : "⚙️" }}
+        </span>
       </button>
+
       <h2 class="settings__title">Settings</h2>
     </div>
+
     <div class="settings__body">
       <form v-on:submit.prevent="onSaveSettings">
-        <label
-          >App Title
+        <label>
+          App Title
           <input type="text" name="title" :value="dashboard.title" />
         </label>
-        <label
-          >Background Color
+
+        <label>
+          Background Color
           <input type="text" name="bgColor" v-bind:value="dashboard.bgColor" />
         </label>
-        <label
-          >Background Image URL
+
+        <label>
+          Background Image URL
           <input type="text" name="bgImageUrl" :value="dashboard.bgImageUrl" />
         </label>
+
         <label class="settings__checkbox-label">
           <span>Repeat background image?</span>
           <input
@@ -43,12 +50,15 @@
             v-model="dashboard.bgImageRepeat"
           />
         </label>
+
         <input class="action-button" type="submit" value="save" />
       </form>
+
       <h3>New Card</h3>
+
       <form v-on:submit.prevent="onCreateCard">
-        <label
-          >Card Type
+        <label>
+          Card Type
           <select name="type">
             <option value="button">button</option>
             <option value="lineChart">line chart</option>
@@ -57,6 +67,7 @@
             <option value="text">text</option>
           </select>
         </label>
+
         <input class="action-button" type="submit" value="create" />
       </form>
     </div>

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <label
-      >Device Id
+    <label>
+      Device Id
       <select name="deviceId" id="deviceSelect">
         <option
           v-for="device in deviceList"
@@ -12,13 +12,13 @@
       </select>
     </label>
 
-    <label
-      >Data Property
+    <label>
+      Data Property
       <input type="text" name="property" :value="tile.property" />
     </label>
 
-    <label
-      >Line Color
+    <label>
+      Line Color
       <input type="text" name="lineColor" :value="tile.lineColor" />
     </label>
   </div>

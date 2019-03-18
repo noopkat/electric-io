@@ -1,5 +1,5 @@
 <template>
-  <canvas v-bind:id="tile.id" v-bind:style="canvasStyle"> </canvas>
+  <canvas v-bind:id="tile.id" v-bind:style="canvasStyle"></canvas>
 </template>
 
 <script>
