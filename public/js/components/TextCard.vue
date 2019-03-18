@@ -5,13 +5,13 @@
 </template>
 
 <script>
-import marked from 'marked';
+import marked from "marked";
 export default {
-  name: 'text-card',
-  props: ['tile'],
+  name: "text-card",
+  props: ["tile"],
   data: function() {
     return {
-      tileText: ''
+      tileText: ""
     };
   },
   computed: {

@@ -1,17 +1,14 @@
 <template>
-  <canvas 
-    v-bind:id="tile.id" 
-    v-bind:style="canvasStyle">
-  </canvas>
+  <canvas v-bind:id="tile.id" v-bind:style="canvasStyle"> </canvas>
 </template>
 
 <script>
-import Chart from 'chart.js';
-import chartOptions from '../lib/chartOptions.js';
+import Chart from "chart.js";
+import chartOptions from "../lib/chartOptions.js";
 
 export default {
-  name: 'line-chart-card',
-  props: ['tile', 'blockSize', 'messages'],
+  name: "line-chart-card",
+  props: ["tile", "blockSize", "messages"],
   data: function() {
     return {
       ctx: this.tile.id,
@@ -20,13 +17,13 @@ export default {
       chartData: {
         datasets: [
           {
-            label: '',
+            label: "",
             data: [],
             fill: false,
             borderColor: this.tile.lineColor,
             borderWidth: 3,
             pointBorderWidth: 2,
-            pointBackgroundColor: '#ffffff',
+            pointBackgroundColor: "#ffffff",
             pointBorderColor: this.tile.lineColor,
             lineTension: 0
           }
@@ -55,7 +52,7 @@ export default {
   },
   mounted() {
     this.chart = new Chart(this.ctx, {
-      type: 'line',
+      type: "line",
       data: this.chartData,
       options: this.chartOptions
     });
