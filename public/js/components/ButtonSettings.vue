@@ -1,32 +1,42 @@
 <template>
   <div>
-    <label
-      >Device Id
+    <label>
+      Device Id
       <select name="deviceId" id="deviceSelect">
         <option
           v-for="device in deviceList"
           v-bind:selected="device === tile.deviceId"
+          >{{ device }}</option
         >
-          {{ device }}
-        </option>
       </select>
     </label>
 
-    <label
-      >Method Name
+    <label>
+      Call Type
+      <select name="callType" id="callTypeSelect" v-model="tile.callType">
+        <option
+          v-for="option in typeOptions"
+          v-bind:key="option.value"
+          v-bind:selected="option.value === tile.callType"
+          v-bind:value="option.value"
+          >{{ option.text }}</option
+        >
+      </select>
+    </label>
+
+    <label v-if="tile.callType === 'method'">
+      Method Name
       <input type="text" name="deviceMethod" v-bind:value="tile.deviceMethod" />
     </label>
 
-    <label
-      >Method Payload (must be valid JSON pls!)
-      <textarea
-        name="deviceMethodPayload"
-        v-bind:value="tile.deviceMethodPayload"
-      ></textarea>
+    <label>
+      <span v-if="tile.callType === 'method'">Method</span>
+      <span v-else>Message</span> Payload (must be valid JSON pls!)
+      <textarea name="callPayload" v-bind:value="tile.callPayload"></textarea>
     </label>
 
-    <label
-      >Button Text
+    <label>
+      Button Text
       <input type="text" name="buttonText" v-bind:value="tile.buttonText" />
     </label>
   </div>
@@ -35,6 +45,14 @@
 <script>
 export default {
   name: "button-settings",
-  props: ["tile", "deviceList"]
+  props: ["tile", "deviceList"],
+  data() {
+    return {
+      typeOptions: [
+        { text: "Direct Method", value: "method" },
+        { text: "C2D Message", value: "message" }
+      ]
+    };
+  }
 };
 </script>
