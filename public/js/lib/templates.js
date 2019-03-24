@@ -13,7 +13,7 @@ export default {
     textColor: "#000",
     property: "",
     position: [0, 0],
-    size: [0.98, 0.73],
+    size: [0.98, 0.73]
   },
   button: {
     title: "Cool Button",
