@@ -21,7 +21,8 @@ export default {
     buttonText: "Click Me",
     deviceId: "",
     deviceMethod: "",
-    deviceMethodPayload: "",
+    callType: "method",
+    callPayload: "",
     position: [0, 0],
     size: [0.8, 0.7]
   },

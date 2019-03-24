@@ -13,9 +13,7 @@ export default {
   props: ["tile"],
   data: function() {
     return {
-      apiUrl: `/api/device/${this.tile.deviceId}/method/${
-        this.tile.deviceMethod
-      }`,
+      apiUrlBase: `/api/device/${this.tile.deviceId}`,
       statusText: "",
       statusClass: "status"
     };
@@ -24,16 +22,20 @@ export default {
     onClick: function() {
       this.statusText = "calling device method...";
 
+      const apiUrl = `${this.apiUrlBase}${
+        this.tile.callType === "method"
+          ? `/method/${this.tile.deviceMethod}`
+          : "/message/"
+      }`;
+
       const payloadExists =
-        this.tile.deviceMethodPayload && this.tile.deviceMethodPayload.length;
-      const body = payloadExists
-        ? { deviceMethodPayload: this.tile.deviceMethodPayload }
-        : {};
+        this.tile.callPayload && this.tile.callPayload.length;
+      const body = payloadExists ? { callPayload: this.tile.callPayload } : {};
       const headers = {
         "Content-Type": "application/json"
       };
 
-      fetch(this.apiUrl, {
+      fetch(apiUrl, {
         method: "POST",
         headers,
         body: JSON.stringify(body)
