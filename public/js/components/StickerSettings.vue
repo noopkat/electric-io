@@ -1,7 +1,7 @@
 <template>
   <div>
-    <label
-      >Picture URL
+    <label>
+      Picture URL
       <input type="text" name="url" v-bind:value="tile.url" />
     </label>
   </div>

@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'number-card',
+  name: "number-card",
   props: {
     tile: {
       default: () => ({})

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <label
-      >This supports
+    <label>
+      This supports
       <a
         href="https://guides.github.com/features/mastering-markdown/"
         target="_blank"
