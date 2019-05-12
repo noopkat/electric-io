@@ -15,9 +15,9 @@
             settingsPanelOpen ? "Close settings panel" : "Open settings panel"
           }}
         </span>
-        <span aria-hidden="true">{{
-          settingsPanelOpen ? "&rarr;" : "⚙️"
-        }}</span>
+        <span aria-hidden="true">
+          {{ settingsPanelOpen ? "&rarr;" : "⚙️" }}
+        </span>
       </button>
 
       <h2 class="settings__title">Settings</h2>
@@ -33,7 +33,7 @@
         <label>
           Background Color
           <compact-picker :value="bgColor" @input="updateValue" />
-          <input type="text" name="bgColor" :value="bgColor" />
+          <input type="text" name="bgColor" v-model="bgColor" />
         </label>
 
         <label>
