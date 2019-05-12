@@ -454,3 +454,9 @@ dialog[open] {
 .dialog-container[aria-hidden="true"] {
   display: none;
 }
+
+.vc-compact {
+  margin-bottom: 10px;
+  box-sizing: content-box;
+  box-shadow: none;
+}

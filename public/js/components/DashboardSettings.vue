@@ -15,9 +15,9 @@
             settingsPanelOpen ? "Close settings panel" : "Open settings panel"
           }}
         </span>
-        <span aria-hidden="true">
-          {{ settingsPanelOpen ? "&rarr;" : "⚙️" }}
-        </span>
+        <span aria-hidden="true">{{
+          settingsPanelOpen ? "&rarr;" : "⚙️"
+        }}</span>
       </button>
 
       <h2 class="settings__title">Settings</h2>
@@ -32,7 +32,8 @@
 
         <label>
           Background Color
-          <input type="text" name="bgColor" v-bind:value="dashboard.bgColor" />
+          <compact-picker :value="bgColor" @input="updateValue" />
+          <input type="text" name="bgColor" :value="bgColor" />
         </label>
 
         <label>
@@ -75,6 +76,7 @@
 </template>
 
 <script>
+import { Compact } from "vue-color";
 import { saveDashboard } from "../lib/configuration.js";
 import templates from "../lib/templates.js";
 import createGuid from "../lib/guid.js";
@@ -82,11 +84,15 @@ import createGuid from "../lib/guid.js";
 export default {
   name: "dashboard-settings",
   props: ["dashboard"],
-  data: function() {
+  data() {
     return {
       status: "",
-      settingsPanelOpen: true
+      settingsPanelOpen: true,
+      bgColor: this.dashboard.bgColor
     };
+  },
+  components: {
+    "compact-picker": Compact
   },
   methods: {
     onSaveSettings: function(event) {
@@ -108,6 +114,9 @@ export default {
     },
     onToggleSettingsPanel() {
       this.settingsPanelOpen = this.settingsPanelOpen === true ? false : true;
+    },
+    updateValue(value) {
+      this.bgColor = value.hex;
     }
   }
 };
