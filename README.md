@@ -178,9 +178,16 @@ Got ideas for more cards? Open an issue on this repo and let me know! 👀
 
 electric-io saves your dashboard configuration to `./.data/dashboard.json`. To safely transfer this elsewhere, stop the source and destination electric-io instances and copy `dashboard.json` across.
 
-```
+```bash
 # With both the source and destination electric-io instances stopped
 cp ./electric-io-testing/.data/dashboard.json ./electric-io-production/.data/dashboard.json
+```
+
+On Windows:
+
+```bash
+xcopy electric-io-testing\.data\dashboard.json electric-io-production\.data\dashboard.json
+# Choose F at the prompt to complete the copy
 ```
 
 The transferred settings should show up when electric-io is started again.
