@@ -124,6 +124,18 @@ Just some ideas ✨ Add your own if you geek out about mobile responsive designs
 
 PRs are welcomed, and you will find lots of support from the Noopkat family if you're not sure about how to approach something. Issues marked [Help Wanted](https://github.com/noopkat/electric-io/labels/help%20wanted) or [Good First Issue](https://github.com/noopkat/electric-io/labels/good%20first%20issue) would be good starting points.
 
+The easiest way to review a pull request for a project maintainer is by submitting a pull request from a copy of the remote repository (usually called “fork”). In most cases, you won’t have the permission to push your changes directly to the project when contributing to open source software.
+
+While on the Github webpage for this repository, you should see a 'fork' button. Please fork this repo. From this online copy (fork), you can create pull requests if you push commits to it.
+
+Clone your new fork to your computer with: `git clone --origin fork <your fork's url>`
+
+Then, check out a new branch with `git checkout -b my-branch-name`
+
+Create your code / documentation changes in this branch, and commit when done. Once done, `git push fork your-branch-name`
+
+Once this is finished pushing, you can go to your fork on GitHub. It should now ask you right away if you want to create a pull request. Clicking that button should set you up with a text field just like when creating a new issue on GitHub. Fill it out and submit the pull request. Then, we can review it “Pull requests” in this original repository.
+
 ### Merge Conflicts
 
 There are times where, after seeing a very good contribution, there are some really confusing merge conflicts. This can be very frustrating for maintainers, who may not understand how to resolve a variety of merge conflicts you and/or others introduced.
