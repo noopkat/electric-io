@@ -5,7 +5,7 @@ const getApiDataFrom = url =>
       // Promise is resolved if we get a 200 response status code
       response.ok
         ? resolve(response.json())
-        : // If the response status ist't a 200, check if it's a 400
+        : // If the response status ist't a 200, check if it's a 404
         response.status === 404
         ? // Error response if the response status code is a 404
           reject(`Request to ${url} failed with 404 Page Not Found`)
@@ -26,7 +26,7 @@ const postApiDataTo = (url, body, headers) =>
     // Promise is resolved if we get a 200 response status code
     response.ok
       ? response
-      : // If the response status ist't a 200, check if it's a 400
+      : // If the response status ist't a 200, check if it's a 404
       response.status === 404
       ? // Error response if the response status code is a 404
         console.error(`Request to ${url} failed with 404 Page Not Found`)
