@@ -65,6 +65,25 @@ footer > a {
   text-decoration: line-through;
 }
 
+.card {
+  padding: 15px;
+  border: 2px solid #222;
+  border-radius: 6px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  background-color: white;
+}
+
+.card:not(:last-child) {
+  margin-bottom: 15px;
+}
+
+@media (min-width: 768px) {
+  .card {
+    position: absolute;
+    margin-bottom: initial;
+  }
+}
+
 /*******************************************************************************************/
 /* this below is Suz code please forgive or improve */
 
@@ -93,15 +112,6 @@ h1 .hemoji {
   width: 100vw;
   height: 100vh;
   overflow: auto;
-}
-
-.card {
-  position: absolute;
-  padding: 15px;
-  border: 2px solid #222;
-  border-radius: 6px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  background-color: white;
 }
 
 .card h2 {
