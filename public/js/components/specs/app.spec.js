@@ -1,4 +1,4 @@
-import { mount, shallowMount } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import App from "../App";
 import { TITLE_EMOJI_REGEX } from "./../../utils/constants.js";
 
@@ -100,7 +100,6 @@ describe("Number card", () => {
 
   test("comput the appTitle with or without an emoji using the TITLE_EMOJI_REGEX constant", () => {
     const { vm } = shallowMountApp();
-
     const title = TITLE_EMOJI_REGEX.exec(mockDashboardData.dashboard.title);
 
     title[1] = "\u2700";
@@ -112,9 +111,9 @@ describe("Number card", () => {
   });
 
   test("onSaveSettings method", () => {
-    const wrapper = mountApp();
+    const { vm } = shallowMountApp();
 
-    expect(wrapper.vm.dashboard).toEqual(
+    expect(vm.dashboard).toEqual(
       expect.objectContaining({
         bgColor: expect.any(String),
         bgImageRepeat: expect.any(Boolean),
@@ -125,6 +124,100 @@ describe("Number card", () => {
         title: expect.any(String)
       })
     );
+
+    vm.onSaveSettings();
+
+    Vue.nextTick(() => {
+      expect(vm.dashboard).toEqual(
+        expect.objectContaining({
+          bgColor: expect.any(String),
+          bgImageRepeat: expect.any(Boolean),
+          bgImageUrl: expect.any(String),
+          blockSize: expect.any(Array),
+          editMode: expect.any(String),
+          tiles: expect.any(Array),
+          title: expect.any(String)
+        })
+      );
+    });
+  });
+
+  test("onTileChange method", () => {
+    const wrapper = shallowMountApp();
+
+    expect(wrapper.vm.dashboard).toEqual(mockDashboardData.dashboard);
+
+    mockDashboardData.dashboard.tiles[0].buttonText = "stop it";
+
+    wrapper.vm.onTileChange(event => {
+      event.id = mockDashboardData.dashboard.tiles[0].id;
+    });
+
+    expect(wrapper.vm.dashboard.tiles[0]).toEqual({
+      buttonText: "stop it",
+      deviceId: "AZ3166",
+      deviceMethod: "stop",
+      id: "2471d5ab-0d73-42a3-ba4f-f694574feb6b",
+      position: [54, 466],
+      size: [0.8, 0.7],
+      title: "MXChip sending",
+      type: "button"
+    });
+  });
+
+  test("onTileDelete method", () => {
+    const wrapper = shallowMountApp();
+    const tileId = mockDashboardData.dashboard.tiles[0].id;
+    const updatedTiles = mockDashboardData.dashboard.tiles.filter(
+      tile => tile.id !== tileId
+    );
+
+    wrapper.vm.onTileDelete(tileId);
+
+    expect(
+      wrapper.find({ name: "base-card" }).vm.$emit("tile-delete")
+    ).toBeTruthy();
+
+    mockDashboardData.dashboard = Object.assign(
+      {},
+      mockDashboardData.dashboard,
+      {
+        tiles: updatedTiles
+      }
+    );
+
+    expect(mockDashboardData.dashboard.tiles.length).toBe(1);
+  });
+
+  test("onTileCreate", () => {
+    const wrapper = shallowMountApp();
+
+    wrapper.vm.onTileCreate(event => {
+      event = {
+        buttonText: "begin",
+        deviceId: "DH7643",
+        deviceMethod: "halt",
+        id: "8071d5ab-0z12-41i3-ba9p-f600124feb6b",
+        position: [106, 266],
+        size: [0.9, 0.3],
+        title: "MSchip receiving",
+        type: "button"
+      };
+
+      const updatedTiles = mockDashboardData.dashboard.tiles.slice();
+
+      updatedTiles.push(event);
+
+      mockDashboardData.dashboard = Object.assign(
+        {},
+        mockDashboardData.dashboard,
+        {
+          tiles: updatedTiles
+        }
+      );
+
+      expect(mockDashboardData.dashboard.tiles.length).toBe(3);
+    });
   });
 });
 
@@ -133,18 +226,10 @@ const mountingConfiguration = {
   data: () => ({
     dashboard: mockDashboardData.dashboard,
     deviceList: mockDeviceList
-  }),
-  stubs: {
-    "a11y-dialog": true
-  }
+  })
 };
 
 // Shallow mount App component as reusable function for tests
 function shallowMountApp() {
   return shallowMount(App, mountingConfiguration);
-}
-
-// Full mount App component as reusable function for tests
-function mountApp() {
-  return mount(App, mountingConfiguration);
 }

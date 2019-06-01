@@ -110,7 +110,6 @@ export default {
       saveDashboard(this.dashboard).then(r => console.log(r.ok));
     },
     onTileDelete: function(tileId) {
-      console.log("on tile delete");
       const updatedTiles = this.dashboard.tiles.filter(t => t.id !== tileId);
       this.dashboard = Object.assign({}, this.dashboard, {
         tiles: updatedTiles
