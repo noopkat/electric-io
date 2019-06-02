@@ -21,5 +21,8 @@ module.exports = {
     hooks: {
       "pre-commit": "pretty-quick --staged"
     }
+  },
+  globals: {
+    SIMULATING: process.env.SIMULATING === true ? true : false
   }
 };

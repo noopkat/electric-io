@@ -58,7 +58,7 @@ describe("Number card", () => {
     expect(vm.dashboard.tiles).toEqual([]);
     expect(vm.messages).toEqual([]);
     expect(vm.deviceList).toEqual([]);
-    expect(vm.simulating).toEqual(process.env.SIMULATING);
+    expect(vm.simulating).toEqual(SIMULATING);
   });
 
   test("computed value returned from dashStyle computed method", () => {

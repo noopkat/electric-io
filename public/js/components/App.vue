@@ -50,7 +50,7 @@ const initialData = function() {
     },
     messages: [],
     deviceList: [],
-    simulating: process.env.SIMULATING
+    simulating: SIMULATING
   };
 };
 
