@@ -171,9 +171,6 @@ describe("Number card", () => {
   test("onTileDelete method", () => {
     const wrapper = shallowMountApp();
     const tileId = mockDashboardData.dashboard.tiles[0].id;
-    const updatedTiles = mockDashboardData.dashboard.tiles.filter(
-      tile => tile.id !== tileId
-    );
 
     wrapper.vm.onTileDelete(tileId);
 
@@ -181,15 +178,7 @@ describe("Number card", () => {
       wrapper.find({ name: "base-card" }).vm.$emit("tile-delete")
     ).toBeTruthy();
 
-    mockDashboardData.dashboard = Object.assign(
-      {},
-      mockDashboardData.dashboard,
-      {
-        tiles: updatedTiles
-      }
-    );
-
-    expect(mockDashboardData.dashboard.tiles.length).toBe(1);
+    expect(wrapper.vm.dashboard.tiles.length).toBe(1);
   });
 
   test("onTileCreate method", () => {
@@ -206,21 +195,9 @@ describe("Number card", () => {
         title: "MSchip receiving",
         type: "button"
       };
-
-      const updatedTiles = mockDashboardData.dashboard.tiles.slice();
-
-      updatedTiles.push(event);
-
-      mockDashboardData.dashboard = Object.assign(
-        {},
-        mockDashboardData.dashboard,
-        {
-          tiles: updatedTiles
-        }
-      );
-
-      expect(mockDashboardData.dashboard.tiles.length).toBe(3);
     });
+
+    expect(wrapper.vm.dashboard.tiles.length).toBe(3);
   });
 
   test("onDeviceListRecieved method", () => {
