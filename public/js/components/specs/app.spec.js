@@ -1,4 +1,4 @@
-import { shallowMount } from "@vue/test-utils";
+import { mount, shallowMount } from "@vue/test-utils";
 import App from "../App";
 import { TITLE_EMOJI_REGEX } from "./../../utils/constants.js";
 
@@ -125,7 +125,9 @@ describe("Number card", () => {
       })
     );
 
-    vm.onSaveSettings();
+    vm.onSaveSettings(() => {
+      expect(vm.saveDashboard).toHaveBeenCalled();
+    });
 
     Vue.nextTick(() => {
       expect(vm.dashboard).toEqual(
@@ -151,6 +153,7 @@ describe("Number card", () => {
 
     wrapper.vm.onTileChange(event => {
       event.id = mockDashboardData.dashboard.tiles[0].id;
+      expect(vm.saveDashboard).toHaveBeenCalled();
     });
 
     expect(wrapper.vm.dashboard.tiles[0]).toEqual({
@@ -189,7 +192,7 @@ describe("Number card", () => {
     expect(mockDashboardData.dashboard.tiles.length).toBe(1);
   });
 
-  test("onTileCreate", () => {
+  test("onTileCreate method", () => {
     const wrapper = shallowMountApp();
 
     wrapper.vm.onTileCreate(event => {
@@ -218,6 +221,28 @@ describe("Number card", () => {
 
       expect(mockDashboardData.dashboard.tiles.length).toBe(3);
     });
+  });
+
+  test("onDeviceListRecieved method", () => {
+    const wrapper = shallowMountApp();
+    const io = jest.fn();
+    const socket = io();
+
+    wrapper.vm.onDeviceListReceived(() => {
+      expect(socket).toHaveBeenCalled();
+    });
+  });
+
+  test("the getDashboard and getDeviceList functions in the created lifecycle hook", () => {
+    const wrapper = mount(App, {
+      methods: {
+        getDashboard: () => mockDashboardData.dashboard,
+        getDeviceList: () => mockDeviceList
+      }
+    });
+
+    expect(wrapper.vm.getDashboard()).toEqual(mockDashboardData.dashboard);
+    expect(wrapper.vm.getDeviceList()).toEqual(mockDeviceList);
   });
 });
 
