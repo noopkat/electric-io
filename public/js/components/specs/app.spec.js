@@ -125,7 +125,13 @@ describe("Number card", () => {
       })
     );
 
-    vm.onSaveSettings(() => {
+    vm.onSaveSettings(event => {
+      event = {
+        bgColor: "#fff",
+        bgImageRepeat: true,
+        bgImageUrl: "",
+        title: "\u2700 IoT Dashboard"
+      };
       expect(vm.saveDashboard).toHaveBeenCalled();
     });
 
@@ -145,18 +151,18 @@ describe("Number card", () => {
   });
 
   test("onTileChange method", () => {
-    const wrapper = shallowMountApp();
+    const { vm } = shallowMountApp();
 
-    expect(wrapper.vm.dashboard).toEqual(mockDashboardData.dashboard);
+    expect(vm.dashboard).toEqual(mockDashboardData.dashboard);
 
     mockDashboardData.dashboard.tiles[0].buttonText = "stop it";
 
-    wrapper.vm.onTileChange(event => {
+    vm.onTileChange(event => {
       event.id = mockDashboardData.dashboard.tiles[0].id;
       expect(vm.saveDashboard).toHaveBeenCalled();
     });
 
-    expect(wrapper.vm.dashboard.tiles[0]).toEqual({
+    expect(vm.dashboard.tiles[0]).toEqual({
       buttonText: "stop it",
       deviceId: "AZ3166",
       deviceMethod: "stop",
@@ -182,9 +188,9 @@ describe("Number card", () => {
   });
 
   test("onTileCreate method", () => {
-    const wrapper = shallowMountApp();
+    const { vm } = shallowMountApp();
 
-    wrapper.vm.onTileCreate(event => {
+    vm.onTileCreate(event => {
       event = {
         buttonText: "begin",
         deviceId: "DH7643",
@@ -197,29 +203,29 @@ describe("Number card", () => {
       };
     });
 
-    expect(wrapper.vm.dashboard.tiles.length).toBe(3);
+    expect(vm.dashboard.tiles.length).toBe(3);
   });
 
   test("onDeviceListRecieved method", () => {
-    const wrapper = shallowMountApp();
+    const { vm } = shallowMountApp();
     const io = jest.fn();
     const socket = io();
 
-    wrapper.vm.onDeviceListReceived(() => {
+    vm.onDeviceListReceived(() => {
       expect(socket).toHaveBeenCalled();
     });
   });
 
   test("the getDashboard and getDeviceList functions in the created lifecycle hook", () => {
-    const wrapper = mount(App, {
+    const { vm } = mount(App, {
       methods: {
         getDashboard: () => mockDashboardData.dashboard,
         getDeviceList: () => mockDeviceList
       }
     });
 
-    expect(wrapper.vm.getDashboard()).toEqual(mockDashboardData.dashboard);
-    expect(wrapper.vm.getDeviceList()).toEqual(mockDeviceList);
+    expect(vm.getDashboard()).toEqual(mockDashboardData.dashboard);
+    expect(vm.getDeviceList()).toEqual(mockDeviceList);
   });
 });
 
