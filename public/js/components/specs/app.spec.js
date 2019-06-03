@@ -98,7 +98,7 @@ describe("Number card", () => {
     expect(wrapper.find({ name: "dashboard-settings" }).exists()).toBe(false);
   });
 
-  test("comput the appTitle with or without an emoji using the TITLE_EMOJI_REGEX constant", () => {
+  test("compute the appTitle with or without an emoji using the TITLE_EMOJI_REGEX constant", () => {
     const { vm } = shallowMountApp();
     const title = TITLE_EMOJI_REGEX.exec(mockDashboardData.dashboard.title);
 
