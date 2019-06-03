@@ -3,22 +3,63 @@ import NumberCard from "../NumberCard";
 
 describe("Number card", () => {
   test("component can mount", () => {
-    const wrapper = shallowMount(NumberCard);
+    const wrapper = shallowMountNumberCard();
+
     expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
   test("renders with color and number value", () => {
-    const wrapper = shallowMount(NumberCard, {
-      propsData: {
-        tile: {
-          textColor: "blue"
-        }
-      },
-      data: () => ({
-        number: 1
-      })
-    });
+    const wrapper = shallowMountNumberCard();
 
     expect(wrapper.html()).toMatchSnapshot();
   });
+
+  test("the messages watch method", () => {
+    const wrapper = shallowMountNumberCard();
+    const lastMessage = wrapper.vm.messages.pop();
+    const randomMessage = wrapper.vm.messages[0];
+
+    wrapper.vm.number = lastMessage;
+
+    expect(wrapper.vm.number).toEqual(7.1);
+
+    wrapper.vm.number = randomMessage;
+
+    expect(wrapper.vm.number).toEqual(0);
+  });
 });
+
+const mountingConfiguration = {
+  propsData: {
+    tile: {
+      deviceId: "AZ3166",
+      postiion: [296, 350],
+      property: "humidity",
+      textColor: "blue",
+      title: "humidity",
+      type: "number"
+    },
+    messages: [
+      {
+        deviceId: "BU2802",
+        enqueuedTime: "2019-06-03T11:45:10.125Z",
+        humidity: 32.800208338,
+        temperature: 45.13494407
+      },
+      {
+        deviceId: "AZ3166",
+        enqueuedTime: "2019-06-03T11:33:10.125Z",
+        humidity: 7.053375767532866,
+        temperature: 31.599309710235097
+      }
+    ]
+  },
+
+  data: () => ({
+    number: 1
+  })
+};
+
+function shallowMountNumberCard() {
+  return shallowMount(NumberCard, mountingConfiguration);
+}
