@@ -86,9 +86,9 @@
     "collectCoverageFrom": [
       "lib/**/*.js",
       "public/js/**/*.js",
+      "public/js/components/*.vue",
       "!public/js/dist/**",
-      "!**/node_modules/**",
-      "public/js/components/*.vue"
+      "!**/node_modules/**"
     ],
     "roots": [
       "lib",
