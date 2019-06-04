@@ -84,8 +84,7 @@
     "collectCoverage": true,
     "collectCoverageFrom": [
       "lib/**/*.js",
-      "public/js/**/*.js",
-      "public/js/components/*.vue",
+      "public/js/**/*.{js,vue}",
       "!public/js/dist/**",
       "!**/node_modules/**"
     ],
