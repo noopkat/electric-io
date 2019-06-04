@@ -1,4 +1,4 @@
-import { shallowMount } from "@vue/test-utils";
+import { mount, shallowMount } from "@vue/test-utils";
 import NumberCard from "../NumberCard";
 
 describe("Number card", () => {
@@ -15,44 +15,43 @@ describe("Number card", () => {
   });
 
   test("the messages watch method", () => {
-    const wrapper = shallowMountNumberCard();
-    const lastMessage = wrapper.vm.messages.pop();
-    const randomMessage = wrapper.vm.messages[0];
+    const spy = sinon.spy(NumberCard.watch, "messages");
+    const wrapper = mount(NumberCard, {
+      propsDat: {
+        messages: []
+      }
+    });
 
-    wrapper.vm.number = lastMessage;
+    expect(spy.called).toBe(false);
 
-    expect(wrapper.vm.number).toEqual(7.1);
+    wrapper.setProps({
+      messages: [
+        {
+          deviceId: "BU2802",
+          enqueuedTime: "2019-06-03T11:45:10.125Z",
+          humidity: 32.800208338,
+          temperature: 45.13494407
+        },
+        {
+          deviceId: "AZ3166",
+          enqueuedTime: "2019-06-03T11:33:10.125Z",
+          humidity: 7.053375767532866,
+          temperature: 31.599309710235097
+        }
+      ]
+    });
 
-    wrapper.vm.number = randomMessage;
-
-    expect(wrapper.vm.number).toEqual(0);
+    Vue.nextTick(() => {
+      expect(spy.called).toBe(true);
+    });
   });
 });
 
 const mountingConfiguration = {
   propsData: {
     tile: {
-      deviceId: "AZ3166",
-      postiion: [296, 350],
-      property: "humidity",
-      textColor: "blue",
-      title: "humidity",
-      type: "number"
-    },
-    messages: [
-      {
-        deviceId: "BU2802",
-        enqueuedTime: "2019-06-03T11:45:10.125Z",
-        humidity: 32.800208338,
-        temperature: 45.13494407
-      },
-      {
-        deviceId: "AZ3166",
-        enqueuedTime: "2019-06-03T11:33:10.125Z",
-        humidity: 7.053375767532866,
-        temperature: 31.599309710235097
-      }
-    ]
+      textColor: "blue"
+    }
   },
 
   data: () => ({
