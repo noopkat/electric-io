@@ -11,7 +11,6 @@
     "watch:server": "nodemon server.js",
     "test": "jest",
     "test:watch": "jest --watchAll",
-    "precommit": "pretty-quick --staged",
     "build": "webpack --progress --colors"
   },
   "dependencies": {
@@ -109,5 +108,10 @@
       "test/*",
       "public/*"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
