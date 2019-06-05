@@ -4,8 +4,9 @@
       Device Id
       <select name="deviceId" id="deviceSelect">
         <option
-          v-for="device in deviceList"
+          v-for="(device, index) in deviceList"
           :selected="device === tile.deviceId"
+          v-bind:key="`device-list-${index}`"
         >
           {{ device }}
         </option>

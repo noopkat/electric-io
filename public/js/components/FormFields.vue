@@ -25,6 +25,7 @@ export default {
   },
   computed: {
     settingsCard: function() {
+      console.log(this.tile);
       return `${this.tile.type.toLowerCase()}-settings`;
     }
   }
