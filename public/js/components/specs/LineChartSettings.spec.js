@@ -1,4 +1,4 @@
-import { mount, shallowMount } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import LineChartSettings from "../LineChartSettings";
 
 describe("Number card", () => {
@@ -10,7 +10,7 @@ describe("Number card", () => {
 });
 
 function shallowMountLineChartSettings() {
-  return mount(LineChartSettings, {
+  return shallowMount(LineChartSettings, {
     propsData: {
       tile: {
         deviceId: "AZ3166",
