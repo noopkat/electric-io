@@ -17,12 +17,7 @@ module.exports = {
   roots: ["lib", "public/js"],
   setupFiles: ["./lib/testSetup.js"],
   testURL: "http://localhost/",
-  husky: {
-    hooks: {
-      "pre-commit": "pretty-quick --staged"
-    }
-  },
   globals: {
-    SIMULATING: process.env.SIMULATING === true ? true : false
+    SIMULATING: process.env.SIMULATING === "true" ? true : false
   }
 };

@@ -1,6 +1,6 @@
 import { mount, shallowMount } from "@vue/test-utils";
 import App from "../App";
-import { TITLE_EMOJI_REGEX } from "./../../utils/constants.js";
+import { TITLE_EMOJI_REGEX } from "../../utils/constants.js";
 
 // Mock dashboard data
 const mockDashboardData = {
