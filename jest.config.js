@@ -18,6 +18,6 @@ module.exports = {
   setupFiles: ["./lib/testSetup.js"],
   testURL: "http://localhost/",
   globals: {
-    SIMULATING: process.env.SIMULATING === "true" ? true : false
+    SIMULATING: process.env.SIMULATING === "true"
   }
 };

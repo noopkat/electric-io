@@ -1,5 +1,6 @@
 import { mount, shallowMount } from "@vue/test-utils";
 import App from "../App";
+import * as configFns from "../../lib/configuration";
 import { TITLE_EMOJI_REGEX } from "../../utils/constants.js";
 
 // Mock dashboard data
@@ -111,9 +112,19 @@ describe("Number card", () => {
   });
 
   test("onSaveSettings method", () => {
-    const { vm } = shallowMountApp();
+    jest.spyOn(configFns, "saveDashboard");
+    const wrapper = shallowMountApp();
 
-    expect(vm.dashboard).toEqual(
+    wrapper.vm.dashboard.editMode = "unlocked";
+
+    wrapper.find({ name: "dashboard-settings" }).vm.$emit("save-settings", {
+      bgColor: "#fff",
+      bgImageRepeat: true,
+      bgImageUrl: "",
+      title: "\u2700 IoT Dashboard"
+    });
+
+    expect(wrapper.vm.dashboard).toEqual(
       expect.objectContaining({
         bgColor: expect.any(String),
         bgImageRepeat: expect.any(Boolean),
@@ -124,30 +135,7 @@ describe("Number card", () => {
         title: expect.any(String)
       })
     );
-
-    vm.onSaveSettings(event => {
-      event = {
-        bgColor: "#fff",
-        bgImageRepeat: true,
-        bgImageUrl: "",
-        title: "\u2700 IoT Dashboard"
-      };
-      expect(vm.saveDashboard).toHaveBeenCalled();
-    });
-
-    Vue.nextTick(() => {
-      expect(vm.dashboard).toEqual(
-        expect.objectContaining({
-          bgColor: expect.any(String),
-          bgImageRepeat: expect.any(Boolean),
-          bgImageUrl: expect.any(String),
-          blockSize: expect.any(Array),
-          editMode: expect.any(String),
-          tiles: expect.any(Array),
-          title: expect.any(String)
-        })
-      );
-    });
+    expect(configFns.saveDashboard).toHaveBeenCalled();
   });
 
   test("onTileChange method", () => {
@@ -159,7 +147,6 @@ describe("Number card", () => {
 
     vm.onTileChange(event => {
       event.id = mockDashboardData.dashboard.tiles[0].id;
-      expect(vm.saveDashboard).toHaveBeenCalled();
     });
 
     expect(vm.dashboard.tiles[0]).toEqual({
@@ -188,44 +175,42 @@ describe("Number card", () => {
   });
 
   test("onTileCreate method", () => {
-    const { vm } = shallowMountApp();
+    jest.spyOn(configFns, "saveDashboard");
+    const wrapper = shallowMountApp();
 
-    vm.onTileCreate(event => {
-      event = {
-        buttonText: "begin",
-        deviceId: "DH7643",
-        deviceMethod: "halt",
-        id: "8071d5ab-0z12-41i3-ba9p-f600124feb6b",
-        position: [106, 266],
-        size: [0.9, 0.3],
-        title: "MSchip receiving",
-        type: "button"
-      };
+    wrapper.find({ name: "dashboard-settings" }).vm.$emit("tile-create", {
+      deviceId: "",
+      id: "2ece272b-a403-46d6-b136-e35906fe1d0d",
+      lineColor: "#FF6384",
+      position: [0, 0],
+      property: "",
+      size: [2, 1.5],
+      title: "Line Chart",
+      type: "line-chart"
     });
 
-    expect(vm.dashboard.tiles.length).toBe(3);
+    expect(configFns.saveDashboard).toHaveBeenCalled();
+    expect(wrapper.vm.dashboard.tiles.length).toBe(3);
   });
 
-  test("onDeviceListRecieved method", () => {
+  test("onDeviceListReceived method", () => {
     const { vm } = shallowMountApp();
-    const io = jest.fn();
-    const socket = io();
+    let deviceList;
 
-    vm.onDeviceListReceived(() => {
-      expect(socket).toHaveBeenCalled();
-    });
+    vm.onDeviceListReceived(deviceList);
+
+    expect(deviceList).toEqual(vm.deviceList);
+
+    // TODO: test socket.on callback function
   });
 
-  test("the getDashboard and getDeviceList functions in the created lifecycle hook", () => {
-    const { vm } = mount(App, {
-      methods: {
-        getDashboard: () => mockDashboardData.dashboard,
-        getDeviceList: () => mockDeviceList
-      }
-    });
+  test("the getDashboard and getDeviceList are invoked in the created lifecycle hook", () => {
+    jest.spyOn(configFns, "getDashboard");
+    jest.spyOn(configFns, "getDeviceList");
+    mount(App);
 
-    expect(vm.getDashboard()).toEqual(mockDashboardData.dashboard);
-    expect(vm.getDeviceList()).toEqual(mockDeviceList);
+    expect(configFns.getDashboard).toHaveBeenCalled();
+    expect(configFns.getDeviceList).toHaveBeenCalled();
   });
 });
 
