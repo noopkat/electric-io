@@ -146,7 +146,8 @@ button {
   font: inherit;
 }
 
-button::-moz-focus-inner {
+button::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner {
   padding: 0;
   border-style: none;
 }
@@ -181,6 +182,15 @@ button::-moz-focus-inner {
 }
 
 .action-button {
+  --base-box-shadow: 1px 0 hsla(214, 45%, 30%, 1), 0 1px hsla(214, 45%, 40%, 1),
+    2px 1px hsla(214, 45%, 30%, 1), 1px 2px hsla(214, 45%, 40%, 1),
+    3px 2px hsla(214, 45%, 30%, 1), 2px 3px hsla(214, 45%, 40%, 1),
+    4px 3px hsla(214, 45%, 30%, 1), 3px 4px hsla(214, 45%, 40%, 1);
+
+  --ext-box-shadow: var(--base-box-shadow), 5px 4px hsla(214, 45%, 30%, 1),
+    4px 5px hsla(214, 45%, 40%, 1), 6px 5px hsla(214, 45%, 30%, 1),
+    5px 6px hsla(214, 45%, 40%, 1);
+
   font-family: "Chivo", sans-serif;
   border: none;
   background-color: hsl(214, 45%, 47%);
@@ -195,24 +205,16 @@ button::-moz-focus-inner {
   cursor: pointer;
   /* needed for anchors */
   position: relative;
-  box-shadow: 1px 0 hsla(214, 45%, 30%, 1), 0 1px hsla(214, 45%, 40%, 1),
-    2px 1px hsla(214, 45%, 30%, 1), 1px 2px hsla(214, 45%, 40%, 1),
-    3px 2px hsla(214, 45%, 30%, 1), 2px 3px hsla(214, 45%, 40%, 1),
-    4px 3px hsla(214, 45%, 30%, 1), 3px 4px hsla(214, 45%, 40%, 1),
-    5px 4px hsla(214, 45%, 30%, 1), 4px 5px hsla(214, 45%, 40%, 1),
-    6px 5px hsla(214, 45%, 30%, 1), 5px 6px hsla(214, 45%, 40%, 1);
+  box-shadow: var(--ext-box-shadow);
 }
 
 .action-button:hover {
   transform: translate(2px, 2px);
-  box-shadow: 1px 0 hsla(214, 45%, 30%, 1), 0 1px hsla(214, 45%, 40%, 1),
-    2px 1px hsla(214, 45%, 30%, 1), 1px 2px hsla(214, 45%, 40%, 1),
-    3px 2px hsla(214, 45%, 30%, 1), 2px 3px hsla(214, 45%, 40%, 1),
-    4px 3px hsla(214, 45%, 30%, 1), 3px 4px hsla(214, 45%, 40%, 1);
+  box-shadow: var(--base-box-shadow);
 }
 
 .action-button:focus {
-  border: 2px solid #333;
+  box-shadow: 0 0 0 2px #333, var(--ext-box-shadow);
 }
 
 .action-button:active {
