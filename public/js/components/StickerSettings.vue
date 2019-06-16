@@ -12,7 +12,7 @@
         >(what's this?)</a
       >
       <textarea name="altText" maxlength="150" v-bind:value="tile.altText" />
-      max length: 150 char
+      <span class="max-length-info">max length: 150 char</span>
     </label>
   </div>
 </template>
