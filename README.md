@@ -6,20 +6,21 @@ The cutest IoT dashboard of your dreams ☁️
 
 Built with:
 
-+ [Glitch](https://glitch.com)
-+ [Vue](https://vuejs.org)
-+ [Chart.js](https://www.chartjs.org/)
-+ [Azure IoT Hub](https://docs.microsoft.com/en-us/azure/iot-hub)
-+ [Love](https://media.giphy.com/media/26ufcYAkp8e66vanu/giphy.gif) ❤️
+- [Glitch](https://glitch.com)
+- [Vue](https://vuejs.org)
+- [Chart.js](https://www.chartjs.org/)
+- [Azure IoT Hub](https://docs.microsoft.com/en-us/azure/iot-hub)
+- [Love](https://media.giphy.com/media/26ufcYAkp8e66vanu/giphy.gif) ❤️
 
 ## Sections
 
-+ [Installation](#installation)
-+ [How to send the right data](#how-to-send-the-right-data)
-+ [Types of cards and their settings](#types-of-cards-and-their-settings)
-+ [Locking your dashboard](#locking-your-dashboard)
-+ [Contributing](#contributing)
-+ [Code of Conduct](#code-of-conduct)
+- [Installation](#installation)
+- [How to send the right data](#how-to-send-the-right-data)
+- [Types of cards and their settings](#types-of-cards-and-their-settings)
+- [Locking your dashboard](#locking-your-dashboard)
+- [Browser Support](#browser-support)
+- [Contributing](#contributing)
+- [Code of Conduct](#code-of-conduct)
 
 ## Installation
 
@@ -37,25 +38,25 @@ We have 2 different ways you can do this. You can do this via the [native instal
 ### Native Installation
 
 1. Install [NodeJS](https://nodejs.org). You can see the recommended version in the "engines" entry in package.json.
-	* After installing, if you run `which node` in your [terminal](https://lifehacker.com/5633909/who-needs-a-mouse-learn-to-use-the-command-line-for-almost-anything), it should print something like `/usr/local/bin/node`. If it prints nothing, there may be an issue with your Node install. First restart your terminal. If that still doesn't work, find out where on your system Node installed to, and then check your `$PATH` variable (`echo $PATH`) to see whether the Node install location is listed.
+   - After installing, if you run `which node` in your [terminal](https://lifehacker.com/5633909/who-needs-a-mouse-learn-to-use-the-command-line-for-almost-anything), it should print something like `/usr/local/bin/node`. If it prints nothing, there may be an issue with your Node install. First restart your terminal. If that still doesn't work, find out where on your system Node installed to, and then check your `$PATH` variable (`echo $PATH`) to see whether the Node install location is listed.
 2. Install [Git](https://git-scm.org).
-	* As above, `which git` should print something like `/usr/local/bin/git`. If it doesn't, you can follow the same troubleshooting steps as for NodeJS.
+   - As above, `which git` should print something like `/usr/local/bin/git`. If it doesn't, you can follow the same troubleshooting steps as for NodeJS.
 3. Open your terminal and run the following commands:
-	1. `git clone https://github.com/noopkat/electric-io.git`
-		* If this fails with an error message, [have a look at this page](https://help.github.com/articles/https-cloning-errors/).
-	2. `cd electric-io`
-	3. `npm install`
-		* If this fails with an error message, [have a look at this page](https://docs.npmjs.com/troubleshooting/common-errors).
+   1. `git clone https://github.com/noopkat/electric-io.git`
+      - If this fails with an error message, [have a look at this page](https://help.github.com/articles/https-cloning-errors/).
+   2. `cd electric-io`
+   3. `npm install`
+      - If this fails with an error message, [have a look at this page](https://docs.npmjs.com/troubleshooting/common-errors).
 4. Open the file `.env` in and fill in the `CONNECTION_STRING` property with your Azure IoT Hub connection string.
 5. Optional - specify the `CONSUMER_GROUP` in `.env`. _If in doubt, you can skip this step_.
 6. In your terminal again, run `npm start`.
-6. Navigate to `http://localhost:3000` in your favourite modern browser and away you go! Try adding new cards via the settings pane on the right and click 'edit' to fill in the details!
+7. Navigate to `http://localhost:3000` in your favourite modern browser and away you go! Try adding new cards via the settings pane on the right and click 'edit' to fill in the details!
 
 ### Docker Installation Method
 
-+ Install Docker
-+ Git clone this repository
-+ Install, build, and run this project
+- Install Docker
+- Git clone this repository
+- Install, build, and run this project
 
 #### Docker Installation
 
@@ -98,7 +99,7 @@ docker-compose down
 
 ## How to send the right data
 
-For this dashboard to work, all data payloads coming in from device to Azure IoT Hub should be in json format and properties should not be nested. If you'd like to see nested properties, pull requests are welcome! 😇
+For this dashboard to work, all data payloads coming in from device to Azure IoT Hub should be in json format and properties should not be nested. If you'd like to see nested properties, [pull requests](#contributing) are welcome! 😇
 
 Example:
 
@@ -203,6 +204,10 @@ EDIT_MODE='locked'
 This mode will show your cards and your telemetry, but won't let them create, edit, delete, or drag cards around. The dashboard settings will also not be available.
 
 This might also be handy for when you're happy with how everything is and want the dashboard to look a little cleaner.
+
+## Browser Support
+
+electric-io will work in modern web browsers, and we aim for it to run on any released in the last 2 years. Support does not extend to any version of Internet Explorer 💀.
 
 ## Contributing
 
