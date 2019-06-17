@@ -4,7 +4,8 @@ import VueA11yDialog from "vue-a11y-dialog";
 
 Vue.use(VueA11yDialog);
 
-const vm = new Vue({
+new Vue({
   el: "#app",
+
   render: h => h(App)
 });

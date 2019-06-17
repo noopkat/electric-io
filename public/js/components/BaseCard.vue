@@ -1,16 +1,16 @@
 <template>
   <div
     class="card"
-    v-bind:class="{ dragging: dragging }"
-    v-bind:style="style"
-    v-on:mousedown.stop="onMouseDown"
+    :class="{ dragging: draggingWithMouse }"
+    :style="style"
+    @mousedown.stop="onMouseDown"
   >
     <div v-if="showChildCard">
       <div v-if="showControls" class="controls">
         <button
           class="inline-button edit-button"
           ref="editButton"
-          v-on:click="onEdit"
+          @click="onEdit"
         >
           edit
         </button>
@@ -27,23 +27,21 @@
       <h2 v-if="tile.title">{{ tile.title }}</h2>
 
       <component
-        v-bind:is="childCard"
-        v-bind:tile="tile"
-        v-bind:blockSize="blockSize"
-        v-bind:messages="messages"
-      >
-      </component>
+        :is="childCard"
+        :tile="tile"
+        :blockSize="blockSize"
+        :messages="messages"
+      ></component>
     </div>
 
     <card-form
       v-if="showForm"
-      v-bind:editing="editing"
-      v-bind:tile="tile"
-      v-bind:deviceList="deviceList"
-      v-bind:cardType="childCard"
-      v-on:save-settings="onSaveSettings"
-    >
-    </card-form>
+      :editing="editing"
+      :tile="tile"
+      :deviceList="deviceList"
+      :cardType="childCard"
+      @save-settings="onSaveSettings"
+    ></card-form>
 
     <a11y-dialog
       id="app-dialog"
@@ -99,10 +97,11 @@ export default {
     StickerCard,
     TextCard
   },
+
   data() {
     return {
       editing: false,
-      dragging: false,
+      draggingWithMouse: false,
       mouseMoved: false,
       y: this.tile.position[1],
       x: this.tile.position[0],
@@ -111,53 +110,60 @@ export default {
       dialog: null
     };
   },
+
   methods: {
     assignDialogRef(dialog) {
       this.dialog = dialog;
     },
 
-    onMouseDown: function(event) {
+    onMouseDown(event) {
       const allowedModes = ["unlocked", "demo"];
       const excludedNodes = ["INPUT", "TEXTAREA", "SELECT", "LABEL"];
       if (
-        !this.dragging &&
+        !this.draggingWithMouse &&
         !excludedNodes.includes(event.target.tagName) &&
         allowedModes.includes(this.editMode)
       ) {
-        this.dragging = true;
+        this.draggingWithMouse = true;
         this.offsetY = event.clientY - this.y;
         this.offsetX = event.clientX - this.x;
         window.addEventListener("mousemove", this.onMouseMove, true);
       }
     },
-    onMouseMove: function(event) {
+
+    onMouseMove(event) {
       this.mouseMoved = true;
       this.y = event.clientY - this.offsetY;
       this.x = event.clientX - this.offsetX;
     },
-    onMouseUp: function(event) {
+
+    onMouseUp(event) {
       window.removeEventListener("mousemove", this.onMouseMove, true);
-      if (this.dragging && this.mouseMoved) {
+      if (this.draggingWithMouse && this.mouseMoved) {
         const newPosition = { position: [this.x, this.y] };
         const eventData = Object.assign({}, this.tile, newPosition);
 
         this.$emit("tile-position", eventData);
       }
-      this.dragging = false;
+      this.draggingWithMouse = false;
       this.mouseMoved = false;
     },
-    onEdit: function() {
+
+    onEdit() {
       this.editing = true;
     },
+
     openCardDeleteModal() {
       if (this.dialog) {
         this.dialog.show();
       }
     },
+
     deleteTile(tileId) {
       this.$emit("tile-delete", tileId);
     },
-    onSaveSettings: function(event) {
+
+    onSaveSettings(event) {
       this.editing = false;
       // focus on edit button
       this.$nextTick(function() {
@@ -166,14 +172,17 @@ export default {
       this.$emit("tile-settings", event);
     }
   },
+
   computed: {
-    top: function() {
+    top() {
       return `${this.y}px`;
     },
-    left: function() {
+
+    left() {
       return `${this.x}px`;
     },
-    style: function() {
+
+    style() {
       return {
         top: this.top,
         left: this.left,
@@ -181,20 +190,25 @@ export default {
         minHeight: `${this.blockSize[1] * this.tile.size[1]}px`
       };
     },
-    childCard: function() {
+
+    childCard() {
       return `${this.tile.type.toLowerCase()}-card`;
     },
-    showChildCard: function() {
+
+    showChildCard() {
       return !this.editing;
     },
-    showForm: function() {
+
+    showForm() {
       return this.editing;
     },
-    showControls: function() {
+
+    showControls() {
       const allowedModes = ["unlocked", "demo"];
       return allowedModes.includes(this.editMode);
     }
   },
+
   mounted() {
     window.addEventListener("mouseup", this.onMouseUp, false);
   }
