@@ -28,7 +28,8 @@
     "vue": "^2.6.10",
     "vue-a11y-dialog": "^0.5.0",
     "vue-color": "^2.7.0",
-    "vue-focus": "^2.1.0"
+    "vue-focus": "^2.1.0",
+    "whatwg-fetch": "^3.0.0"
   },
   "engines": {
     "node": ">= 10"
@@ -67,34 +68,6 @@
     "webpack": "^4.31.0",
     "webpack-cli": "^3.3.2",
     "webpack-watch-server": "^1.2.1"
-  },
-  "jest": {
-    "moduleNameMapper": {
-      "^vue$": "vue/dist/vue.common.js"
-    },
-    "moduleFileExtensions": [
-      "js",
-      "vue"
-    ],
-    "transform": {
-      "^.+\\.js$": "babel-jest",
-      ".*\\.(vue)$": "vue-jest"
-    },
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "lib/**/*.js",
-      "public/js/**/*.{js,vue}",
-      "!public/js/dist/**",
-      "!**/node_modules/**"
-    ],
-    "roots": [
-      "lib",
-      "public/js"
-    ],
-    "setupFiles": [
-      "./lib/testSetup.js"
-    ],
-    "testURL": "http://localhost/"
   },
   "nodemonConfig": {
     "ignore": [
