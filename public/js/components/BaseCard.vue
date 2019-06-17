@@ -1,9 +1,11 @@
 <template>
   <div
     class="card"
+    tabindex="0"
     :class="{ dragging: draggingWithMouse }"
     :style="style"
     @mousedown.stop="onMouseDown"
+    @keydown="moveCard"
   >
     <div v-if="showChildCard">
       <div v-if="showControls" class="controls">
@@ -170,6 +172,25 @@ export default {
         this.$refs.editButton.focus();
       });
       this.$emit("tile-settings", event);
+    },
+
+    moveCard(event) {
+      // We should bail out early if
+      // - the card doesn’t have focus
+      // - the pressed key is not an arrow key
+      if (
+        document.activeElement !== this.$el ||
+        !["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"].includes(event.key)
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+
+      const direction = ["ArrowLeft", "ArrowUp"].includes(event.key) ? -1 : 1;
+      const axis = ["ArrowLeft", "ArrowRight"].includes(event.key) ? "x" : "y";
+      const step = event.shiftKey ? 10 : 1;
+      this[axis] += direction * step;
     }
   },
 

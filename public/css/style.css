@@ -8,6 +8,12 @@
   box-sizing: border-box;
 }
 
+:root {
+  --focus-color: hotpink;
+  --focus-outline: 2px solid var(--focus-color);
+  --focus-box-shadow: 0 0 0 2px var(--focus-color);
+}
+
 html,
 body {
   width: 100%;
@@ -18,6 +24,9 @@ body {
   position: relative;
   font-family: helvetica, arial, sans-serif;
 }
+
+:focus {
+  outline: var(--focus-outline);
 }
 
 .bold {
@@ -76,6 +85,11 @@ footer > a {
   border-radius: 6px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   background-color: white;
+}
+
+.card:focus {
+  outline: none;
+  box-shadow: var(--focus-box-shadow);
 }
 
 .card:not(:last-child) {
