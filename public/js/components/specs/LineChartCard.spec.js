@@ -11,7 +11,10 @@ describe("Number card", () => {
   });
 
   test("the new Chart creation in the mounted lifecycle hook", () => {
+    jest.spyOn(Chart, "Chart");
     const { vm } = shallowMountLineChartCard();
+
+    expect(Chart.Chart).toHaveBeenCalled();
   });
 });
 
@@ -45,11 +48,24 @@ function shallowMountLineChartCard() {
       ]
     },
     data: () => ({
-      chart: new Chart(LineChartCard.data.ctx, {
-        type: "line",
-        data: LineChartCard.data.chartData,
-        options: chartOptions
-      })
+      ctx: "AZ3166",
+      chart: null,
+      chartOptions,
+      chartData: {
+        datasets: [
+          {
+            label: "",
+            data: [],
+            fill: false,
+            borderColor: "#000",
+            borderWidth: 3,
+            pointBorderWidth: 2,
+            pointBackgroundColor: "#ffffff",
+            pointBorderColor: "#000",
+            lineTension: 0
+          }
+        ]
+      }
     })
   });
 }

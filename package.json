@@ -24,7 +24,6 @@
     "express": "^4.16.4",
     "express-sanitizer": "^1.0.5",
     "marked": "^0.6.2",
-    "sinon": "^7.3.2",
     "socket.io": "^2.2.0",
     "vue": "^2.6.10",
     "vue-a11y-dialog": "^0.5.0",
@@ -95,12 +94,7 @@
     "setupFiles": [
       "./lib/testSetup.js"
     ],
-    "testURL": "http://localhost/",
-    "husky": {
-      "hooks": {
-        "pre-commit": "pretty-quick --staged"
-      }
-    }
+    "testURL": "http://localhost/"
   },
   "nodemonConfig": {
     "ignore": [

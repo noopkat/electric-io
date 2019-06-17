@@ -15,14 +15,14 @@ describe("Number card", () => {
   });
 
   test("the messages watch method", () => {
-    const spy = sinon.spy(NumberCard.watch, "messages");
+    const spy = jest.spyOn(NumberCard.watch, "messages");
     const wrapper = mount(NumberCard, {
       propsDat: {
         messages: []
       }
     });
 
-    expect(spy.called).toBe(false);
+    expect(spy).toHaveBeenCalledTimes(0);
 
     wrapper.setProps({
       messages: [
@@ -41,9 +41,7 @@ describe("Number card", () => {
       ]
     });
 
-    Vue.nextTick(() => {
-      expect(spy.called).toBe(true);
-    });
+    expect(spy).toHaveBeenCalled();
   });
 });
 
