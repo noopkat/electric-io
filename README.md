@@ -207,7 +207,7 @@ This might also be handy for when you're happy with how everything is and want t
 
 ## Browser Support
 
-electric-io will work in modern web browsers, and we aim for it to run on any released in the last 2 years. Support does to extend to any version of Internet Explorer 💀.
+electric-io will work in modern web browsers, and we aim for it to run on any released in the last 2 years. Support does not extend to any version of Internet Explorer 💀.
 
 ## Contributing
 
