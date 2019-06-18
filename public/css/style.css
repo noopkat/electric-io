@@ -80,16 +80,33 @@ footer > a {
 }
 
 .card {
+  --card-border-radius: 6px;
+  --card-border-width: 2px;
+
+  position: relative;
   padding: 15px;
-  border: 2px solid #222;
-  border-radius: 6px;
+  border: var(--card-border-width) solid #222;
+  border-radius: var(--card-border-radius);
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   background-color: white;
 }
 
 .card:focus {
   outline: none;
-  box-shadow: var(--focus-box-shadow);
+}
+
+.card:focus::before {
+  --focus-offset: calc(-2 * var(--card-border-width));
+
+  content: "";
+  position: absolute;
+  top: var(--focus-offset);
+  left: var(--focus-offset);
+  right: var(--focus-offset);
+  bottom: var(--focus-offset);
+  border: var(--card-border-width) dotted var(--background-color);
+  border-radius: var(--card-border-radius);
+  filter: invert(100%);
 }
 
 .card:not(:last-child) {
@@ -131,6 +148,7 @@ h1 .hemoji {
   width: 100%;
   height: 100%;
   overflow: auto;
+  background-color: var(--background-color);
 }
 
 .card h2 {
