@@ -113,6 +113,16 @@ export default {
     };
   },
 
+  watch: {
+    draggingWithMouse: function(dragging) {
+      if (dragging) {
+        document.body.classList.add("dragging");
+      } else if (document.body.classList.contains("dragging")) {
+        document.body.classList.remove("dragging");
+      }
+    }
+  },
+
   methods: {
     assignDialogRef(dialog) {
       this.dialog = dialog;

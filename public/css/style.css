@@ -502,3 +502,13 @@ dialog[open] {
   box-sizing: content-box;
   box-shadow: none;
 }
+
+/**
+ * Stops content from being selected (e.g. when moving around cards).
+ */
+body.dragging {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
