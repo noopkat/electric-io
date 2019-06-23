@@ -134,7 +134,8 @@ export default {
       if (
         !this.draggingWithMouse &&
         !excludedNodes.includes(event.target.tagName) &&
-        allowedModes.includes(this.editMode)
+        allowedModes.includes(this.editMode) &&
+        event.buttons === 1 // primary mouse button
       ) {
         this.draggingWithMouse = true;
         this.offsetY = event.clientY - this.y;
