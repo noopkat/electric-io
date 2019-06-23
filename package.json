@@ -24,6 +24,7 @@
     "dotenv": "^8.0.0",
     "express": "^4.16.4",
     "express-sanitizer": "^1.0.5",
+    "jmespath": "^0.15.0",
     "marked": "^0.6.2",
     "socket.io": "^2.2.0",
     "vue": "^2.6.10",
