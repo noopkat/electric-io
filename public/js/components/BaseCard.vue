@@ -2,9 +2,9 @@
   <div
     class="card"
     tabindex="0"
-    :class="{ dragging: draggingWithMouse }"
+    :class="{ dragging: draggingCard }"
     :style="style"
-    @mousedown.stop="onMouseDown"
+    @mousedown.stop.capture="startDraggingCard"
     @keydown="moveCardWithArrows"
   >
     <div v-if="showChildCard">
@@ -103,8 +103,8 @@ export default {
   data() {
     return {
       editing: false,
-      draggingWithMouse: false,
-      mouseMoved: false,
+      draggingCard: false,
+      mouseWasMovedWhileDragging: false,
 
       // The position of a card’s top-left corner relative to the dashboard
       x: this.tile.position[0],
@@ -119,7 +119,7 @@ export default {
   },
 
   watch: {
-    draggingWithMouse: function(dragging) {
+    draggingCard(dragging) {
       if (dragging) {
         document.body.classList.add("dragging");
       } else if (document.body.classList.contains("dragging")) {
@@ -133,24 +133,31 @@ export default {
       this.dialog = dialog;
     },
 
-    onMouseDown(event) {
+    startDraggingCard(event) {
       const allowedModes = ["unlocked", "demo"];
       const excludedNodes = ["INPUT", "TEXTAREA", "SELECT", "LABEL"];
+
       if (
-        !this.draggingWithMouse &&
-        !excludedNodes.includes(event.target.tagName) &&
-        allowedModes.includes(this.editMode) &&
-        event.buttons === 1 // primary mouse button
+        event.buttons !== 1 || // primary mouse button
+        excludedNodes.includes(event.target.tagName) ||
+        !allowedModes.includes(this.editMode)
       ) {
-        this.draggingWithMouse = true;
-        this.offsetY = event.clientY - this.y;
-        this.offsetX = event.clientX - this.x;
-        window.addEventListener("mousemove", this.onMouseMove, true);
+        return;
       }
+
+      this.draggingCard = true;
+      this.offsetY = event.clientY - this.y;
+      this.offsetX = event.clientX - this.x;
     },
 
-    onMouseMove(event) {
-      this.mouseMoved = true;
+    dragCard(event) {
+      event.stopPropagation();
+
+      if (!this.draggingCard) {
+        return;
+      }
+
+      this.mouseWasMovedWhileDragging = true;
 
       this.updateCardPosition({
         x: event.clientX - this.offsetX,
@@ -158,16 +165,18 @@ export default {
       });
     },
 
-    onMouseUp(event) {
-      window.removeEventListener("mousemove", this.onMouseMove, true);
-      if (this.draggingWithMouse && this.mouseMoved) {
-        const newPosition = { position: [this.x, this.y] };
-        const eventData = Object.assign({}, this.tile, newPosition);
-
-        this.$emit("tile-position", eventData);
+    stopDraggingCard(event) {
+      if (!this.draggingCard || !this.mouseWasMovedWhileDragging) {
+        return;
       }
-      this.draggingWithMouse = false;
-      this.mouseMoved = false;
+
+      this.draggingCard = false;
+      this.mouseWasMovedWhileDragging = false;
+
+      const newPosition = { position: [this.x, this.y] };
+      const eventData = Object.assign({}, this.tile, newPosition);
+
+      this.$emit("tile-position", eventData);
     },
 
     onEdit() {
@@ -271,7 +280,12 @@ export default {
   },
 
   mounted() {
-    window.addEventListener("mouseup", this.onMouseUp, false);
+    // It’s necessary that this event handler is registered on the window rather than the card
+    // itself. If it’s registered on the card, a fast movement of the mouse can escape the card
+    // quicker than what causes to the card to be re-rendered at the new position. This leads to
+    // the mouse no longer being “above” the card; thus, no new mousemove events will be triggered.
+    window.addEventListener("mousemove", this.dragCard, { capture: true });
+    window.addEventListener("mouseup", this.stopDraggingCard);
   }
 };
 </script>
