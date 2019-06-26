@@ -173,10 +173,7 @@ export default {
       this.draggingCard = false;
       this.mouseWasMovedWhileDragging = false;
 
-      const newPosition = { position: [this.x, this.y] };
-      const eventData = Object.assign({}, this.tile, newPosition);
-
-      this.$emit("tile-position", eventData);
+      this.emitCardPosition();
     },
 
     onEdit() {
@@ -229,6 +226,7 @@ export default {
       const newCardPosition = {};
       newCardPosition[axis] = this[axis] + direction * step;
       this.updateCardPosition(newCardPosition);
+      this.emitCardPosition();
     },
 
     /**
@@ -240,6 +238,13 @@ export default {
     updateCardPosition({ x = this.x, y = this.y }) {
       this.x = Math.max(0, x);
       this.y = Math.max(0, y);
+    },
+
+    emitCardPosition() {
+      const newPosition = { position: [this.x, this.y] };
+      const eventData = Object.assign({}, this.tile, newPosition);
+
+      this.$emit("tile-position", eventData);
     }
   },
 
