@@ -5,7 +5,7 @@
     :class="{ dragging: draggingWithMouse }"
     :style="style"
     @mousedown.stop="onMouseDown"
-    @keydown="moveCard"
+    @keydown="moveCardWithArrows"
   >
     <div v-if="showChildCard">
       <div v-if="showControls" class="controls">
@@ -20,7 +20,7 @@
         <button
           class="inline-button delete-button"
           aria-label="Remove card"
-          @click="openCardDeleteModal()"
+          @click="openCardDeleteModal"
         >
           X
         </button>
@@ -105,10 +105,15 @@ export default {
       editing: false,
       draggingWithMouse: false,
       mouseMoved: false,
-      y: this.tile.position[1],
+
+      // The position of a card’s top-left corner relative to the dashboard
       x: this.tile.position[0],
-      offsetY: 0,
+      y: this.tile.position[1],
+
+      // Offset of the mouse cursor relative to a card’s top-left corner.
       offsetX: 0,
+      offsetY: 0,
+
       dialog: null
     };
   },
@@ -146,8 +151,11 @@ export default {
 
     onMouseMove(event) {
       this.mouseMoved = true;
-      this.y = event.clientY - this.offsetY;
-      this.x = event.clientX - this.offsetX;
+
+      this.updateCardPosition({
+        x: event.clientX - this.offsetX,
+        y: event.clientY - this.offsetY
+      });
     },
 
     onMouseUp(event) {
@@ -185,10 +193,17 @@ export default {
       this.$emit("tile-settings", event);
     },
 
-    moveCard(event) {
-      // We should bail out early if
-      // - the card doesn’t have focus
-      // - the pressed key is not an arrow key
+    /**
+     * Event handler for moving the card with arrow keys.
+     *
+     * This function does nothing in the following cases:
+     *
+     * - The card is not focused
+     * - The pressed key is not an arrow key
+     *
+     * @param {KeyboardEvent} event
+     */
+    moveCardWithArrows(event) {
       if (
         document.activeElement !== this.$el ||
         !["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"].includes(event.key)
@@ -201,7 +216,21 @@ export default {
       const direction = ["ArrowLeft", "ArrowUp"].includes(event.key) ? -1 : 1;
       const axis = ["ArrowLeft", "ArrowRight"].includes(event.key) ? "x" : "y";
       const step = event.shiftKey ? 10 : 1;
-      this[axis] += direction * step;
+
+      const newCardPosition = {};
+      newCardPosition[axis] = this[axis] + direction * step;
+      this.updateCardPosition(newCardPosition);
+    },
+
+    /**
+     * Sets the card’s position and takes care of sanitizing its value.
+     *
+     * Currently, it makes sure that the card cannot be positioned outside the top-left corner of
+     * the dashboard.
+     */
+    updateCardPosition({ x = this.x, y = this.y }) {
+      this.x = Math.max(0, x);
+      this.y = Math.max(0, y);
     }
   },
 
