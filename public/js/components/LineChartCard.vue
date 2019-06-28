@@ -36,12 +36,12 @@ export default {
     messages: function() {
       const propPath = this.tile.property;
       const newData = this.messages
-        .filter(msg => evaluatePath(propPath, msg))
-        .splice(-20)
         .map(msg => ({
           t: new Date(msg.enqueuedTime),
           y: evaluatePath(propPath, msg)
-        }));
+        }))
+        .filter(msg => msg.y)
+        .splice(-20);
       this.chartData.datasets[0].data = newData;
       this.chart.update();
     }
