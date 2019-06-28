@@ -7,12 +7,12 @@
     @mousedown.stop="startDraggingCard"
     @keydown="moveCardWithArrows"
   >
-    <div v-if="showChildCard">
+    <div v-if="!editingCard">
       <div v-if="showControls" class="controls">
         <button
           class="inline-button edit-button"
           ref="editButton"
-          @click="onEdit"
+          @click="editingCard = true"
         >
           edit
         </button>
@@ -37,8 +37,8 @@
     </div>
 
     <card-form
-      v-if="showForm"
-      :editing="editing"
+      v-if="editingCard"
+      :editing="editingCard"
       :tile="tile"
       :deviceList="deviceList"
       :cardType="childCard"
@@ -102,11 +102,15 @@ export default {
 
   data() {
     return {
-      editing: false,
+      editingCard: false,
+
+      // Used to attach an HTML class to the card.
       draggingCard: false,
+
+      // Used to only emit card position changes when the card is being moved.
       cardHasBeenMoved: false,
 
-      // The position of a card’s top-left corner relative to the dashboard
+      // The position of a card’s top-left corner relative to the dashboard.
       x: this.tile.position[0],
       y: this.tile.position[1],
 
@@ -114,6 +118,7 @@ export default {
       offsetX: 0,
       offsetY: 0,
 
+      // Will be set with `assignDialogRef`. Allows one to call methods like `this.dialog.show()`.
       dialog: null
     };
   },
@@ -129,10 +134,16 @@ export default {
   },
 
   methods: {
+    /**
+     * @param {HTMLElement} dialog
+     */
     assignDialogRef(dialog) {
       this.dialog = dialog;
     },
 
+    /**
+     * @param {MouseEvent} event
+     */
     startDraggingCard(event) {
       const allowedModes = ["unlocked", "demo"];
       const excludedNodes = ["INPUT", "TEXTAREA", "SELECT", "LABEL"];
@@ -151,6 +162,9 @@ export default {
       this.offsetX = event.clientX - this.x;
     },
 
+    /**
+     * @param {MouseEvent} event
+     */
     dragCard(event) {
       event.stopPropagation();
 
@@ -166,11 +180,14 @@ export default {
       });
     },
 
+    /**
+     * @param {MouseEvent} event
+     */
     stopDraggingCard(event) {
       this.draggingCard = false;
 
       if (this.cardHasBeenMoved) {
-      this.emitCardPosition();
+        this.emitCardPosition();
       }
     },
 
@@ -180,17 +197,23 @@ export default {
       }
     },
 
+    /**
+     * @param {string} tileId
+     */
     deleteTile(tileId) {
       this.$emit("tile-delete", tileId);
     },
 
-    onSaveSettings(event) {
-      this.editing = false;
+    /**
+     * @param {object} eventData
+     */
+    onSaveSettings(eventData) {
+      this.editingCard = false;
       // focus on edit button
       this.$nextTick(function() {
         this.$refs.editButton.focus();
       });
-      this.$emit("tile-settings", event);
+      this.$emit("tile-settings", eventData);
     },
 
     /**
@@ -262,14 +285,6 @@ export default {
 
     childCard() {
       return `${this.tile.type.toLowerCase()}-card`;
-    },
-
-    showChildCard() {
-      return !this.editing;
-    },
-
-    showForm() {
-      return this.editing;
     },
 
     showControls() {
