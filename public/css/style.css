@@ -107,6 +107,7 @@ footer > a {
   border: var(--card-border-width) dotted var(--background-color);
   border-radius: var(--card-border-radius);
   filter: invert(100%);
+  pointer-events: none;
 }
 
 .card:not(:last-child) {

@@ -4,7 +4,7 @@
     tabindex="0"
     :class="{ dragging: draggingCard }"
     :style="style"
-    @mousedown.stop.capture="startDraggingCard"
+    @mousedown.stop="startDraggingCard"
     @keydown="moveCardWithArrows"
   >
     <div v-if="showChildCard">
@@ -104,7 +104,7 @@ export default {
     return {
       editing: false,
       draggingCard: false,
-      mouseWasMovedWhileDragging: false,
+      cardHasBeenMoved: false,
 
       // The position of a card’s top-left corner relative to the dashboard
       x: this.tile.position[0],
@@ -139,6 +139,7 @@ export default {
 
       if (
         event.buttons !== 1 || // primary mouse button
+        this.editingCard ||
         excludedNodes.includes(event.target.tagName) ||
         !allowedModes.includes(this.editMode)
       ) {
@@ -153,11 +154,11 @@ export default {
     dragCard(event) {
       event.stopPropagation();
 
-      if (!this.draggingCard) {
+      if (!this.draggingCard || this.editingCard) {
         return;
       }
 
-      this.mouseWasMovedWhileDragging = true;
+      this.cardHasBeenMoved = true;
 
       this.updateCardPosition({
         x: event.clientX - this.offsetX,
@@ -166,18 +167,11 @@ export default {
     },
 
     stopDraggingCard(event) {
-      if (!this.draggingCard || !this.mouseWasMovedWhileDragging) {
-        return;
-      }
-
       this.draggingCard = false;
-      this.mouseWasMovedWhileDragging = false;
 
+      if (this.cardHasBeenMoved) {
       this.emitCardPosition();
-    },
-
-    onEdit() {
-      this.editing = true;
+      }
     },
 
     openCardDeleteModal() {
