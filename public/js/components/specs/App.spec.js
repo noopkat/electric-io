@@ -68,7 +68,7 @@ describe("Number card", () => {
     vm.dashboard.bgImageRepeat = mockDashboardData.dashboard.bgImageRepeat;
 
     expect(vm.dashStyle).toEqual({
-      backgroundColor: vm.dashboard.bgColor,
+      "--background-color": vm.dashboard.bgColor,
       backgroundImage: vm.dashboard.bgImageUrl,
       backgroundRepeat: "repeat"
     });
@@ -76,7 +76,7 @@ describe("Number card", () => {
     vm.dashboard.bgImageRepeat = false;
 
     expect(vm.dashStyle).toEqual({
-      backgroundColor: vm.dashboard.bgColor,
+      "--background-color": vm.dashboard.bgColor,
       backgroundImage: vm.dashboard.bgImageUrl,
       backgroundRepeat: "no-repeat"
     });

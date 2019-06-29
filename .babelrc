@@ -5,26 +5,16 @@
       {
         "modules": false,
         "targets": {
-          "browsers": [
-            "> 1%",
-            "last 2 versions",
-            "not ie <= 8"
-          ]
+          "browsers": ["last 2 years"]
         }
       }
     ]
   ],
-  "plugins": [
-    "@babel/plugin-transform-runtime"
-  ],
+  "plugins": ["@babel/plugin-transform-runtime"],
   "env": {
     "test": {
-      "presets": [
-        "@babel/preset-env"
-      ],
-      "plugins": [
-        "@babel/plugin-transform-modules-commonjs"
-      ]
+      "presets": ["@babel/preset-env"],
+      "plugins": ["@babel/plugin-transform-modules-commonjs"]
     }
   }
 }
