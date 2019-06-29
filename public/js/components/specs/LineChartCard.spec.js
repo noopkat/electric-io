@@ -4,17 +4,16 @@ import chartOptions from "./../../lib/chartOptions";
 import Chart from "chart.js";
 
 describe("Number card", () => {
+  let canvas;
+
+  beforeEach(() => {
+    canvas = document.createElement("canvas");
+  });
+
   test("component can mount", () => {
     const wrapper = shallowMountLineChartCard();
 
     expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-
-  test("the new Chart creation in the mounted lifecycle hook", () => {
-    jest.spyOn(Chart, "Chart");
-    const { vm } = shallowMountLineChartCard();
-
-    expect(Chart.Chart).toHaveBeenCalled();
   });
 });
 
@@ -48,24 +47,7 @@ function shallowMountLineChartCard() {
       ]
     },
     data: () => ({
-      ctx: "AZ3166",
-      chart: null,
-      chartOptions,
-      chartData: {
-        datasets: [
-          {
-            label: "",
-            data: [],
-            fill: false,
-            borderColor: "#000",
-            borderWidth: 3,
-            pointBorderWidth: 2,
-            pointBackgroundColor: "#ffffff",
-            pointBorderColor: "#000",
-            lineTension: 0
-          }
-        ]
-      }
+      chart: jest.fn()
     })
   });
 }
