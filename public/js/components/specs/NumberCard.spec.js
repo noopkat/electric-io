@@ -17,7 +17,7 @@ describe("Number card", () => {
   test("the messages watch method", () => {
     const spy = jest.spyOn(NumberCard.watch, "messages");
     const wrapper = mount(NumberCard, {
-      propsDat: {
+      propsData: {
         messages: []
       }
     });
