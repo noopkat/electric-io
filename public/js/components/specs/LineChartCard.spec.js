@@ -4,7 +4,7 @@ import Chart from "chart.js";
 
 jest.mock("chart.js");
 
-describe("Number card", () => {
+describe("LineChartCard", () => {
   test("component can mount", () => {
     const wrapper = shallowmountLineChartCard();
 
