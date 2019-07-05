@@ -6,7 +6,7 @@
         <option
           v-for="(device, index) in deviceList"
           v-bind:selected="device === tile.deviceId"
-          v-bind:key="`device-list-option${index}`"
+          v-bind:key="`device-list-option-${index}`"
         >
           {{ device }}
         </option>
