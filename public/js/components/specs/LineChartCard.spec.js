@@ -36,7 +36,7 @@ describe("Number card", () => {
     });
   });
 
-  test("messages watcher", () => {
+  test("the update of messages data based upon the watcher", () => {
     const spy = jest.spyOn(LineChartCard.watch, "messages");
     const wrapper = shallowMount(LineChartCard, {
       propsData: {
@@ -54,7 +54,6 @@ describe("Number card", () => {
         }
       }
     });
-    let Date = jest.fn();
 
     expect(spy).toHaveBeenCalledTimes(0);
 
@@ -70,7 +69,6 @@ describe("Number card", () => {
     });
 
     expect(spy).toHaveBeenCalledTimes(1);
-    expect(Date).toHaveBeenCalled();
   });
 });
 

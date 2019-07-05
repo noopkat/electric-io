@@ -1,7 +1,7 @@
-import { mount, shallowMount } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import NumberCard from "../NumberCard";
 
-describe("Number card", () => {
+describe("NumberCard", () => {
   test("component can mount", () => {
     const wrapper = shallowMountNumberCard();
 
@@ -16,7 +16,7 @@ describe("Number card", () => {
 
   test("the messages watch method", () => {
     const spy = jest.spyOn(NumberCard.watch, "messages");
-    const wrapper = mount(NumberCard, {
+    const wrapper = shallowMount(NumberCard, {
       propsData: {
         messages: []
       }
@@ -51,7 +51,6 @@ const mountingConfiguration = {
       textColor: "blue"
     }
   },
-
   data: () => ({
     number: 1
   })

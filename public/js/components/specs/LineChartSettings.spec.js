@@ -1,11 +1,26 @@
 import { shallowMount } from "@vue/test-utils";
 import LineChartSettings from "../LineChartSettings";
 
-describe("Number card", () => {
+describe("LineChartSettings", () => {
   test("component can mount", () => {
     const wrapper = shallowMountLineChartSettings();
 
     expect(wrapper.isVueInstance()).toBeTruthy();
+  });
+
+  test("the deviceList prop is populated", () => {
+    const { vm } = shallowMountLineChartSettings();
+
+    expect(vm.deviceList.length).toBe(3);
+  });
+
+  test("that there are 3 labels in the LineChartSettings window", () => {
+    const wrapper = shallowMountLineChartSettings();
+
+    const labels = wrapper.findAll("label");
+
+    expect(labels.exists()).toBe(true);
+    expect(labels.length).toEqual(3);
   });
 });
 
@@ -21,7 +36,8 @@ function shallowMountLineChartSettings() {
         size: [2, 1.5],
         title: "Line Chart",
         type: "line-chart"
-      }
+      },
+      deviceList: ["AZ3166", "Tessel2", "Jenn"]
     }
   });
 }
