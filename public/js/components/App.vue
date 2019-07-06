@@ -66,7 +66,7 @@ export default {
         var bgImageRepeatBool = JSON.parse(this.dashboard.bgImageRepeat);
       }
       return {
-        backgroundColor: this.dashboard.bgColor,
+        "--background-color": this.dashboard.bgColor,
         backgroundImage: this.dashboard.bgImageUrl
           ? `url(${this.dashboard.bgImageUrl})`
           : "",

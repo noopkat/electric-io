@@ -99,7 +99,7 @@ docker-compose down
 
 ## How to send the right data
 
-For this dashboard to work, all data payloads coming in from device to Azure IoT Hub should be in json format and properties should not be nested. If you'd like to see nested properties, pull requests are welcome! 😇
+For this dashboard to work, all data payloads coming in from device to Azure IoT Hub should be in json format and properties should not be nested. If you'd like to see nested properties, [pull requests](#contributing) are welcome! 😇
 
 Example:
 
@@ -207,7 +207,7 @@ This might also be handy for when you're happy with how everything is and want t
 
 ## Browser Support
 
-Electric IO will work in most modern browsers, and we aim for it to run on any released in the last 2 years. Note that this support does to extend to any version of Internet Explorer.
+electric-io will work in modern web browsers, and we aim for it to run on any released in the last 2 years. Support does not extend to any version of Internet Explorer 💀.
 
 ## Contributing
 
