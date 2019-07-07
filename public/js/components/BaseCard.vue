@@ -267,6 +267,7 @@ export default {
      */
     moveCardWithArrows(event) {
       if (
+        this.editingCard ||
         document.activeElement !== this.$el ||
         !["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"].includes(event.key)
       ) {
@@ -282,6 +283,7 @@ export default {
       const newCardPosition = {};
       newCardPosition[axis] = this[axis] + direction * step;
       this.updateCardPosition(newCardPosition);
+      this.emitCardPosition();
     },
 
     /**
@@ -332,16 +334,6 @@ export default {
   },
 
   mounted() {
-    // Before a window unloads its resources (e.g. when reloading or closing the tab),
-    // we try to emit the card’s position so it is properly stored.
-    window.addEventListener(
-      "beforeunload",
-      () => {
-        this.emitCardPosition();
-      },
-      { passive: true }
-    );
-
     // It’s necessary that this event handler is registered on the window rather than the card
     // itself. If it’s registered on the card, a fast movement of the mouse can escape the card
     // quicker than what causes to the card to be re-rendered at the new position. This leads to
