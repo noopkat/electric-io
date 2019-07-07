@@ -1,5 +1,6 @@
 import { shallowMount } from "@vue/test-utils";
 import CardForm from "../CardForm";
+import axe from "axe-core";
 
 describe("CardFrom", () => {
   test("component can mount", () => {
@@ -20,6 +21,16 @@ describe("CardFrom", () => {
     wrapper.vm.onSubmit(event);
 
     expect(wrapper.emitted("save-settings")).toBeTruthy();
+  });
+});
+
+test("verify component is accessible", () => {
+  const wrapper = shallowMountCardForm();
+
+  axe.run(wrapper, (err, { violations }) => {
+    expect(err).toBe(null);
+    expect(violations).toHaveLength(0);
+    done();
   });
 });
 

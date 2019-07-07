@@ -1,5 +1,6 @@
 import { shallowMount } from "@vue/test-utils";
 import NumberCard from "../NumberCard";
+import axe from "axe-core";
 
 describe("NumberCard", () => {
   test("component can mount", () => {
@@ -42,6 +43,16 @@ describe("NumberCard", () => {
     });
 
     expect(spy).toHaveBeenCalled();
+  });
+
+  test("verify component is accessible", () => {
+    const wrapper = shallowMountNumberCard();
+
+    axe.run(wrapper, (err, { violations }) => {
+      expect(err).toBe(null);
+      expect(violations).toHaveLength(0);
+      done();
+    });
   });
 });
 

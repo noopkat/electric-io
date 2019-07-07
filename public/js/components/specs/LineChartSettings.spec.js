@@ -1,5 +1,6 @@
 import { shallowMount } from "@vue/test-utils";
 import LineChartSettings from "../LineChartSettings";
+import axe from "axe-core";
 
 describe("LineChartSettings", () => {
   test("component can mount", () => {
@@ -21,6 +22,15 @@ describe("LineChartSettings", () => {
 
     expect(labels.exists()).toBe(true);
     expect(labels.length).toEqual(3);
+  });
+  test("verify component is accessible", () => {
+    const wrapper = shallowMountLineChartSettings();
+
+    axe.run(wrapper, (err, { violations }) => {
+      expect(err).toBe(null);
+      expect(violations).toHaveLength(0);
+      done();
+    });
   });
 });
 

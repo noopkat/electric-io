@@ -1,6 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
 import LineChartCard from "../LineChartCard";
 import Chart from "chart.js";
+import axe from "axe-core";
 
 jest.mock("chart.js");
 
@@ -69,6 +70,16 @@ describe("LineChartCard", () => {
     });
 
     expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  test("verify component is accessible", () => {
+    const { vm } = shallowmountLineChartCard();
+
+    axe.run(vm, (err, { violations }) => {
+      expect(err).toBe(null);
+      expect(violations).toHaveLength(0);
+      done();
+    });
   });
 });
 
