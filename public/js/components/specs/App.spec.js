@@ -62,26 +62,6 @@ describe("Number card", () => {
     expect(vm.simulating).toEqual(SIMULATING);
   });
 
-  test("computed value returned from dashStyle computed method", () => {
-    const { vm } = shallowMountApp();
-
-    vm.dashboard.bgImageRepeat = mockDashboardData.dashboard.bgImageRepeat;
-
-    expect(vm.dashStyle).toEqual({
-      "--background-color": vm.dashboard.bgColor,
-      backgroundImage: vm.dashboard.bgImageUrl,
-      backgroundRepeat: "repeat"
-    });
-
-    vm.dashboard.bgImageRepeat = false;
-
-    expect(vm.dashStyle).toEqual({
-      "--background-color": vm.dashboard.bgColor,
-      backgroundImage: vm.dashboard.bgImageUrl,
-      backgroundRepeat: "no-repeat"
-    });
-  });
-
   test("h1 heading style based upon headingStyle computed method", () => {
     const { vm } = shallowMountApp();
 

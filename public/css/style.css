@@ -23,6 +23,9 @@ body {
 body {
   position: relative;
   font-family: helvetica, arial, sans-serif;
+  background-color: var(--background-color);
+  background-image: var(--background-image);
+  background-repeat: var(--background-repeat);
 }
 
 :focus {
@@ -149,7 +152,6 @@ h1 .hemoji {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: var(--background-color);
 }
 
 .card h2 {
