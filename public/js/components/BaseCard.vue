@@ -4,7 +4,8 @@
     tabindex="0"
     :class="{ dragging: draggingCard }"
     :style="style"
-    @mousedown.stop="startDraggingCard"
+    @mousedown.stop.passive="startDraggingCardWithMouse"
+    @touchstart.stop.passive="startDraggingCardWithTouch"
     @keydown="moveCardWithArrows"
   >
     <div v-if="!editingCard">
@@ -144,12 +145,32 @@ export default {
     /**
      * @param {MouseEvent} event
      */
-    startDraggingCard(event) {
+    startDraggingCardWithMouse(event) {
+      // 1 in event.buttons represents the primary mouse button
+      if (event.buttons === 1) {
+        this.startDraggingCard(event, event.clientX, event.clientY);
+      }
+    },
+
+    /**
+     * @param {TouchEvent} event
+     */
+    startDraggingCardWithTouch(event) {
+      this.startDraggingCard(
+        event,
+        event.touches[0].clientX,
+        event.touches[0].clientY
+      );
+    },
+
+    /**
+     * @param {MouseEvent|TouchEvent} event
+     */
+    startDraggingCard(event, clientX, clientY) {
       const allowedModes = ["unlocked", "demo"];
       const excludedNodes = ["INPUT", "TEXTAREA", "SELECT", "LABEL"];
 
       if (
-        event.buttons !== 1 || // primary mouse button
         this.editingCard ||
         excludedNodes.includes(event.target.tagName) ||
         !allowedModes.includes(this.editMode)
@@ -158,25 +179,44 @@ export default {
       }
 
       this.draggingCard = true;
-      this.offsetY = event.clientY - this.y;
-      this.offsetX = event.clientX - this.x;
+      this.offsetY = clientY - this.y;
+      this.offsetX = clientX - this.x;
     },
 
     /**
      * @param {MouseEvent} event
      */
-    dragCard(event) {
+    dragCardWithMouse(event) {
+      this.dragCard(event, event.clientX, event.clientY);
+    },
+
+    /**
+     * @param {TouchEvent} event
+     */
+    dragCardWithTouch(event) {
+      const clientX = event.touches[0].clientX;
+      const clientY = event.touches[0].clientY;
+      this.dragCard(event, clientX, clientY);
+    },
+
+    /**
+     * @param {MouseEvent|TouchEvent} event
+     */
+    dragCard(event, clientX, clientY) {
       event.stopPropagation();
 
       if (!this.draggingCard || this.editingCard) {
         return;
       }
 
+      // Stop touch events from dragging the page.
+      event.preventDefault();
+
       this.cardHasBeenMoved = true;
 
       this.updateCardPosition({
-        x: event.clientX - this.offsetX,
-        y: event.clientY - this.offsetY
+        x: clientX - this.offsetX,
+        y: clientY - this.offsetY
       });
     },
 
@@ -300,8 +340,18 @@ export default {
     // itself. If it’s registered on the card, a fast movement of the mouse can escape the card
     // quicker than what causes to the card to be re-rendered at the new position. This leads to
     // the mouse no longer being “above” the card; thus, no new mousemove events will be triggered.
-    window.addEventListener("mousemove", this.dragCard, { capture: true });
-    window.addEventListener("mouseup", this.stopDraggingCard);
+    document.addEventListener("mousemove", this.dragCardWithMouse, {
+      capture: true
+    });
+
+    // Touch-based event listeners are passive by default, but we actually need to call
+    // event.preventDefault() so we need to explicitly make them active.
+    document.addEventListener("touchmove", this.dragCardWithTouch, {
+      capture: true,
+      passive: false
+    });
+    document.addEventListener("mouseup", this.stopDraggingCard);
+    document.addEventListener("touchend", this.stopDraggingCard);
   }
 };
 </script>
