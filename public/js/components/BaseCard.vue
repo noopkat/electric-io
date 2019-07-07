@@ -47,6 +47,7 @@
       :deviceList="deviceList"
       :cardType="childCard"
       @save-settings="onSaveSettings"
+      @cancel-editing="editingCard = false"
     ></card-form>
 
     <a11y-dialog

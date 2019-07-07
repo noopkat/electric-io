@@ -18,6 +18,13 @@
       <form-fields :tile="tile" :deviceList="deviceList" />
 
       <input class="action-button" type="submit" value="save" />
+
+      <input
+        class="action-button action-button--secondary"
+        type="button"
+        value="cancel"
+        @click="cancelEditing"
+      />
     </form>
   </div>
 </template>
@@ -45,6 +52,10 @@ export default {
         eventData[name] = value;
       });
       this.$emit("save-settings", eventData);
+    },
+
+    cancelEditing() {
+      this.$emit("cancel-editing");
     }
   }
 };
