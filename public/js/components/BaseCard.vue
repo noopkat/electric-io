@@ -2,7 +2,10 @@
   <div
     class="card"
     tabindex="0"
-    :class="{ dragging: draggingCard }"
+    :class="{
+      'card--is-being-dragged': draggingCard,
+      'card--is-being-edited': editingCard
+    }"
     :style="style"
     @mousedown.stop.passive="startDraggingCardWithMouse"
     @touchstart.stop.passive="startDraggingCardWithTouch"

@@ -94,6 +94,15 @@ footer > a {
   background-color: white;
 }
 
+.card--is-being-dragged:hover {
+  cursor: move;
+  user-select: none;
+}
+
+.card:not(.card--is-being-edited) {
+  cursor: grab;
+}
+
 .card:focus {
   outline: none;
 }
@@ -260,11 +269,6 @@ input[type="submit"]::-moz-focus-inner {
 .action-button:active {
   transform: translate(4px, 4px);
   box-shadow: none;
-}
-
-.card.dragging:hover {
-  cursor: move;
-  user-select: none;
 }
 
 .card form input[type="submit"] {
