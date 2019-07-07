@@ -2,6 +2,8 @@ import Vue from "vue";
 import App from "./components/App";
 import VueA11yDialog from "vue-a11y-dialog";
 
+Vue.config.devtools = true;
+
 Vue.use(VueA11yDialog);
 
 new Vue({

@@ -1,5 +1,5 @@
 <template>
-  <div id="dashboard" :style="dashStyle">
+  <div id="dashboard">
     <header>
       <h1 v-bind:style="headingStyle" v-html="appTitle"></h1>
       <div v-if="simulating" :style="headingStyle" class="simulation-status">
@@ -58,21 +58,20 @@ export default {
   name: "main-app",
   components: { BaseCard, DashboardSettings },
   data: initialData,
-  computed: {
-    dashStyle: function() {
-      // saveSettings() uses FormData, which converts booleans to strings, so
-      // there's a chance we might get a string. Let's convert it back!
-      if (typeof this.dashboard.bgImageRepeat !== "undefined") {
-        var bgImageRepeatBool = JSON.parse(this.dashboard.bgImageRepeat);
-      }
-      return {
-        "--background-color": this.dashboard.bgColor,
-        backgroundImage: this.dashboard.bgImageUrl
-          ? `url(${this.dashboard.bgImageUrl})`
-          : "",
-        backgroundRepeat: bgImageRepeatBool === true ? "repeat" : "no-repeat"
-      };
+  watch: {
+    "dashboard.bgColor": function(bgColor) {
+      document.body.style.setProperty("--background-color", bgColor);
     },
+    "dashboard.bgImageUrl": function(bgImageUrl) {
+      const bgImage = bgImageUrl !== "" ? `url(${bgImageUrl})` : "";
+      document.body.style.setProperty("--background-image", bgImage);
+    },
+    "dashboard.bgImageRepeat": function(bgImageRepeat) {
+      const bgRepeat = Boolean(bgImageRepeat) ? "repeat" : "no-repeat";
+      document.body.style.setProperty("--background-repeat", bgRepeat);
+    }
+  },
+  computed: {
     headingStyle: function() {
       const color = contrastColor(this.dashboard.bgColor, "#fff", "#000");
       return { color };

@@ -8,31 +8,42 @@
       <label>
         Title
         <input
-          v-focus="editing"
           type="text"
           name="title"
           v-bind:value="tile.title"
+          ref="firstFocusableElement"
         />
       </label>
 
       <form-fields :tile="tile" :deviceList="deviceList" />
 
       <input class="action-button" type="submit" value="save" />
+
+      <input
+        class="action-button action-button--secondary"
+        type="button"
+        value="cancel"
+        @click="cancelEditing"
+      />
     </form>
   </div>
 </template>
 
 <script>
-// focus management mixin
-import { focus } from "vue-focus";
 import FormFields from "./FormFields";
 import { Script } from "vm";
 
 export default {
   name: "card-form",
-  directives: { focus },
   components: { FormFields },
   props: ["tile", "deviceList", "editing"],
+  mounted() {
+    // After clicking the edit button, we need to focus the first focusable element in the form to
+    // make sure editing a card is keyboard-accessible.
+    this.$nextTick(function() {
+      this.$refs.firstFocusableElement.focus();
+    });
+  },
   methods: {
     onSubmit: function(event) {
       let eventData = {};
@@ -41,6 +52,10 @@ export default {
         eventData[name] = value;
       });
       this.$emit("save-settings", eventData);
+    },
+
+    cancelEditing() {
+      this.$emit("cancel-editing");
     }
   }
 };
