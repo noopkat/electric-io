@@ -14,7 +14,8 @@
     </label>
 
     <label>
-      Data Property
+      Data Property (supports
+      <a href="http://jmespath.org/tutorial.html" target="_blank">JMESPath</a>)
       <input type="text" name="property" :value="tile.property" />
     </label>
 

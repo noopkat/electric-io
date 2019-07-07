@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { evaluatePath } from "../lib/messagePropertyEvaluation.js";
+
 export default {
   name: "number-card",
   props: {
@@ -24,9 +26,12 @@ export default {
   watch: {
     messages: function() {
       const lastMessage = this.messages.pop();
-      this.number = lastMessage
-        ? parseFloat(lastMessage[this.tile.property]).toFixed(1)
-        : 0;
+      if (lastMessage) {
+        const value = evaluatePath(this.tile.property, lastMessage);
+        this.number = parseFloat(value).toFixed(1);
+      } else {
+        this.number = 0;
+      }
     }
   },
   computed: {
