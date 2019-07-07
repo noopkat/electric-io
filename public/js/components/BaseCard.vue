@@ -209,10 +209,12 @@ export default {
      */
     onSaveSettings(eventData) {
       this.editingCard = false;
-      // focus on edit button
+
+      // Return focus to the edit button
       this.$nextTick(function() {
         this.$refs.editButton.focus();
       });
+
       this.$emit("tile-settings", eventData);
     },
 
