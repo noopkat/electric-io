@@ -51,7 +51,7 @@
     ></card-form>
 
     <a11y-dialog
-      id="app-dialog"
+      :id="`app-dialog-${tile.id}`"
       app-root="#app"
       dialog-root="#dialog-root"
       :class-names="{
