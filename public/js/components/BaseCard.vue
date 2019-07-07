@@ -220,10 +220,7 @@ export default {
       });
     },
 
-    /**
-     * @param {MouseEvent} event
-     */
-    stopDraggingCard(event) {
+    stopDraggingCard() {
       this.draggingCard = false;
 
       if (this.cardHasBeenMoved) {
