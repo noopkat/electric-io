@@ -2,6 +2,7 @@ import { mount, shallowMount } from "@vue/test-utils";
 import App from "../App";
 import * as configFns from "../../lib/configuration";
 import { TITLE_EMOJI_REGEX } from "../../utils/constants.js";
+import axe from "axe-core";
 
 // Mock dashboard data
 const mockDashboardData = {
@@ -191,6 +192,16 @@ describe("Number card", () => {
 
     expect(configFns.getDashboard).toHaveBeenCalled();
     expect(configFns.getDeviceList).toHaveBeenCalled();
+  });
+
+  test("verify component is accessible", () => {
+    const { vm } = shallowMountApp();
+
+    axe.run(vm, (err, { violations }) => {
+      expect(err).toBe(null);
+      expect(violations).toHaveLength(0);
+      done();
+    });
   });
 });
 
