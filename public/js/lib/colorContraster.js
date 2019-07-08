@@ -36,7 +36,7 @@ function parseHex(color) {
   // check if string is either 4 or 7 characters long and is string
   // added 9 for #RGBA types value (we remove alpha part later using substring) 
   // Also, RGBA don't have short code
-  if ([4, 7, 9].includes(color.length) && typeof color === "string") {
+  if (!([4, 7, 9].includes(color.length)) || typeof color !== "string") {
     return null;
   }
   // Another small check to validate valid HEX input
