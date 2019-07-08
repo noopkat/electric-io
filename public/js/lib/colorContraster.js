@@ -31,7 +31,7 @@ function parseColor(color) {
 
 function parseHex(color) {
   // #ff00de
-  const r; const g; const b, const justColor;
+  let r; let g; let b; let justColor;
   
   // need to check here if a 3 digit short hex code is provided
   // We're assuming here that the color will always be 
