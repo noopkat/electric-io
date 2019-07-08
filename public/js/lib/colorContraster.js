@@ -31,12 +31,24 @@ function parseColor(color) {
 
 function parseHex(color) {
   // #ff00de
-  // support for 3 character hex strings would be nice :)
-  // pull request me if you like - noopkat
-  const justColor = color.substring(1, 7);
-  const r = parseInt(justColor.substring(0, 2), 16); // hexToR
-  const g = parseInt(justColor.substring(2, 4), 16); // hexToG
-  const b = parseInt(justColor.substring(4, 6), 16); // hexToB
+  const r; const g; const b, const justColor;
+  
+  // need to check here if a 3 digit short hex code is provided
+  // We're assuming here that the color will always be 
+  // (simple string length test would do)
+  if (color.length === 4) {
+    justColor = color.substring(1, 4);
+    // Using [String.prototype.repeat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat)
+    r = parseInt(justColor.substring(0,1).repeat(2), 16); // hextToR
+    g = parseInt(justColor.substring(1,2).repeat(2), 16); // hextToG
+    b = parseInt(justColor.substring(2,3).repeat(2), 16); // hextToR
+  } else {
+    justColor = color.substring(1, 7);
+    r = parseInt(justColor.substring(0, 2), 16); // hexToR
+    g = parseInt(justColor.substring(2, 4), 16); // hexToG
+    b = parseInt(justColor.substring(4, 6), 16); // hexToB
+  }
+
   return { r, g, b };
 }
 
