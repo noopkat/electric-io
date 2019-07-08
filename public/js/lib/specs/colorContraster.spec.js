@@ -15,9 +15,17 @@ describe("colorContrast checker", () => {
     test("Return dark colour given light", () => {
       expect(colorContrastCheck("#ffefd5", "white", "black")).toBe("black");
     });
+    
+    test("Return dark color given light (short hex code)", () => {
+      expect(colorContrastCheck("#fed", "white", "black")).toBe("black");
+    });
 
     test("Return light colour given dark", () => {
       expect(colorContrastCheck("#800080", "white", "black")).toBe("white");
+    });
+    
+    test("Return light color given dark (short hex code)", () => {
+      expect(colorContrastCheck("#352", "white", "black")).toBe("white");
     });
   });
 
