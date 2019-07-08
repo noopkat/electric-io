@@ -11,7 +11,12 @@ export default function pickTextColorBasedOnBgColor(
   darkColor
 ) {
   if (!bgColor) return "#000000";
-  const { r, g, b } = parseColor(bgColor);
+  const rgb = parseColor(bgColor);
+  if (rgb === null) {
+    return null;
+  }
+
+  const { r, g, b } = rgb;
   const uicolors = [r / 255, g / 255, b / 255];
   const c = uicolors.map(col => {
     if (col <= 0.03928) {
@@ -31,37 +36,21 @@ function parseColor(color) {
 
 function parseHex(color) {
   // #ff00de
-  
-  // adding a simple error check in case of an invalid color string
-  // check if string is either 4 or 7 characters long and is string
-  // added 9 for #RGBA types value (we remove alpha part later using substring) 
-  // Also, RGBA don't have short code
-  if (!([4, 7, 9].includes(color.length)) || typeof color !== "string") {
+  // validate and return if invalid
+  if (!validHexColor(color)) {
     return null;
   }
-  // Another small check to validate valid HEX input
-  // 1. Remove '#' from string
-  // 2. Split into array of chars
-  // 3. Map over each entry to check if parseInt with base 16 yields valid number
-  // 4. Finally test if a NaN is present.
-  // If NaN were present, this condition will be true implying invalid Hex code
-  // It might be an overkill here
-  if (Array.from(color.substr(1))
-       .map(b => isNaN(parseInt(b, 16)))
-       .indexOf(true) !== -1) {
-     return null;
-  }
-  
+
   let r, g, b, justColor;
-  
+
   // need to check here if a 3 digit short hex code is provided
-  // We're assuming here that the color will always be 
+  // We're assuming here that the color will always be
   // (simple string length test would do)
   if (color.length === 4) {
     justColor = color.substring(1, 4);
-    r = parseInt(justColor.substring(0,1).repeat(2), 16); // hextToR
-    g = parseInt(justColor.substring(1,2).repeat(2), 16); // hextToG
-    b = parseInt(justColor.substring(2,3).repeat(2), 16); // hextToR
+    r = parseInt(justColor.substring(0, 1).repeat(2), 16); // hextToR
+    g = parseInt(justColor.substring(1, 2).repeat(2), 16); // hextToG
+    b = parseInt(justColor.substring(2, 3).repeat(2), 16); // hextToR
   } else {
     justColor = color.substring(1, 7);
     r = parseInt(justColor.substring(0, 2), 16); // hexToR
@@ -84,4 +73,37 @@ function parseName(color) {
   const justColor = color.replace(/\s/g, "").toLowerCase();
   const hexColor = colorNames[color];
   return parseHex(hexColor);
+}
+
+function validHexColor(inputHexString) {
+  // returns true or false depending on validity of input string
+  // I've divided the check into two steps for code readability
+
+  // adding a simple error check in case of an invalid color string
+  // check if string is either 4 or 7 characters long and is string
+  // added 9 for #RGBA types value (we remove alpha part later using substring)
+  // Also, RGBA don't have short code
+  if (
+    ![4, 7, 9].includes(inputHexString.length) ||
+    typeof inputHexString !== "string"
+  ) {
+    return false;
+  }
+
+  // Another small check to validate valid HEX input
+  // 1. Remove '#' from string
+  // 2. Split into array of chars
+  // 3. Map over each entry to check if parseInt with base 16 yields valid number
+  // 4. Finally test if a NaN is present.
+  // If NaN were present, this condition will be true implying invalid Hex code
+  // It might be an overkill here
+  if (
+    Array.from(inputHexString.substr(1)).find(char =>
+      isNaN(parseInt(char, 16))
+    ) !== undefined
+  ) {
+    return false;
+  }
+
+  return true;
 }
