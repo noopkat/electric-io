@@ -83,27 +83,16 @@ function validHexColor(inputHexString) {
   // check if string is either 4 or 7 characters long and is string
   // added 9 for #RGBA types value (we remove alpha part later using substring)
   // Also, RGBA don't have short code
-  if (
-    ![4, 7, 9].includes(inputHexString.length) ||
-    typeof inputHexString !== "string"
-  ) {
+  // Edit: Removed string check as it doesn't make sense here
+  if (![4, 7, 9].includes(inputHexString.length)) {
     return false;
   }
 
   // Another small check to validate valid HEX input
-  // 1. Remove '#' from string
-  // 2. Split into array of chars
-  // 3. Map over each entry to check if parseInt with base 16 yields valid number
-  // 4. Finally test if a NaN is present.
-  // If NaN were present, this condition will be true implying invalid Hex code
-  // It might be an overkill here
-  if (
-    Array.from(inputHexString.substr(1)).find(char =>
-      isNaN(parseInt(char, 16))
-    ) !== undefined
-  ) {
-    return false;
-  }
+  // A simple Regular Expression can handle the validation here
 
-  return true;
+  // 1 or more characters between 0-f both cases (captial and small)
+  const exp = /^[a-fA-F0-9]+$/;
+
+  return exp.test(inputHexString.substr(1));
 }
