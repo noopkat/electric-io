@@ -15,14 +15,33 @@ describe("LineChartSettings", () => {
     expect(vm.deviceList.length).toBe(3);
   });
 
-  test("that there are 3 labels in the LineChartSettings window", () => {
+  test("that there is a device ID field in the LineChartSettings window", () => {
     const wrapper = shallowMountLineChartSettings();
 
-    const labels = wrapper.findAll("label");
+    const elements = wrapper.findAll("[name=deviceId]");
 
-    expect(labels.exists()).toBe(true);
-    expect(labels.length).toEqual(3);
+    expect(elements.exists()).toBe(true);
+    expect(elements.length).toEqual(1);
   });
+
+  test("that there is a data property field in the LineChartSettings window", () => {
+    const wrapper = shallowMountLineChartSettings();
+
+    const elements = wrapper.findAll("[name=property]");
+
+    expect(elements.exists()).toBe(true);
+    expect(elements.length).toEqual(1);
+  });
+
+  test("that there is a line color field in the LineChartSettings window", () => {
+    const wrapper = shallowMountLineChartSettings();
+
+    const elements = wrapper.findAll("[name=lineColor]");
+
+    expect(elements.exists()).toBe(true);
+    expect(elements.length).toEqual(1);
+  });
+
   test("verify component is accessible", () => {
     const wrapper = shallowMountLineChartSettings();
 

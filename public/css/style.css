@@ -12,6 +12,9 @@
   --focus-color: hotpink;
   --focus-outline: 2px solid var(--focus-color);
   --focus-box-shadow: 0 0 0 2px var(--focus-color);
+
+  --invalid-color: #da2727;
+  --invalid-focus-outline: 2px solid var(--invalid-color);
 }
 
 html,
@@ -30,6 +33,10 @@ body {
 
 :focus {
   outline: var(--focus-outline);
+}
+
+.invalid :focus {
+  outline: var(--invalid-focus-outline);
 }
 
 .bold {
@@ -336,6 +343,7 @@ input {
 label {
   font-size: 13px;
   display: block;
+  margin-bottom: 10px;
 }
 
 select {
@@ -349,6 +357,10 @@ select {
   margin-top: -7px;
   margin-bottom: 15px;
   display: block;
+}
+
+.cardForm .invalid {
+  color: var(--invalid-color);
 }
 
 /* -------------- */
