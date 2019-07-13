@@ -28,7 +28,7 @@ export default {
       const lastMessage = this.messages.pop();
       if (lastMessage) {
         const value = evaluatePath(this.tile.property, lastMessage);
-        this.number = value === null ? "" : parseFloat(value).toFixed(1);
+        this.number = parseFloat(value).toFixed(1);
       } else {
         this.number = 0;
       }
