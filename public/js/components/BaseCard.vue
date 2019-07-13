@@ -2,17 +2,21 @@
   <div
     class="card"
     tabindex="0"
-    :class="{ dragging: draggingWithMouse }"
+    :class="{
+      'card--is-being-dragged': draggingCard,
+      'card--is-being-edited': editingCard
+    }"
     :style="style"
-    @mousedown.stop="onMouseDown"
-    @keydown="moveCard"
+    @mousedown.stop.passive="startDraggingCardWithMouse"
+    @touchstart.stop.passive="startDraggingCardWithTouch"
+    @keydown="moveCardWithArrows"
   >
-    <div v-if="showChildCard">
+    <div v-if="!editingCard">
       <div v-if="showControls" class="controls">
         <button
           class="inline-button edit-button"
           ref="editButton"
-          @click="onEdit"
+          @click="editingCard = true"
         >
           edit
         </button>
@@ -20,7 +24,7 @@
         <button
           class="inline-button delete-button"
           aria-label="Remove card"
-          @click="openCardDeleteModal()"
+          @click="openCardDeleteModal"
         >
           X
         </button>
@@ -37,16 +41,17 @@
     </div>
 
     <card-form
-      v-if="showForm"
-      :editing="editing"
+      v-if="editingCard"
+      :editing="editingCard"
       :tile="tile"
       :deviceList="deviceList"
       :cardType="childCard"
       @save-settings="onSaveSettings"
+      @cancel-editing="editingCard = false"
     ></card-form>
 
     <a11y-dialog
-      id="app-dialog"
+      :id="`app-dialog-${tile.id}`"
       app-root="#app"
       dialog-root="#dialog-root"
       :class-names="{
@@ -102,19 +107,29 @@ export default {
 
   data() {
     return {
-      editing: false,
-      draggingWithMouse: false,
-      mouseMoved: false,
-      y: this.tile.position[1],
+      editingCard: false,
+
+      // Used to attach an HTML class to the card.
+      draggingCard: false,
+
+      // Used to only emit card position changes when the card is being moved.
+      cardHasBeenMoved: false,
+
+      // The position of a card’s top-left corner relative to the dashboard.
       x: this.tile.position[0],
-      offsetY: 0,
+      y: this.tile.position[1],
+
+      // Offset of the mouse cursor relative to a card’s top-left corner.
       offsetX: 0,
+      offsetY: 0,
+
+      // Will be set with `assignDialogRef`. Allows one to call methods like `this.dialog.show()`.
       dialog: null
     };
   },
 
   watch: {
-    draggingWithMouse: function(dragging) {
+    draggingCard(dragging) {
       if (dragging) {
         document.body.classList.add("dragging");
       } else if (document.body.classList.contains("dragging")) {
@@ -124,46 +139,97 @@ export default {
   },
 
   methods: {
+    /**
+     * @param {HTMLElement} dialog
+     */
     assignDialogRef(dialog) {
       this.dialog = dialog;
     },
 
-    onMouseDown(event) {
+    /**
+     * @param {MouseEvent} event
+     */
+    startDraggingCardWithMouse(event) {
+      // 1 in event.buttons represents the primary mouse button
+      if (event.buttons === 1) {
+        this.startDraggingCard(event, event.clientX, event.clientY);
+      }
+    },
+
+    /**
+     * @param {TouchEvent} event
+     */
+    startDraggingCardWithTouch(event) {
+      this.startDraggingCard(
+        event,
+        event.touches[0].clientX,
+        event.touches[0].clientY
+      );
+    },
+
+    /**
+     * @param {MouseEvent|TouchEvent} event
+     */
+    startDraggingCard(event, clientX, clientY) {
       const allowedModes = ["unlocked", "demo"];
       const excludedNodes = ["INPUT", "TEXTAREA", "SELECT", "LABEL"];
+
       if (
-        !this.draggingWithMouse &&
-        !excludedNodes.includes(event.target.tagName) &&
-        allowedModes.includes(this.editMode) &&
-        event.buttons === 1 // primary mouse button
+        this.editingCard ||
+        excludedNodes.includes(event.target.tagName) ||
+        !allowedModes.includes(this.editMode)
       ) {
-        this.draggingWithMouse = true;
-        this.offsetY = event.clientY - this.y;
-        this.offsetX = event.clientX - this.x;
-        window.addEventListener("mousemove", this.onMouseMove, true);
+        return;
       }
+
+      this.draggingCard = true;
+      this.offsetY = clientY - this.y;
+      this.offsetX = clientX - this.x;
     },
 
-    onMouseMove(event) {
-      this.mouseMoved = true;
-      this.y = event.clientY - this.offsetY;
-      this.x = event.clientX - this.offsetX;
+    /**
+     * @param {MouseEvent} event
+     */
+    dragCardWithMouse(event) {
+      this.dragCard(event, event.clientX, event.clientY);
     },
 
-    onMouseUp(event) {
-      window.removeEventListener("mousemove", this.onMouseMove, true);
-      if (this.draggingWithMouse && this.mouseMoved) {
-        const newPosition = { position: [this.x, this.y] };
-        const eventData = Object.assign({}, this.tile, newPosition);
+    /**
+     * @param {TouchEvent} event
+     */
+    dragCardWithTouch(event) {
+      const clientX = event.touches[0].clientX;
+      const clientY = event.touches[0].clientY;
+      this.dragCard(event, clientX, clientY);
+    },
 
-        this.$emit("tile-position", eventData);
+    /**
+     * @param {MouseEvent|TouchEvent} event
+     */
+    dragCard(event, clientX, clientY) {
+      event.stopPropagation();
+
+      if (!this.draggingCard || this.editingCard) {
+        return;
       }
-      this.draggingWithMouse = false;
-      this.mouseMoved = false;
+
+      // Stop touch events from dragging the page.
+      event.preventDefault();
+
+      this.cardHasBeenMoved = true;
+
+      this.updateCardPosition({
+        x: clientX - this.offsetX,
+        y: clientY - this.offsetY
+      });
     },
 
-    onEdit() {
-      this.editing = true;
+    stopDraggingCard() {
+      this.draggingCard = false;
+
+      if (this.cardHasBeenMoved) {
+        this.emitCardPosition();
+      }
     },
 
     openCardDeleteModal() {
@@ -172,24 +238,40 @@ export default {
       }
     },
 
+    /**
+     * @param {string} tileId
+     */
     deleteTile(tileId) {
       this.$emit("tile-delete", tileId);
     },
 
-    onSaveSettings(event) {
-      this.editing = false;
-      // focus on edit button
+    /**
+     * @param {object} eventData
+     */
+    onSaveSettings(eventData) {
+      this.editingCard = false;
+
+      // Return focus to the edit button
       this.$nextTick(function() {
         this.$refs.editButton.focus();
       });
-      this.$emit("tile-settings", event);
+
+      this.$emit("tile-settings", eventData);
     },
 
-    moveCard(event) {
-      // We should bail out early if
-      // - the card doesn’t have focus
-      // - the pressed key is not an arrow key
+    /**
+     * Event handler for moving the card with arrow keys.
+     *
+     * This function does nothing in the following cases:
+     *
+     * - The card is not focused
+     * - The pressed key is not an arrow key
+     *
+     * @param {KeyboardEvent} event
+     */
+    moveCardWithArrows(event) {
       if (
+        this.editingCard ||
         document.activeElement !== this.$el ||
         !["ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"].includes(event.key)
       ) {
@@ -201,7 +283,29 @@ export default {
       const direction = ["ArrowLeft", "ArrowUp"].includes(event.key) ? -1 : 1;
       const axis = ["ArrowLeft", "ArrowRight"].includes(event.key) ? "x" : "y";
       const step = event.shiftKey ? 10 : 1;
-      this[axis] += direction * step;
+
+      const newCardPosition = {};
+      newCardPosition[axis] = this[axis] + direction * step;
+      this.updateCardPosition(newCardPosition);
+      this.emitCardPosition();
+    },
+
+    /**
+     * Sets the card’s position and takes care of sanitizing its value.
+     *
+     * Currently, it makes sure that the card cannot be positioned outside the top-left corner of
+     * the dashboard.
+     */
+    updateCardPosition({ x = this.x, y = this.y }) {
+      this.x = Math.max(0, x);
+      this.y = Math.max(0, y);
+    },
+
+    emitCardPosition() {
+      const newPosition = { position: [this.x, this.y] };
+      const eventData = Object.assign({}, this.tile, newPosition);
+
+      this.$emit("tile-position", eventData);
     }
   },
 
@@ -227,14 +331,6 @@ export default {
       return `${this.tile.type.toLowerCase()}-card`;
     },
 
-    showChildCard() {
-      return !this.editing;
-    },
-
-    showForm() {
-      return this.editing;
-    },
-
     showControls() {
       const allowedModes = ["unlocked", "demo"];
       return allowedModes.includes(this.editMode);
@@ -242,7 +338,22 @@ export default {
   },
 
   mounted() {
-    window.addEventListener("mouseup", this.onMouseUp, false);
+    // It’s necessary that this event handler is registered on the window rather than the card
+    // itself. If it’s registered on the card, a fast movement of the mouse can escape the card
+    // quicker than what causes to the card to be re-rendered at the new position. This leads to
+    // the mouse no longer being “above” the card; thus, no new mousemove events will be triggered.
+    document.addEventListener("mousemove", this.dragCardWithMouse, {
+      capture: true
+    });
+
+    // Touch-based event listeners are passive by default, but we actually need to call
+    // event.preventDefault() so we need to explicitly make them active.
+    document.addEventListener("touchmove", this.dragCardWithTouch, {
+      capture: true,
+      passive: false
+    });
+    document.addEventListener("mouseup", this.stopDraggingCard);
+    document.addEventListener("touchend", this.stopDraggingCard);
   }
 };
 </script>

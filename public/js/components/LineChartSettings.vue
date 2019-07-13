@@ -4,8 +4,9 @@
       Device Id
       <select name="deviceId" id="deviceSelect">
         <option
-          v-for="device in deviceList"
+          v-for="(device, index) in deviceList"
           :selected="device === tile.deviceId"
+          v-bind:key="`device-list-${index}`"
         >
           {{ device }}
         </option>
@@ -13,7 +14,8 @@
     </label>
 
     <label>
-      Data Property
+      Data Property (supports
+      <a href="http://jmespath.org/tutorial.html" target="_blank">JMESPath</a>)
       <input type="text" name="property" :value="tile.property" />
     </label>
 

@@ -2,6 +2,7 @@ import { mount, shallowMount } from "@vue/test-utils";
 import App from "../App";
 import * as configFns from "../../lib/configuration";
 import { TITLE_EMOJI_REGEX } from "../../utils/constants.js";
+import axe from "axe-core";
 
 // Mock dashboard data
 const mockDashboardData = {
@@ -60,26 +61,6 @@ describe("Number card", () => {
     expect(vm.messages).toEqual([]);
     expect(vm.deviceList).toEqual([]);
     expect(vm.simulating).toEqual(SIMULATING);
-  });
-
-  test("computed value returned from dashStyle computed method", () => {
-    const { vm } = shallowMountApp();
-
-    vm.dashboard.bgImageRepeat = mockDashboardData.dashboard.bgImageRepeat;
-
-    expect(vm.dashStyle).toEqual({
-      "--background-color": vm.dashboard.bgColor,
-      backgroundImage: vm.dashboard.bgImageUrl,
-      backgroundRepeat: "repeat"
-    });
-
-    vm.dashboard.bgImageRepeat = false;
-
-    expect(vm.dashStyle).toEqual({
-      "--background-color": vm.dashboard.bgColor,
-      backgroundImage: vm.dashboard.bgImageUrl,
-      backgroundRepeat: "no-repeat"
-    });
   });
 
   test("h1 heading style based upon headingStyle computed method", () => {
@@ -211,6 +192,16 @@ describe("Number card", () => {
 
     expect(configFns.getDashboard).toHaveBeenCalled();
     expect(configFns.getDeviceList).toHaveBeenCalled();
+  });
+
+  test("verify component is accessible", () => {
+    const { vm } = shallowMountApp();
+
+    axe.run(vm, (err, { violations }) => {
+      expect(err).toBe(null);
+      expect(violations).toHaveLength(0);
+      done();
+    });
   });
 });
 

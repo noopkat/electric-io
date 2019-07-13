@@ -5,6 +5,7 @@
 <script>
 import Chart from "chart.js";
 import chartOptions from "../lib/chartOptions.js";
+import { evaluatePath } from "../lib/messagePropertyEvaluation.js";
 
 export default {
   name: "line-chart-card",
@@ -33,11 +34,14 @@ export default {
   },
   watch: {
     messages: function() {
-      const prop = this.tile.property;
+      const propPath = this.tile.property;
       const newData = this.messages
-        .filter(msg => msg[prop])
-        .splice(-20)
-        .map(msg => ({ t: new Date(msg.enqueuedTime), y: msg[prop] }));
+        .map(msg => ({
+          t: new Date(msg.enqueuedTime),
+          y: evaluatePath(propPath, msg)
+        }))
+        .filter(msg => msg.y)
+        .splice(-20);
       this.chartData.datasets[0].data = newData;
       this.chart.update();
     }

@@ -23,6 +23,9 @@ body {
 body {
   position: relative;
   font-family: helvetica, arial, sans-serif;
+  background-color: var(--background-color);
+  background-image: var(--background-image);
+  background-repeat: var(--background-repeat);
 }
 
 :focus {
@@ -91,6 +94,15 @@ footer > a {
   background-color: white;
 }
 
+.card--is-being-dragged:hover {
+  cursor: move;
+  user-select: none;
+}
+
+.card:not(.card--is-being-edited) {
+  cursor: grab;
+}
+
 .card:focus {
   outline: none;
 }
@@ -107,6 +119,7 @@ footer > a {
   border: var(--card-border-width) dotted var(--background-color);
   border-radius: var(--card-border-radius);
   filter: invert(100%);
+  pointer-events: none;
 }
 
 .card:not(:last-child) {
@@ -148,7 +161,6 @@ h1 .hemoji {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: var(--background-color);
 }
 
 .card h2 {
@@ -183,7 +195,12 @@ button {
   font: inherit;
 }
 
+/*
+Remove very strange and unnecessary focus outline in Firefox.
+Firefox, why are you like this?
+*/
 button::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
 input[type="submit"]::-moz-focus-inner {
   padding: 0;
   border-style: none;
@@ -219,18 +236,23 @@ input[type="submit"]::-moz-focus-inner {
 }
 
 .action-button {
-  --base-box-shadow: 1px 0 hsla(214, 45%, 30%, 1), 0 1px hsla(214, 45%, 40%, 1),
-    2px 1px hsla(214, 45%, 30%, 1), 1px 2px hsla(214, 45%, 40%, 1),
-    3px 2px hsla(214, 45%, 30%, 1), 2px 3px hsla(214, 45%, 40%, 1),
-    4px 3px hsla(214, 45%, 30%, 1), 3px 4px hsla(214, 45%, 40%, 1);
+  --c-button-bg: hsl(214, 45%, 47%);
+  --c-button-bg-dark-1: hsl(214, 45%, 40%);
+  --c-button-bg-dark-2: hsl(214, 45%, 30%);
 
-  --ext-box-shadow: var(--base-box-shadow), 5px 4px hsla(214, 45%, 30%, 1),
-    4px 5px hsla(214, 45%, 40%, 1), 6px 5px hsla(214, 45%, 30%, 1),
-    5px 6px hsla(214, 45%, 40%, 1);
+  --base-box-shadow: 1px 0 var(--c-button-bg-dark-2),
+    0 1px var(--c-button-bg-dark-1), 2px 1px var(--c-button-bg-dark-2),
+    1px 2px var(--c-button-bg-dark-1), 3px 2px var(--c-button-bg-dark-2),
+    2px 3px var(--c-button-bg-dark-1), 4px 3px var(--c-button-bg-dark-2),
+    3px 4px var(--c-button-bg-dark-1);
+
+  --ext-box-shadow: var(--base-box-shadow), 5px 4px var(--c-button-bg-dark-2),
+    4px 5px var(--c-button-bg-dark-1), 6px 5px var(--c-button-bg-dark-2),
+    5px 6px var(--c-button-bg-dark-1);
 
   font-family: "Chivo", sans-serif;
   border: none;
-  background-color: hsl(214, 45%, 47%);
+  background-color: var(--c-button-bg);
   color: white;
   padding: 8px 14px;
   font-weight: normal;
@@ -243,6 +265,13 @@ input[type="submit"]::-moz-focus-inner {
   /* needed for anchors */
   position: relative;
   box-shadow: var(--ext-box-shadow);
+  width: calc(100% - 6px);
+}
+
+.action-button--secondary {
+  --c-button-bg: hsl(214, 0%, 47%);
+  --c-button-bg-dark-1: hsl(214, 0%, 40%);
+  --c-button-bg-dark-2: hsl(214, 0%, 30%);
 }
 
 .action-button:hover {
@@ -257,17 +286,6 @@ input[type="submit"]::-moz-focus-inner {
 .action-button:active {
   transform: translate(4px, 4px);
   box-shadow: none;
-}
-
-.card.dragging:hover {
-  cursor: move;
-  user-select: none;
-}
-
-.card form input[type="submit"] {
-  padding: 5px;
-  font-size: 14px;
-  width: 97%;
 }
 
 .card .controls {
