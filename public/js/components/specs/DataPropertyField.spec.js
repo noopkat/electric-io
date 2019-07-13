@@ -4,13 +4,13 @@ import DataPropertyField from "../DataPropertyField";
 
 describe("DataPropertyField", () => {
   test("component can mount", () => {
-    const wrapper = shallowMountDataPropertyField("property", "");
+    const wrapper = shallowMountDataPropertyField("property", "", "");
 
     expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
   test("has one input element with the expected name", () => {
-    const wrapper = shallowMountDataPropertyField("unusual-property", "");
+    const wrapper = shallowMountDataPropertyField("unusual-property", "", "");
 
     const inputs = wrapper.findAll("input[name=unusual-property]");
 
@@ -22,7 +22,7 @@ describe("DataPropertyField", () => {
     const validValue = "this.is.a.valid.value";
 
     test("has aria-invalid attribute unset", () => {
-      const wrapper = shallowMountDataPropertyField("property", validValue);
+      const wrapper = shallowMountDataPropertyField("property", validValue, "");
 
       const input = wrapper.find("input[name=property]");
 
@@ -34,7 +34,11 @@ describe("DataPropertyField", () => {
     const invalidValue = "this is not a valid value";
 
     test("has aria-invalid attribute set to 'true'", () => {
-      const wrapper = shallowMountDataPropertyField("property", invalidValue);
+      const wrapper = shallowMountDataPropertyField(
+        "property",
+        invalidValue,
+        ""
+      );
 
       const input = wrapper.find("input[name=property]");
 
@@ -43,7 +47,7 @@ describe("DataPropertyField", () => {
   });
 
   test("verify component is accessible", () => {
-    const wrapper = shallowMountDataPropertyField("property", "value");
+    const wrapper = shallowMountDataPropertyField("property", "value", "");
 
     axe.run(wrapper, (err, { violations }) => {
       expect(err).toBe(null);
@@ -53,11 +57,12 @@ describe("DataPropertyField", () => {
   });
 });
 
-function shallowMountDataPropertyField(name, value) {
+function shallowMountDataPropertyField(name, value, tileId) {
   return shallowMount(DataPropertyField, {
     propsData: {
       name: name,
-      value: value
+      value: value,
+      tileId: tileId
     }
   });
 }
