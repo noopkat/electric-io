@@ -13,7 +13,11 @@
       </select>
     </label>
 
-    <data-property-field name="property" v-bind:value="tile.property" />
+    <data-property-field
+      name="property"
+      v-bind:value="tile.property"
+      v-bind:tileId="tile.id"
+    />
 
     <label>
       Line Color

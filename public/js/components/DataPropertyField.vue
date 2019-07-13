@@ -1,11 +1,12 @@
 <template>
-  <label v-bind:class="{ invalid: !isValid }">
+  <label v-bind:for="inputId" v-bind:class="{ invalid: !isValid }">
     Data Property (supports
     <a href="http://jmespath.org/tutorial.html" target="_blank" rel="noopener"
       >JMESPath</a
     >)
     <input
       type="text"
+      v-bind:id="inputId"
       v-bind:name="name"
       v-model="model"
       v-bind:aria-invalid="!isValid"
@@ -19,7 +20,7 @@ import { pathIsValid } from "../lib/messagePropertyEvaluation.js";
 
 export default {
   name: "data-property-field",
-  props: ["name", "value"],
+  props: ["tileId", "name", "value"],
   data() {
     return {
       model: ""
@@ -31,6 +32,9 @@ export default {
   computed: {
     isValid: function() {
       return pathIsValid(this.model);
+    },
+    inputId: function() {
+      return `data-property-input-${this.tileId}`;
     }
   }
 };
