@@ -48,11 +48,10 @@ p {
 }
 
 form {
-  background-color: cyan;
+  background-color: papayawhip;
   padding: 15px;
   display: inline-block;
   width: 100%;
-  max-width: 340px;
   border-radius: 3px;
 }
 
@@ -69,6 +68,10 @@ textarea {
   border: 1px solid lightgrey;
   border-radius: 3px;
   font-size: 14px;
+}
+
+select {
+  border-radius: 3px;
 }
 
 li {
@@ -322,12 +325,16 @@ p.success {
   color: #048401;
 }
 
+.cardForm {
+  --card-form-width: 340px;
+}
+
 .cardForm form {
   padding: 0;
   background-color: white;
   display: inline-block;
   width: 100%;
-  max-width: 340px;
+  max-width: var(--card-form-width);
 }
 
 input {
@@ -428,7 +435,6 @@ select {
 }
 
 .settings select {
-  height: 30px;
   width: 100%;
 }
 
