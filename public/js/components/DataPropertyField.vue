@@ -1,17 +1,20 @@
 <template>
-  <label v-bind:for="inputId" v-bind:class="{ invalid: !isValid }">
+  <label v-bind:for="inputElementId" v-bind:class="{ invalid: !isValid }">
     Data Property (supports
     <a href="http://jmespath.org/tutorial.html" target="_blank" rel="noopener"
       >JMESPath</a
     >)
     <input
       type="text"
-      v-bind:id="inputId"
+      v-bind:id="inputElementId"
       v-bind:name="name"
       v-model="model"
       v-bind:aria-invalid="!isValid"
+      v-bind:aria-describedby="!isValid ? errorElementId : null"
     />
-    <span v-if="!isValid">This is not a valid JMESPath.</span>
+    <span v-bind:id="errorElementId" v-if="!isValid"
+      >This is not a valid JMESPath.</span
+    >
   </label>
 </template>
 
@@ -33,8 +36,11 @@ export default {
     isValid: function() {
       return pathIsValid(this.model);
     },
-    inputId: function() {
+    inputElementId: function() {
       return `data-property-input-${this.tileId}`;
+    },
+    errorElementId: function() {
+      return `data-property-error-${this.tileId}`;
     }
   }
 };

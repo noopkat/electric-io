@@ -28,6 +28,14 @@ describe("DataPropertyField", () => {
 
       expect(input.attributes("aria-invalid")).toBeUndefined();
     });
+
+    test("has aria-describedby attribute unset", () => {
+      const wrapper = shallowMountDataPropertyField("property", validValue, "");
+
+      const input = wrapper.find("input[name=property]");
+
+      expect(input.attributes("aria-describedby")).toBeUndefined();
+    });
   });
 
   describe("given invalid input", () => {
@@ -43,6 +51,21 @@ describe("DataPropertyField", () => {
       const input = wrapper.find("input[name=property]");
 
       expect(input.attributes("aria-invalid")).toEqual("true");
+    });
+
+    test("has aria-describedby attribute set to an element that exists in the component", () => {
+      const wrapper = shallowMountDataPropertyField(
+        "property",
+        invalidValue,
+        ""
+      );
+
+      const input = wrapper.find("input[name=property]");
+      const attributeValue = input.attributes("aria-describedby");
+      const describedByElements = wrapper.findAll(`#${attributeValue}`);
+
+      expect(describedByElements.exists()).toBe(true);
+      expect(describedByElements.length).toEqual(1);
     });
   });
 
