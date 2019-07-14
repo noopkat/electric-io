@@ -40,15 +40,16 @@ function evaluate(path, input) {
     const value = jmespath.search(input, path);
     return { value: value, isValidPath: true };
   } catch (error) {
-    switch ((error.name || "").toLowerCase()) {
-      case "lexererror":
-      case "parsererror":
-      case "runtimeerror":
-        // The user entered a path that is not a valid JMESPath.
-        // Return error.
-        return { value: null, isValidPath: false };
-      default:
-        throw error;
+    const errorName = (error.name || "").toLowerCase();
+    if (
+      errorName === "lexererror" ||
+      errorName === "parsererror" ||
+      errorName === "runtimeerror"
+    ) {
+      // The user entered a path that is not a valid JMESPath.
+      // Return error.
+      return { value: null, isValidPath: false };
     }
+    throw error;
   }
 }
