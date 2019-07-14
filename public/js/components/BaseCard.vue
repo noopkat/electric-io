@@ -141,7 +141,7 @@ export default {
       return {
         top: this.top,
         left: this.left,
-        minWidth: `${this.blockSize[0] * this.tile.size[0]}px`,
+        "--card-tile-width": `${this.blockSize[0] * this.tile.size[0]}px`,
         minHeight: `${this.blockSize[1] * this.tile.size[1]}px`
       };
     },

@@ -96,6 +96,7 @@ footer > a {
   --card-border-radius: 6px;
   --card-border-width: 2px;
 
+  width: var(--card-tile-width);
   position: relative;
   padding: 15px;
   border: var(--card-border-width) solid #222;
@@ -111,6 +112,11 @@ footer > a {
 
 .card:not(.card--is-being-edited) {
   cursor: grab;
+}
+
+.card--is-being-edited {
+  width: auto !important;
+  min-width: var(--card-tile-width);
 }
 
 .card:focus {
