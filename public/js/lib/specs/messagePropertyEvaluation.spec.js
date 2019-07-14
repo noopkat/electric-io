@@ -1,4 +1,4 @@
-import { evaluatePath } from "../messagePropertyEvaluation.js";
+import { evaluatePath, pathIsValid } from "../messagePropertyEvaluation.js";
 
 describe("evaluatePath", () => {
   const complexMessageBody = {
@@ -64,5 +64,19 @@ describe("evaluatePath", () => {
   test("Evaluates 'arrayProperty[1].value'", () => {
     const value = evaluatePath("arrayProperty[1].value", complexMessageBody);
     expect(value).toEqual(6);
+  });
+});
+
+describe("pathIsValid", () => {
+  test("returns true for empty path", () => {
+    expect(pathIsValid("")).toEqual(true);
+  }),
+
+  test("returns false for '['", () => {
+    expect(pathIsValid("[")).toEqual(false);
+  });
+
+  test("returns false for 'prop.'", () => {
+    expect(pathIsValid("prop.")).toEqual(false);
   });
 });

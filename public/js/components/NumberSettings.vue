@@ -12,11 +12,11 @@
       </select>
     </label>
 
-    <label>
-      Data Property (supports
-      <a href="http://jmespath.org/tutorial.html" target="_blank">JMESPath</a>)
-      <input type="text" name="property" v-bind:value="tile.property" />
-    </label>
+    <data-property-field
+      name="property"
+      v-bind:value="tile.property"
+      v-bind:tileId="tile.id"
+    />
 
     <label>
       Text Color
@@ -26,8 +26,11 @@
 </template>
 
 <script>
+import DataPropertyField from "./DataPropertyField";
+
 export default {
   name: "number-settings",
+  components: { DataPropertyField },
   props: ["tile", "deviceList"]
 };
 </script>
