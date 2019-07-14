@@ -29,7 +29,6 @@
     "socket.io": "^2.2.0",
     "vue": "^2.6.10",
     "vue-a11y-dialog": "^0.5.0",
-    "vue-color": "^2.7.0",
     "whatwg-fetch": "^3.0.0"
   },
   "engines": {

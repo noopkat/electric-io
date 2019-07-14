@@ -15,6 +15,7 @@
             settingsPanelOpen ? "Close settings panel" : "Open settings panel"
           }}
         </span>
+
         <span aria-hidden="true">
           {{ settingsPanelOpen ? "&rarr;" : "⚙️" }}
         </span>
@@ -25,27 +26,52 @@
 
     <div class="settings__body">
       <form v-on:submit.prevent="onSaveSettings">
-        <label>
+        <label for="dashboard-settings-title">
           App Title
-          <input type="text" name="title" :value="dashboard.title" />
+          <input
+            type="text"
+            id="title"
+            name="dashboard-settings-title"
+            :value="dashboard.title"
+          />
         </label>
 
-        <label>
+        <label for="dashboard-settings-bgColor">
           Background Color
-          <compact-picker :value="bgColor" @input="updateValue" />
-          <input type="text" name="bgColor" v-model="bgColor" />
+          <input
+            type="hidden"
+            id="dashboard-settings-bgColor"
+            name="bgColor"
+            v-model="bgColor"
+          />
         </label>
 
-        <label>
+        <color-picker
+          :uid="'dashboard-settings'"
+          :color="bgColor"
+          @change="updateValue"
+          style="--cp-background-color: transparent; --cp-focus-color: var(--focus-color)"
+        />
+
+        <label for="dashboard-settings-bgImageUrl">
           Background Image URL
-          <input type="text" name="bgImageUrl" :value="dashboard.bgImageUrl" />
+          <input
+            type="text"
+            id="dashboard-settings-bgImageUrl"
+            name="bgImageUrl"
+            :value="dashboard.bgImageUrl"
+          />
         </label>
 
-        <label class="settings__checkbox-label">
+        <label
+          class="settings__checkbox-label"
+          for="dashboard-settings-bgImageRepeat"
+        >
           <span>Repeat background image?</span>
           <input
             class="settings__checkbox"
             type="checkbox"
+            id="dashboard-settings-bgImageRepeat"
             name="bgImageRepeat"
             :value="dashboard.bgImageRepeat"
             v-model="dashboard.bgImageRepeat"
@@ -58,9 +84,9 @@
       <h3>New Card</h3>
 
       <form v-on:submit.prevent="onCreateCard">
-        <label>
+        <label for="dashboard-settings-type">
           Card Type
-          <select name="type">
+          <select id="dashboard-settings-type" name="type">
             <option value="button">button</option>
             <option value="lineChart">line chart</option>
             <option value="number">number</option>
@@ -76,7 +102,7 @@
 </template>
 
 <script>
-import { Compact } from "vue-color";
+import ColorPicker from "./ColorPicker";
 import { saveDashboard } from "../lib/configuration.js";
 import templates from "../lib/templates.js";
 import createGuid from "../lib/guid.js";
@@ -84,15 +110,15 @@ import createGuid from "../lib/guid.js";
 export default {
   name: "dashboard-settings",
   props: ["dashboard"],
+  components: {
+    ColorPicker
+  },
   data() {
     return {
       status: "",
       settingsPanelOpen: true,
       bgColor: this.dashboard.bgColor
     };
-  },
-  components: {
-    "compact-picker": Compact
   },
   methods: {
     onSaveSettings: function(event) {
@@ -116,7 +142,7 @@ export default {
       this.settingsPanelOpen = this.settingsPanelOpen === true ? false : true;
     },
     updateValue(value) {
-      this.bgColor = value.hex;
+      this.bgColor = value;
     }
   }
 };

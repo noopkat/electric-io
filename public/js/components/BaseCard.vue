@@ -207,8 +207,6 @@ export default {
      * @param {MouseEvent|TouchEvent} event
      */
     dragCard(event, clientX, clientY) {
-      event.stopPropagation();
-
       if (!this.draggingCard || this.editingCard) {
         return;
       }
@@ -322,7 +320,7 @@ export default {
       return {
         top: this.top,
         left: this.left,
-        width: `${this.blockSize[0] * this.tile.size[0]}px`,
+        minWidth: `${this.blockSize[0] * this.tile.size[0]}px`,
         minHeight: `${this.blockSize[1] * this.tile.size[1]}px`
       };
     },
