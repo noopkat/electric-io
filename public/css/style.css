@@ -68,6 +68,8 @@ textarea {
   border: 1px solid lightgrey;
   border-radius: 3px;
   font-size: 14px;
+  resize: vertical;
+  overflow: auto;
 }
 
 select {
