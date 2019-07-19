@@ -16,7 +16,7 @@
         <button
           class="inline-button edit-button"
           ref="editButton"
-          @click="editingCard = true"
+          @click="() => editingCard = true"
         >
           edit
         </button>
