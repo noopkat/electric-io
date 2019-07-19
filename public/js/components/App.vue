@@ -11,20 +11,20 @@
       <dashboard-settings
         v-if="showSettings"
         :dashboard="dashboard"
-        v-on:save-settings="onSaveSettings"
-        v-on:tile-create="onTileCreate"
+        @save-settings="onSaveSettings"
+        @tile-create="onTileCreate"
       />
       <base-card
-        :key="tile.id"
         v-for="tile in dashboard.tiles"
+        :key="tile.id"
         :editMode="dashboard.editMode"
         :messages="messages.filter(m => m.deviceId === tile.deviceId)"
         :tile="tile"
         :deviceList="deviceList"
         :blockSize="dashboard.blockSize"
-        v-on:tile-position="onTileChange"
-        v-on:tile-settings="onTileChange"
-        v-on:tile-delete="onTileDelete"
+        @tile-position="onTileChange"
+        @tile-settings="onTileChange"
+        @tile-delete="onTileDelete"
       />
     </main>
   </div>
@@ -42,45 +42,35 @@ import {
 
 import contrastColor from "../lib/colorContraster.js";
 import { TITLE_EMOJI_REGEX } from "../utils/constants.js";
-const initialData = function() {
-  return {
-    dashboard: {
-      blockSize: [],
-      tiles: []
-    },
-    messages: [],
-    deviceList: [],
-    simulating: SIMULATING
-  };
-};
 
 export default {
   name: "main-app",
   components: { BaseCard, DashboardSettings },
-  data: initialData,
-  watch: {
-    "dashboard.bgColor": function(bgColor) {
-      document.body.style.setProperty("--background-color", bgColor);
-    },
-    "dashboard.bgImageUrl": function(bgImageUrl) {
-      const bgImage = bgImageUrl !== "" ? `url(${bgImageUrl})` : "";
-      document.body.style.setProperty("--background-image", bgImage);
-    },
-    "dashboard.bgImageRepeat": function(bgImageRepeat) {
-      const bgRepeat = Boolean(bgImageRepeat) ? "repeat" : "no-repeat";
-      document.body.style.setProperty("--background-repeat", bgRepeat);
-    }
+
+  data() {
+    return {
+      dashboard: {
+        blockSize: [],
+        tiles: []
+      },
+      messages: [],
+      deviceList: [],
+      simulating: SIMULATING
+    };
   },
+
   computed: {
-    headingStyle: function() {
+    headingStyle() {
       const color = contrastColor(this.dashboard.bgColor, "#fff", "#000");
       return { color };
     },
-    showSettings: function() {
+
+    showSettings() {
       const allowedModes = ["unlocked", "demo"];
       return allowedModes.includes(this.dashboard.editMode);
     },
-    appTitle: function() {
+
+    appTitle() {
       var title = TITLE_EMOJI_REGEX.exec(this.dashboard.title);
       title = title
         ? `<span class="hemoji">${title[1]}</span>${title[2]}`
@@ -88,12 +78,36 @@ export default {
       return title;
     }
   },
+
+  watch: {
+    "dashboard.bgColor": function(bgColor) {
+      document.body.style.setProperty("--background-color", bgColor);
+    },
+
+    "dashboard.bgImageUrl": function(bgImageUrl) {
+      const bgImage = bgImageUrl !== "" ? `url(${bgImageUrl})` : "";
+      document.body.style.setProperty("--background-image", bgImage);
+    },
+
+    "dashboard.bgImageRepeat": function(bgImageRepeat) {
+      const bgRepeat = Boolean(bgImageRepeat) ? "repeat" : "no-repeat";
+      document.body.style.setProperty("--background-repeat", bgRepeat);
+    }
+  },
+
+  created() {
+    // TODO: handle errors here
+    getDashboard().then(r => (this.dashboard = r.dashboard));
+    getDeviceList().then(r => this.onDeviceListReceived(r));
+  },
+
   methods: {
-    onSaveSettings: function(event) {
+    onSaveSettings(event) {
       this.dashboard = Object.assign({}, this.dashboard, event);
       saveDashboard(this.dashboard).then(r => console.log(r.ok));
     },
-    onTileChange: function(event) {
+
+    onTileChange(event) {
       const tileIndex = this.dashboard.tiles.findIndex(t => t.id === event.id);
       const updatedTile = Object.assign(
         {},
@@ -108,7 +122,8 @@ export default {
       // TODO: this needs to be handled properly in the UI
       saveDashboard(this.dashboard).then(r => console.log(r.ok));
     },
-    onTileDelete: function(tileId) {
+
+    onTileDelete(tileId) {
       const updatedTiles = this.dashboard.tiles.filter(t => t.id !== tileId);
       this.dashboard = Object.assign({}, this.dashboard, {
         tiles: updatedTiles
@@ -116,7 +131,8 @@ export default {
       // TODO: this needs to be handled properly in the UI
       saveDashboard(this.dashboard).then(r => console.log(r.ok));
     },
-    onTileCreate: function(event) {
+
+    onTileCreate(event) {
       const updatedTiles = this.dashboard.tiles.slice();
       updatedTiles.push(event);
       this.dashboard = Object.assign({}, this.dashboard, {
@@ -125,7 +141,8 @@ export default {
       // TODO: this needs to be handled properly in the UI
       saveDashboard(this.dashboard).then(r => console.log(r.ok));
     },
-    onDeviceListReceived: function(deviceList) {
+
+    onDeviceListReceived(deviceList) {
       this.deviceList = deviceList;
 
       const socket = io();
@@ -137,11 +154,6 @@ export default {
         this.messages.push(message.body);
       });
     }
-  },
-  created() {
-    // TODO: handle errors here
-    getDashboard().then(r => (this.dashboard = r.dashboard));
-    getDeviceList().then(r => this.onDeviceListReceived(r));
   }
 };
 </script>
