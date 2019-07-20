@@ -14,8 +14,8 @@
     <div v-if="!editingCard">
       <div v-if="showControls" class="controls">
         <button
-          class="inline-button edit-button"
           ref="editButton"
+          class="inline-button edit-button"
           @click="editingCard = true"
         >
           edit
@@ -30,25 +30,27 @@
         </button>
       </div>
 
-      <h2 v-if="tile.title">{{ tile.title }}</h2>
+      <h2 v-if="tile.title">
+        {{ tile.title }}
+      </h2>
 
       <component
         :is="childCard"
         :tile="tile"
-        :blockSize="blockSize"
+        :block-size="blockSize"
         :messages="messages"
-      ></component>
+      />
     </div>
 
     <card-form
       v-if="editingCard"
       :editing="editingCard"
       :tile="tile"
-      :deviceList="deviceList"
-      :cardType="childCard"
+      :device-list="deviceList"
+      :card-type="childCard"
       @save-settings="onSaveSettings"
       @cancel-editing="editingCard = false"
-    ></card-form>
+    />
 
     <a11y-dialog
       :id="`app-dialog-${tile.id}`"
@@ -59,8 +61,8 @@
         title: 'modal__title',
         closeButton: 'inline-button modal__close-button'
       }"
-      @dialog-ref="assignDialogRef"
       close-button-label="Close the “Remove card” dialog"
+      @dialog-ref="assignDialogRef"
     >
       <template v-slot:title>
         <span>Remove card</span>
@@ -94,8 +96,8 @@ import StickerCard from "./StickerCard";
 import TextCard from "./TextCard";
 
 export default {
-  name: "base-card",
-  props: ["tile", "blockSize", "deviceList", "messages", "editMode"],
+  name: "BaseCard",
+
   components: {
     ButtonCard,
     CardForm,
@@ -103,6 +105,32 @@ export default {
     NumberCard,
     StickerCard,
     TextCard
+  },
+
+  props: {
+    tile: {
+      type: Object,
+      required: false,
+      default: () => ({})
+    },
+    blockSize: {
+      type: Array,
+      required: true
+    },
+    deviceList: {
+      type: Array,
+      required: false,
+      default: () => []
+    },
+    messages: {
+      type: Array,
+      required: false,
+      default: () => []
+    },
+    editMode: {
+      type: String,
+      required: true
+    }
   },
 
   data() {

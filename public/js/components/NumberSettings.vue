@@ -2,11 +2,11 @@
   <div>
     <label :for="`deviceId-${tile.id}`">
       Device Id
-      <select name="deviceId" :id="`deviceId-${tile.id}`">
+      <select :id="`deviceId-${tile.id}`" name="deviceId">
         <option
           v-for="(device, index) in deviceList"
-          :selected="device === tile.deviceId"
           :key="`device-list-${index}`"
+          :selected="device === tile.deviceId"
         >
           {{ device }}
         </option>
@@ -15,25 +15,25 @@
 
     <data-property-field
       name="property"
-      v-bind:value="tile.property"
-      v-bind:tileId="tile.id"
+      :value="tile.property"
+      :tile-id="tile.id"
     />
 
     <label :for="`textColor-${tile.id}`">
       Text Color
       <input
-        type="hidden"
         :id="`textColor-${tile.id}`"
-        name="textColor"
         v-model="textColor"
+        type="hidden"
+        name="textColor"
       />
     </label>
 
     <color-picker
       :uid="tile.id"
       :color="textColor"
-      @change="updateValue"
       style="--cp-background-color: transparent; --cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
+      @change="updateValue"
     />
   </div>
 </template>
@@ -43,11 +43,22 @@ import ColorPicker from "./ColorPicker";
 import DataPropertyField from "./DataPropertyField";
 
 export default {
-  name: "number-settings",
-  props: ["tile", "deviceList"],
+  name: "NumberSettings",
+
   components: {
     ColorPicker,
     DataPropertyField
+  },
+
+  props: {
+    tile: {
+      type: Object,
+      required: true
+    },
+    deviceList: {
+      type: Array,
+      required: true
+    }
   },
 
   data() {

@@ -2,16 +2,21 @@
   <div>
     <label>
       Picture URL
-      <input type="text" name="url" v-bind:value="tile.url" />
+      <input type="text" name="url" :value="tile.url" />
     </label>
+
     <label>
       Picture Alt Text
+
       <a
         href="https://axesslab.com/alt-texts#lets-create-the-perfect-alt-text"
         target="_blank"
-        >(what's this?)</a
       >
-      <textarea name="altText" maxlength="150" v-bind:value="tile.altText" />
+        (what's this?)
+      </a>
+
+      <textarea name="altText" maxlength="150" :value="tile.altText" />
+
       <span class="max-length-info">max length: 150 char</span>
     </label>
   </div>
@@ -19,7 +24,13 @@
 
 <script>
 export default {
-  name: "sticker-settings",
-  props: ["tile"]
+  name: "StickerSettings",
+
+  props: {
+    tile: {
+      type: Object,
+      required: true
+    }
+  }
 };
 </script>

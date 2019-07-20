@@ -1,20 +1,22 @@
 <template>
-  <label v-bind:for="inputElementId" v-bind:class="{ invalid: !isValid }">
+  <label :for="inputElementId" :class="{ invalid: !isValid }">
     Data Property (supports
-    <a href="http://jmespath.org/tutorial.html" target="_blank" rel="noopener"
-      >JMESPath</a
+    <a href="http://jmespath.org/tutorial.html" target="_blank" rel="noopener">
+      JMESPath</a
     >)
+
     <input
-      type="text"
-      v-bind:id="inputElementId"
-      v-bind:name="name"
+      :id="inputElementId"
       v-model="model"
-      v-bind:aria-invalid="!isValid"
-      v-bind:aria-describedby="!isValid ? errorElementId : null"
+      type="text"
+      :name="name"
+      :aria-invalid="!isValid"
+      :aria-describedby="!isValid ? errorElementId : null"
     />
-    <span v-bind:id="errorElementId" v-if="!isValid"
-      >This is not a valid JMESPath.</span
-    >
+
+    <span v-if="!isValid" :id="errorElementId">
+      This is not a valid JMESPath.
+    </span>
   </label>
 </template>
 
@@ -22,26 +24,45 @@
 import { pathIsValid } from "../lib/messagePropertyEvaluation.js";
 
 export default {
-  name: "data-property-field",
-  props: ["tileId", "name", "value"],
+  name: "DataPropertyField",
+
+  props: {
+    tileId: {
+      type: String,
+      required: true
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    value: {
+      type: String,
+      required: true
+    }
+  },
+
   data() {
     return {
       model: ""
     };
   },
-  mounted() {
-    this.model = this.value;
-  },
+
   computed: {
     isValid: function() {
       return pathIsValid(this.model);
     },
+
     inputElementId: function() {
       return `data-property-input-${this.tileId}`;
     },
+
     errorElementId: function() {
       return `data-property-error-${this.tileId}`;
     }
+  },
+
+  mounted() {
+    this.model = this.value;
   }
 };
 </script>

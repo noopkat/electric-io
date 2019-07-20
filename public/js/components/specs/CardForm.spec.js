@@ -34,7 +34,7 @@ test("verify component is accessible", () => {
   });
 });
 
-function shallowMountCardForm() {
+function shallowMountCardForm(props) {
   return shallowMount(CardForm, {
     propsData: {
       tile: {
@@ -46,7 +46,8 @@ function shallowMountCardForm() {
         type: "sticker",
         url: "https://media.giphy.com/media/1wXeLxuTVBZe0Ht7Zu/giphy.gif"
       },
-      deviceList: ["AZ3166", "Tessel2", "Jenn"]
+      deviceList: ["AZ3166", "Tessel2", "Jenn"],
+      ...props
     },
     attachToDocument: true
   });

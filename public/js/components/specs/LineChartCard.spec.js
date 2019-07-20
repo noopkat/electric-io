@@ -7,20 +7,20 @@ jest.mock("chart.js");
 
 describe("LineChartCard", () => {
   test("component can mount", () => {
-    const wrapper = shallowmountLineChartCard();
+    const wrapper = shallowMountLineChartCard();
 
     expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
   test("new Chart is called in mounted lifecycle hook", () => {
-    const { vm } = shallowmountLineChartCard();
+    const { vm } = shallowMountLineChartCard();
     vm.chart.update = jest.fn();
 
     expect(Chart).toHaveBeenCalled();
   });
 
   test("computes the CanvasStyle width and height object and object property values", () => {
-    const { vm } = shallowmountLineChartCard();
+    const { vm } = shallowMountLineChartCard();
 
     // Test the object returned in the computed method
     expect(vm.canvasStyle).toEqual(
@@ -39,20 +39,18 @@ describe("LineChartCard", () => {
 
   test("the update of messages data based upon the watcher", () => {
     const spy = jest.spyOn(LineChartCard.watch, "messages");
-    const wrapper = shallowMount(LineChartCard, {
-      propsData: {
-        messages: [],
-        blockSize: [200, 250],
-        tile: {
-          deviceId: "AZ3166",
-          id: "ac57912f-1a04-4cc2-a587-1bc116e8cc54",
-          lineColor: "#FF6384",
-          position: [200, 246],
-          property: "",
-          size: [2, 1.5],
-          title: "Line Chart",
-          type: "line-chart"
-        }
+    const wrapper = shallowMountLineChartCard({
+      messages: [],
+      blockSize: [200, 250],
+      tile: {
+        deviceId: "AZ3166",
+        id: "ac57912f-1a04-4cc2-a587-1bc116e8cc54",
+        lineColor: "#FF6384",
+        position: [200, 246],
+        property: "",
+        size: [2, 1.5],
+        title: "Line Chart",
+        type: "line-chart"
       }
     });
 
@@ -73,7 +71,7 @@ describe("LineChartCard", () => {
   });
 
   test("verify component is accessible", () => {
-    const { vm } = shallowmountLineChartCard();
+    const { vm } = shallowMountLineChartCard();
 
     axe.run(vm, (err, { violations }) => {
       expect(err).toBe(null);
@@ -83,7 +81,7 @@ describe("LineChartCard", () => {
   });
 });
 
-function shallowmountLineChartCard() {
+function shallowMountLineChartCard(props) {
   return shallowMount(LineChartCard, {
     propsData: {
       tile: {
@@ -110,7 +108,8 @@ function shallowmountLineChartCard() {
           humidity: 7.053375767532866,
           temperature: 31.599309710235097
         }
-      ]
+      ],
+      ...props
     }
   });
 }

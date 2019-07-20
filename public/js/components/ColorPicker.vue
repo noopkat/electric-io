@@ -14,7 +14,7 @@
         tabindex="0"
         aria-label="Marker"
         @keydown="moveMarkerWithArrows"
-      ></div>
+      />
     </div>
 
     <div class="cp-columns cp-preview-row">
@@ -23,8 +23,8 @@
           <span class="cp-slider__label cp-visually-hidden">Hue</span>
 
           <input
-            class="cp-slider__input cp-slider__input--hue"
             :id="`hue-slider-${uid}`"
+            class="cp-slider__input cp-slider__input--hue"
             data-cp-input-hsl="h"
             type="range"
           />
@@ -34,15 +34,15 @@
           <span class="cp-slider__label cp-visually-hidden">Alpha</span>
 
           <input
-            class="cp-slider__input cp-slider__input--alpha cp-tiled-background"
             :id="`alpha-slider-${uid}`"
+            class="cp-slider__input cp-slider__input--alpha cp-tiled-background"
             data-cp-input-hsl="a"
             type="range"
           />
         </label>
       </div>
 
-      <div class="cp-color-preview cp-column cp-tiled-background"></div>
+      <div class="cp-color-preview cp-column cp-tiled-background" />
 
       <div class="cp-column">
         <button class="cp-copy-button" @click="copyColor">
@@ -70,22 +70,23 @@
     <div class="cp-color-format-row cp-columns cp-columns--bottom">
       <div class="cp-column">
         <label class="cp-select" :for="`cp-format-select-${uid}`">
-          <span class="cp-select__label cp-visually-hidden"
-            >Select color format</span
-          >
+          <span class="cp-select__label cp-visually-hidden">
+            Select color format
+          </span>
 
           <select
-            class="cp-select__input"
             :id="`cp-format-select-${uid}`"
+            class="cp-select__input"
             :value="activeFormat"
             @input="selectActiveFormat"
           >
             <option
-              v-for="format in supportedColorFormats"
-              :value="format"
-              :key="format"
-              >{{ format }}</option
+              v-for="supportedColorFormat in supportedColorFormats"
+              :key="supportedColorFormat"
+              :value="supportedColorFormat"
             >
+              {{ supportedColorFormat }}
+            </option>
           </select>
         </label>
       </div>
@@ -97,8 +98,8 @@
               <label class="cp-text-field" :for="`color-hsl-h-${uid}`">
                 <span class="cp-text-field__label">H</span>
                 <input
-                  class="cp-text-field__input"
                   :id="`color-hsl-h-${uid}`"
+                  class="cp-text-field__input"
                   data-cp-input-hsl="h"
                   type="text"
                 />
@@ -109,8 +110,8 @@
               <label class="cp-text-field" :for="`color-hsl-s-${uid}`">
                 <span class="cp-text-field__label">S</span>
                 <input
-                  class="cp-text-field__input"
                   :id="`color-hsl-s-${uid}`"
+                  class="cp-text-field__input"
                   data-cp-input-hsl="s"
                   type="text"
                 />
@@ -121,8 +122,8 @@
               <label class="cp-text-field" :for="`color-hsl-l-${uid}`">
                 <span class="cp-text-field__label">L</span>
                 <input
-                  class="cp-text-field__input"
                   :id="`color-hsl-l-${uid}`"
+                  class="cp-text-field__input"
                   data-cp-input-hsl="l"
                   type="text"
                 />
@@ -133,8 +134,8 @@
               <label class="cp-text-field" :for="`color-hsl-a-${uid}`">
                 <span class="cp-text-field__label">A</span>
                 <input
-                  class="cp-text-field__input"
                   :id="`color-hsl-a-${uid}`"
+                  class="cp-text-field__input"
                   data-cp-input-hsl="a"
                   type="text"
                 />
@@ -149,8 +150,8 @@
               <label class="cp-text-field" :for="`color-hsv-h-${uid}`">
                 <span class="cp-text-field__label">H</span>
                 <input
-                  class="cp-text-field__input"
                   :id="`color-hsv-h-${uid}`"
+                  class="cp-text-field__input"
                   data-cp-input-hsv="h"
                   type="text"
                 />
@@ -161,8 +162,8 @@
               <label class="cp-text-field" :for="`color-hsv-s-${uid}`">
                 <span class="cp-text-field__label">S</span>
                 <input
-                  class="cp-text-field__input"
                   :id="`color-hsv-s-${uid}`"
+                  class="cp-text-field__input"
                   data-cp-input-hsv="s"
                   type="text"
                 />
@@ -173,8 +174,8 @@
               <label class="cp-text-field" :for="`color-hsv-v-${uid}`">
                 <span class="cp-text-field__label">V</span>
                 <input
-                  class="cp-text-field__input"
                   :id="`color-hsv-v-${uid}`"
+                  class="cp-text-field__input"
                   data-cp-input-hsv="v"
                   type="text"
                 />
@@ -185,8 +186,8 @@
               <label class="cp-text-field" :for="`color-hsv-a-${uid}`">
                 <span class="cp-text-field__label">A</span>
                 <input
-                  class="cp-text-field__input"
                   :id="`color-hsv-a-${uid}`"
+                  class="cp-text-field__input"
                   data-cp-input-hsv="a"
                   type="text"
                 />
@@ -201,8 +202,8 @@
               <label class="cp-text-field" :for="`color-hwb-h-${uid}`">
                 <span class="cp-text-field__label">H</span>
                 <input
-                  class="cp-text-field__input"
                   :id="`color-hwb-h-${uid}`"
+                  class="cp-text-field__input"
                   data-cp-input-hwb="h"
                   type="text"
                 />
@@ -213,8 +214,8 @@
               <label class="cp-text-field" :for="`color-hwb-w-${uid}`">
                 <span class="cp-text-field__label">W</span>
                 <input
-                  class="cp-text-field__input"
                   :id="`color-hwb-w-${uid}`"
+                  class="cp-text-field__input"
                   data-cp-input-hwb="w"
                   type="text"
                 />
@@ -225,8 +226,8 @@
               <label class="cp-text-field" :for="`color-hwb-b-${uid}`">
                 <span class="cp-text-field__label">B</span>
                 <input
-                  class="cp-text-field__input"
                   :id="`color-hwb-b-${uid}`"
+                  class="cp-text-field__input"
                   data-cp-input-hwb="b"
                   type="text"
                 />
@@ -237,8 +238,8 @@
               <label class="cp-text-field" :for="`color-hwb-a-${uid}`">
                 <span class="cp-text-field__label">A</span>
                 <input
-                  class="cp-text-field__input"
                   :id="`color-hwb-a-${uid}`"
+                  class="cp-text-field__input"
                   data-cp-input-hwb="a"
                   type="text"
                 />
@@ -253,8 +254,8 @@
               <label class="cp-text-field" :for="`color-rgb-r-${uid}`">
                 <span class="cp-text-field__label">R</span>
                 <input
-                  class="cp-text-field__input"
                   :id="`color-rgb-r-${uid}`"
+                  class="cp-text-field__input"
                   data-cp-input-rgb="r"
                   type="text"
                 />
@@ -265,8 +266,8 @@
               <label class="cp-text-field" :for="`color-rgb-g-${uid}`">
                 <span class="cp-text-field__label">G</span>
                 <input
-                  class="cp-text-field__input"
                   :id="`color-rgb-g-${uid}`"
+                  class="cp-text-field__input"
                   data-cp-input-rgb="g"
                   type="text"
                 />
@@ -277,8 +278,8 @@
               <label class="cp-text-field" :for="`color-rgb-b-${uid}`">
                 <span class="cp-text-field__label">B</span>
                 <input
-                  class="cp-text-field__input"
                   :id="`color-rgb-b-${uid}`"
+                  class="cp-text-field__input"
                   data-cp-input-rgb="b"
                   type="text"
                 />
@@ -289,8 +290,8 @@
               <label class="cp-text-field" :for="`color-rgb-a-${uid}`">
                 <span class="cp-text-field__label">A</span>
                 <input
-                  class="cp-text-field__input"
                   :id="`color-rgb-a-${uid}`"
+                  class="cp-text-field__input"
                   data-cp-input-rgb="a"
                   type="text"
                 />
@@ -305,8 +306,8 @@
               <label class="cp-text-field" :for="`color-hex-${uid}`">
                 <span class="cp-text-field__label">Hexadecimal</span>
                 <input
-                  class="cp-text-field__input"
                   :id="`color-hex-${uid}`"
+                  class="cp-text-field__input"
                   data-cp-input-hex
                   type="text"
                 />
@@ -332,7 +333,17 @@ import convert from "../lib/colorConversions.js";
 
 export default {
   name: "ColorPicker",
-  props: ["uid", "color", "format"],
+
+  props: {
+    uid: {
+      type: String,
+      required: true
+    },
+    color: {
+      type: String,
+      required: true
+    }
+  },
 
   data() {
     return {
@@ -744,7 +755,7 @@ export default {
      * In its initial state, a factor of 10 will be applied to all steps.
      */
     enhanceRangeInputs() {
-      const inputs = this.$el.querySelectorAll('input[type="range"]');
+      const inputs = this.$el.querySelectorAll("input[type='range']");
       inputs.forEach(input => {
         input.addEventListener("keydown", this.changeInputValue, {
           passive: true
