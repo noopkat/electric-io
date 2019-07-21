@@ -2,37 +2,38 @@
   <div>
     <label :for="`deviceId-${tile.id}`">
       Device Id
-      <select name="deviceId" :id="`deviceId-${tile.id}`">
+      <select :id="`deviceId-${tile.id}`" name="deviceId">
         <option
           v-for="(device, index) in deviceList"
-          :selected="device === tile.deviceId"
           :key="`device-list-${index}`"
-          >{{ device }}</option
+          :selected="device === tile.deviceId"
         >
+          {{ device }}
+        </option>
       </select>
     </label>
 
     <data-property-field
       name="property"
-      v-bind:value="tile.property"
-      v-bind:tileId="tile.id"
+      :value="tile.property"
+      :tile-id="tile.id"
     />
 
     <label :for="`lineColor-${tile.id}`">
       Line Color
       <input
-        type="hidden"
         :id="`lineColor-${tile.id}`"
-        name="lineColor"
         v-model="lineColor"
+        name="lineColor"
+        type="hidden"
       />
     </label>
 
     <color-picker
       :uid="tile.id"
       :color="lineColor"
-      @change="updateValue"
       style="--cp-background-color: transparent; --cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
+      @change="updateValue"
     />
   </div>
 </template>
@@ -42,12 +43,23 @@ import ColorPicker from "./ColorPicker";
 import DataPropertyField from "./DataPropertyField";
 
 export default {
-  name: "line-chart-settings",
+  name: "LineChartSettings",
+
   components: {
     ColorPicker,
     DataPropertyField
   },
-  props: ["tile", "deviceList"],
+
+  props: {
+    tile: {
+      type: Object,
+      required: true
+    },
+    deviceList: {
+      type: Array,
+      required: true
+    }
+  },
 
   data() {
     return {

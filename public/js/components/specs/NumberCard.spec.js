@@ -17,10 +17,8 @@ describe("NumberCard", () => {
 
   test("the messages watch method", () => {
     const spy = jest.spyOn(NumberCard.watch, "messages");
-    const wrapper = shallowMount(NumberCard, {
-      propsData: {
-        messages: []
-      }
+    const wrapper = shallowMountNumberCard({
+      messages: []
     });
 
     expect(spy).toHaveBeenCalledTimes(0);
@@ -56,17 +54,17 @@ describe("NumberCard", () => {
   });
 });
 
-const mountingConfiguration = {
-  propsData: {
-    tile: {
-      textColor: "blue"
-    }
-  },
-  data: () => ({
-    number: 1
-  })
-};
+function shallowMountNumberCard(props = {}) {
+  return shallowMount(NumberCard, {
+    propsData: {
+      tile: {
+        textColor: "blue"
+      },
+      ...props
+    },
 
-function shallowMountNumberCard() {
-  return shallowMount(NumberCard, mountingConfiguration);
+    data: () => ({
+      number: 1
+    })
+  });
 }

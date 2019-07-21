@@ -1,25 +1,36 @@
 <template>
   <div>
-    <button class="action-button" v-on:click="onClick">
+    <button class="action-button" @click="onClick">
       {{ tile.buttonText }}
     </button>
-    <p v-bind:class="statusClass">{{ statusText }}</p>
+
+    <p :class="statusClass">
+      {{ statusText }}
+    </p>
   </div>
 </template>
 
 <script>
 export default {
-  name: "button-card",
-  props: ["tile"],
-  data: function() {
+  name: "ButtonCard",
+
+  props: {
+    tile: {
+      type: Object,
+      required: true
+    }
+  },
+
+  data() {
     return {
       apiUrlBase: `/api/device/${this.tile.deviceId}`,
       statusText: "",
       statusClass: "status"
     };
   },
+
   methods: {
-    onClick: function() {
+    onClick() {
       this.statusText = "calling device method...";
 
       const apiUrl = `${this.apiUrlBase}${

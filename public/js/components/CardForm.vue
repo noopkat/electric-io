@@ -2,20 +2,20 @@
   <div class="cardForm">
     <h2>Settings</h2>
 
-    <form v-on:submit.prevent="onSubmit">
-      <input name="id" type="hidden" v-bind:value="tile.id" />
+    <form @submit.prevent="onSubmit">
+      <input name="id" type="hidden" value="tile.id" />
 
       <label>
         Title
         <input
+          ref="firstFocusableElement"
           type="text"
           name="title"
-          v-bind:value="tile.title"
-          ref="firstFocusableElement"
+          :value="tile.title"
         />
       </label>
 
-      <form-fields :tile="tile" :deviceList="deviceList" />
+      <form-fields :tile="tile" :device-list="deviceList" />
 
       <input class="action-button" type="submit" value="save" />
 
@@ -34,9 +34,21 @@ import FormFields from "./FormFields";
 import { Script } from "vm";
 
 export default {
-  name: "card-form",
+  name: "CardForm",
+
   components: { FormFields },
-  props: ["tile", "deviceList", "editing"],
+
+  props: {
+    tile: {
+      type: Object,
+      required: true
+    },
+    deviceList: {
+      type: Array,
+      required: true
+    }
+  },
+
   mounted() {
     // After clicking the edit button, we need to focus the first focusable element in the form to
     // make sure editing a card is keyboard-accessible.
@@ -44,8 +56,9 @@ export default {
       this.$refs.firstFocusableElement.focus();
     });
   },
+
   methods: {
-    onSubmit: function(event) {
+    onSubmit(event) {
       let eventData = {};
       const formData = new FormData(event.target);
       formData.forEach((value, name) => {

@@ -1,7 +1,8 @@
 <template>
   <div id="dashboard">
     <header>
-      <h1 v-bind:style="headingStyle" v-html="appTitle"></h1>
+      <h1 :style="headingStyle" v-html="appTitle" />
+
       <div v-if="simulating" :style="headingStyle" class="simulation-status">
         ⚠️ Using simulated data
       </div>
@@ -14,14 +15,15 @@
         @save-settings="onSaveSettings"
         @tile-create="onTileCreate"
       />
+
       <base-card
         v-for="tile in dashboard.tiles"
         :key="tile.id"
-        :editMode="dashboard.editMode"
+        :edit-mode="dashboard.editMode"
         :messages="messages.filter(m => m.deviceId === tile.deviceId)"
         :tile="tile"
-        :deviceList="deviceList"
-        :blockSize="dashboard.blockSize"
+        :device-list="deviceList"
+        :block-size="dashboard.blockSize"
         @tile-position="onTileChange"
         @tile-settings="onTileChange"
         @tile-delete="onTileDelete"
@@ -44,7 +46,7 @@ import contrastColor from "../lib/colorContraster.js";
 import { TITLE_EMOJI_REGEX } from "../utils/constants.js";
 
 export default {
-  name: "main-app",
+  name: "App",
   components: { BaseCard, DashboardSettings },
 
   data() {
@@ -60,22 +62,38 @@ export default {
   },
 
   computed: {
+    /**
+     * @returns {{ color: String }}
+     */
     headingStyle() {
       const color = contrastColor(this.dashboard.bgColor, "#fff", "#000");
-      return { color };
+
+      if (color !== null) {
+        return { color };
+      }
+
+      return { color: "#000" };
     },
 
+    /**
+     * @returns {Boolean}
+     */
     showSettings() {
       const allowedModes = ["unlocked", "demo"];
       return allowedModes.includes(this.dashboard.editMode);
     },
 
+    /**
+     * @returns {String}
+     */
     appTitle() {
-      var title = TITLE_EMOJI_REGEX.exec(this.dashboard.title);
-      title = title
-        ? `<span class="hemoji">${title[1]}</span>${title[2]}`
-        : this.dashboard.title;
-      return title;
+      const title = TITLE_EMOJI_REGEX.exec(this.dashboard.title);
+
+      if (title !== null) {
+        return `<span class="hemoji">${title[1]}</span>${title[2]}`;
+      }
+
+      return this.dashboard.title;
     }
   },
 
@@ -119,6 +137,7 @@ export default {
       this.dashboard = Object.assign({}, this.dashboard, {
         tiles: updatedTiles
       });
+
       // TODO: this needs to be handled properly in the UI
       saveDashboard(this.dashboard).then(r => console.log(r.ok));
     },
@@ -128,6 +147,7 @@ export default {
       this.dashboard = Object.assign({}, this.dashboard, {
         tiles: updatedTiles
       });
+
       // TODO: this needs to be handled properly in the UI
       saveDashboard(this.dashboard).then(r => console.log(r.ok));
     },
@@ -138,6 +158,7 @@ export default {
       this.dashboard = Object.assign({}, this.dashboard, {
         tiles: updatedTiles
       });
+
       // TODO: this needs to be handled properly in the UI
       saveDashboard(this.dashboard).then(r => console.log(r.ok));
     },

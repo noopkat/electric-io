@@ -1,0 +1,16 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 9,
+    "sourceType": "module"
+  },
+  "rules": {
+    "semi": "error",
+    "quotes": ["error", "double"],
+    "vue/html-closing-bracket-newline": "off",
+    "vue/html-self-closing": "off",
+    "vue/max-attributes-per-line": "off",
+    "vue/require-prop-types": "off",
+    "vue/singleline-html-element-content-newline": "off"
+  },
+  "extends": ["plugin:vue/recommended"]
+}

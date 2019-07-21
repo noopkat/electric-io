@@ -1,9 +1,5 @@
 <template>
-  <component
-    v-bind:is="settingsCard"
-    v-bind:tile="tile"
-    v-bind:deviceList="deviceList"
-  ></component>
+  <component :is="settingsCard" :tile="tile" :device-list="deviceList" />
 </template>
 
 <script>
@@ -14,8 +10,8 @@ import StickerSettings from "./StickerSettings";
 import TextSettings from "./TextSettings";
 
 export default {
-  name: "form-fields",
-  props: ["tile", "deviceList"],
+  name: "FormFields",
+
   components: {
     ButtonSettings,
     LineChartSettings,
@@ -23,8 +19,20 @@ export default {
     StickerSettings,
     TextSettings
   },
+
+  props: {
+    tile: {
+      type: Object,
+      required: true
+    },
+    deviceList: {
+      type: Array,
+      required: true
+    }
+  },
+
   computed: {
-    settingsCard: function() {
+    settingsCard() {
       return `${this.tile.type.toLowerCase()}-settings`;
     }
   }

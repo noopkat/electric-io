@@ -10,7 +10,6 @@ find a use case for it feel free to code a solution for this component!
 
 <script>
 export default {
-  name: "pie-chart-card",
-  props: ["tile", "messages"]
+  name: "PieChartCard"
 };
 </script>

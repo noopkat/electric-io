@@ -49,8 +49,8 @@ describe("Number card", () => {
   test("if child components mount", () => {
     const wrapper = shallowMountApp();
 
-    expect(wrapper.find({ name: "dashboard-settings" }).exists()).toBe(true);
-    expect(wrapper.find({ name: "base-card" }).exists()).toBe(true);
+    expect(wrapper.find({ name: "DashboardSettings" }).exists()).toBe(true);
+    expect(wrapper.find({ name: "BaseCard" }).exists()).toBe(true);
   });
 
   test("check before component is created that the default data is clean", () => {
@@ -77,7 +77,7 @@ describe("Number card", () => {
     wrapper.vm.dashboard.editMode = "locked";
 
     expect(wrapper.vm.showSettings).toEqual(false);
-    expect(wrapper.find({ name: "dashboard-settings" }).exists()).toBe(false);
+    expect(wrapper.find({ name: "DashboardSettings" }).exists()).toBe(false);
   });
 
   test("compute the appTitle with or without an emoji using the TITLE_EMOJI_REGEX constant", () => {
@@ -98,7 +98,7 @@ describe("Number card", () => {
 
     wrapper.vm.dashboard.editMode = "unlocked";
 
-    wrapper.find({ name: "dashboard-settings" }).vm.$emit("save-settings", {
+    wrapper.find({ name: "DashboardSettings" }).vm.$emit("save-settings", {
       bgColor: "#fff",
       bgImageRepeat: true,
       bgImageUrl: "",
@@ -149,7 +149,7 @@ describe("Number card", () => {
     wrapper.vm.onTileDelete(tileId);
 
     expect(
-      wrapper.find({ name: "base-card" }).vm.$emit("tile-delete")
+      wrapper.find({ name: "BaseCard" }).vm.$emit("tile-delete")
     ).toBeTruthy();
 
     expect(wrapper.vm.dashboard.tiles.length).toBe(1);
@@ -159,7 +159,7 @@ describe("Number card", () => {
     jest.spyOn(configFns, "saveDashboard");
     const wrapper = shallowMountApp();
 
-    wrapper.find({ name: "dashboard-settings" }).vm.$emit("tile-create", {
+    wrapper.find({ name: "DashboardSettings" }).vm.$emit("tile-create", {
       deviceId: "",
       id: "2ece272b-a403-46d6-b136-e35906fe1d0d",
       lineColor: "#FF6384",
