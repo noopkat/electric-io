@@ -1,21 +1,32 @@
 <template>
   <div>
-    <div v-html="compiledMarkdown"></div>
+    <div v-html="compiledMarkdown" />
   </div>
 </template>
 
 <script>
 import marked from "marked";
 export default {
-  name: "text-card",
-  props: ["tile"],
-  data: function() {
+  name: "TextCard",
+
+  props: {
+    tile: {
+      type: Object,
+      required: true
+    }
+  },
+
+  data() {
     return {
       tileText: ""
     };
   },
+
   computed: {
-    compiledMarkdown: function() {
+    /**
+     * @returns {String}
+     */
+    compiledMarkdown() {
       return marked(this.tile.tileText, { sanitize: true });
     }
   }

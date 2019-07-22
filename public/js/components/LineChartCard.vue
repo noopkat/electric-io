@@ -1,5 +1,5 @@
 <template>
-  <canvas v-bind:id="tile.id" v-bind:style="canvasStyle"></canvas>
+  <canvas :id="tile.id" :style="canvasStyle" />
 </template>
 
 <script>
@@ -8,9 +8,24 @@ import chartOptions from "../lib/chartOptions.js";
 import { evaluatePath } from "../lib/messagePropertyEvaluation.js";
 
 export default {
-  name: "line-chart-card",
-  props: ["tile", "blockSize", "messages"],
-  data: function() {
+  name: "LineChartCard",
+
+  props: {
+    tile: {
+      type: Object,
+      required: true
+    },
+    blockSize: {
+      type: Array,
+      required: true
+    },
+    messages: {
+      type: Array,
+      required: true
+    }
+  },
+
+  data() {
     return {
       ctx: this.tile.id,
       chart: null,
@@ -32,6 +47,16 @@ export default {
       }
     };
   },
+
+  computed: {
+    canvasStyle: function() {
+      return {
+        width: `${this.blockSize[0] * this.tile.size[0] - 30}px`,
+        height: `${this.blockSize[1] * this.tile.size[1] - 70}px`
+      };
+    }
+  },
+
   watch: {
     messages: function() {
       const propPath = this.tile.property;
@@ -46,14 +71,7 @@ export default {
       this.chart.update();
     }
   },
-  computed: {
-    canvasStyle: function() {
-      return {
-        width: `${this.blockSize[0] * this.tile.size[0] - 30}px`,
-        height: `${this.blockSize[1] * this.tile.size[1] - 70}px`
-      };
-    }
-  },
+
   mounted() {
     this.chart = new Chart(this.ctx, {
       type: "line",

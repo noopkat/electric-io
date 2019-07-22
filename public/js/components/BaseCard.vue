@@ -14,8 +14,8 @@
     <div v-if="!editingCard">
       <div v-if="showControls" class="controls">
         <button
-          class="inline-button edit-button"
           ref="editButton"
+          class="inline-button edit-button"
           @click="editingCard = true"
         >
           edit
@@ -30,25 +30,27 @@
         </button>
       </div>
 
-      <h2 v-if="tile.title">{{ tile.title }}</h2>
+      <h2 v-if="tile.title">
+        {{ tile.title }}
+      </h2>
 
       <component
         :is="childCard"
         :tile="tile"
-        :blockSize="blockSize"
+        :block-size="blockSize"
         :messages="messages"
-      ></component>
+      />
     </div>
 
     <card-form
       v-if="editingCard"
       :editing="editingCard"
       :tile="tile"
-      :deviceList="deviceList"
-      :cardType="childCard"
+      :device-list="deviceList"
+      :card-type="childCard"
       @save-settings="onSaveSettings"
       @cancel-editing="editingCard = false"
-    ></card-form>
+    />
 
     <a11y-dialog
       :id="`app-dialog-${tile.id}`"
@@ -59,8 +61,8 @@
         title: 'modal__title',
         closeButton: 'inline-button modal__close-button'
       }"
-      @dialog-ref="assignDialogRef"
       close-button-label="Close the “Remove card” dialog"
+      @dialog-ref="assignDialogRef"
     >
       <template v-slot:title>
         <span>Remove card</span>
@@ -94,8 +96,8 @@ import StickerCard from "./StickerCard";
 import TextCard from "./TextCard";
 
 export default {
-  name: "base-card",
-  props: ["tile", "blockSize", "deviceList", "messages", "editMode"],
+  name: "BaseCard",
+
   components: {
     ButtonCard,
     CardForm,
@@ -103,6 +105,32 @@ export default {
     NumberCard,
     StickerCard,
     TextCard
+  },
+
+  props: {
+    tile: {
+      type: Object,
+      required: false,
+      default: () => ({})
+    },
+    blockSize: {
+      type: Array,
+      required: true
+    },
+    deviceList: {
+      type: Array,
+      required: false,
+      default: () => []
+    },
+    messages: {
+      type: Array,
+      required: false,
+      default: () => []
+    },
+    editMode: {
+      type: String,
+      required: true
+    }
   },
 
   data() {
@@ -128,6 +156,34 @@ export default {
     };
   },
 
+  computed: {
+    top() {
+      return `${this.y}px`;
+    },
+
+    left() {
+      return `${this.x}px`;
+    },
+
+    style() {
+      return {
+        top: this.top,
+        left: this.left,
+        "--card-tile-width": `${this.blockSize[0] * this.tile.size[0]}px`,
+        minHeight: `${this.blockSize[1] * this.tile.size[1]}px`
+      };
+    },
+
+    childCard() {
+      return `${this.tile.type.toLowerCase()}-card`;
+    },
+
+    showControls() {
+      const allowedModes = ["unlocked", "demo"];
+      return allowedModes.includes(this.editMode);
+    }
+  },
+
   watch: {
     draggingCard(dragging) {
       if (dragging) {
@@ -136,6 +192,25 @@ export default {
         document.body.classList.remove("dragging");
       }
     }
+  },
+
+  mounted() {
+    // It’s necessary that this event handler is registered on the window rather than the card
+    // itself. If it’s registered on the card, a fast movement of the mouse can escape the card
+    // quicker than what causes to the card to be re-rendered at the new position. This leads to
+    // the mouse no longer being “above” the card; thus, no new mousemove events will be triggered.
+    document.addEventListener("mousemove", this.dragCardWithMouse, {
+      capture: true
+    });
+
+    // Touch-based event listeners are passive by default, but we actually need to call
+    // event.preventDefault() so we need to explicitly make them active.
+    document.addEventListener("touchmove", this.dragCardWithTouch, {
+      capture: true,
+      passive: false
+    });
+    document.addEventListener("mouseup", this.stopDraggingCard);
+    document.addEventListener("touchend", this.stopDraggingCard);
   },
 
   methods: {
@@ -305,53 +380,6 @@ export default {
 
       this.$emit("tile-position", eventData);
     }
-  },
-
-  computed: {
-    top() {
-      return `${this.y}px`;
-    },
-
-    left() {
-      return `${this.x}px`;
-    },
-
-    style() {
-      return {
-        top: this.top,
-        left: this.left,
-        minWidth: `${this.blockSize[0] * this.tile.size[0]}px`,
-        minHeight: `${this.blockSize[1] * this.tile.size[1]}px`
-      };
-    },
-
-    childCard() {
-      return `${this.tile.type.toLowerCase()}-card`;
-    },
-
-    showControls() {
-      const allowedModes = ["unlocked", "demo"];
-      return allowedModes.includes(this.editMode);
-    }
-  },
-
-  mounted() {
-    // It’s necessary that this event handler is registered on the window rather than the card
-    // itself. If it’s registered on the card, a fast movement of the mouse can escape the card
-    // quicker than what causes to the card to be re-rendered at the new position. This leads to
-    // the mouse no longer being “above” the card; thus, no new mousemove events will be triggered.
-    document.addEventListener("mousemove", this.dragCardWithMouse, {
-      capture: true
-    });
-
-    // Touch-based event listeners are passive by default, but we actually need to call
-    // event.preventDefault() so we need to explicitly make them active.
-    document.addEventListener("touchmove", this.dragCardWithTouch, {
-      capture: true,
-      passive: false
-    });
-    document.addEventListener("mouseup", this.stopDraggingCard);
-    document.addEventListener("touchend", this.stopDraggingCard);
   }
 };
 </script>
