@@ -1,40 +1,9 @@
-import { shallowMount } from "@vue/test-utils";
-import CardForm from "../CardForm";
 import axe from "axe-core";
+import { shallowMount } from "@vue/test-utils";
 
-describe("CardFrom", () => {
-  test("component can mount", () => {
-    const wrapper = shallowMountCardForm();
+import CardForm from "../CardForm";
 
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-
-  test("the new FormData", () => {
-    const wrapper = shallowMountCardForm();
-    const formData = document.querySelector(".cardForm form");
-    wrapper.setProps({ editing: true });
-
-    const event = {
-      target: formData
-    };
-
-    wrapper.vm.onSubmit(event);
-
-    expect(wrapper.emitted("save-settings")).toBeTruthy();
-  });
-});
-
-test("verify component is accessible", () => {
-  const wrapper = shallowMountCardForm();
-
-  axe.run(wrapper, (err, { violations }) => {
-    expect(err).toBe(null);
-    expect(violations).toHaveLength(0);
-    done();
-  });
-});
-
-function shallowMountCardForm(props) {
+function shallowMountComponent(props = {}) {
   return shallowMount(CardForm, {
     propsData: {
       tile: {
@@ -52,3 +21,40 @@ function shallowMountCardForm(props) {
     attachToDocument: true
   });
 }
+
+describe("CardFrom", () => {
+  test("Component can be mounted", () => {
+    const wrapper = shallowMountComponent();
+
+    expect(wrapper.isVueInstance()).toBeTruthy();
+  });
+
+  test("save-settings event is emitted", () => {
+    const wrapper = shallowMountComponent();
+    const formData = document.querySelector(".cardForm form");
+    wrapper.setProps({ editing: true });
+
+    const event = {
+      target: formData
+    };
+
+    wrapper.vm.onSubmit(event);
+
+    expect(wrapper.emitted("save-settings")).toBeTruthy();
+  });
+
+  /**
+   * TODO:
+   *
+   * The Axe tests run and pass, but they don’t actually test the component in a properly mounted
+   * state. Introducing a deliberate error (i.e. an unlabeled form control) don’t make them fail.
+   *
+   * Feel free to fix them. 👋
+   */
+  test.skip("Axe doesn’t find any violations", async () => {
+    const wrapper = shallowMountComponent();
+
+    const error = await axe.run(wrapper.vm.$el);
+    expect(error).toBe(null);
+  });
+});

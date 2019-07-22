@@ -1,23 +1,39 @@
-import { shallowMount } from "@vue/test-utils";
-import NumberCard from "../NumberCard";
 import axe from "axe-core";
+import { shallowMount } from "@vue/test-utils";
+
+import NumberCard from "../NumberCard";
+
+function shallowMountComponent(props = {}) {
+  return shallowMount(NumberCard, {
+    propsData: {
+      tile: {
+        textColor: "blue"
+      },
+      ...props
+    },
+
+    data: () => ({
+      number: 1
+    })
+  });
+}
 
 describe("NumberCard", () => {
   test("component can mount", () => {
-    const wrapper = shallowMountNumberCard();
+    const wrapper = shallowMountComponent();
 
     expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
   test("renders with color and number value", () => {
-    const wrapper = shallowMountNumberCard();
+    const wrapper = shallowMountComponent();
 
     expect(wrapper.html()).toMatchSnapshot();
   });
 
   test("the messages watch method", () => {
     const spy = jest.spyOn(NumberCard.watch, "messages");
-    const wrapper = shallowMountNumberCard({
+    const wrapper = shallowMountComponent({
       messages: []
     });
 
@@ -43,28 +59,18 @@ describe("NumberCard", () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  test("verify component is accessible", () => {
-    const wrapper = shallowMountNumberCard();
+  /**
+   * TODO:
+   *
+   * The Axe tests run and pass, but they don’t actually test the component in a properly mounted
+   * state. Introducing a deliberate error (i.e. an unlabeled form control) don’t make them fail.
+   *
+   * Feel free to fix them. 👋
+   */
+  test.skip("Axe doesn’t find any violations", async () => {
+    const wrapper = shallowMountComponent();
 
-    axe.run(wrapper, (err, { violations }) => {
-      expect(err).toBe(null);
-      expect(violations).toHaveLength(0);
-      done();
-    });
+    const error = await axe.run(wrapper.vm.$el);
+    expect(error).toBe(null);
   });
 });
-
-function shallowMountNumberCard(props = {}) {
-  return shallowMount(NumberCard, {
-    propsData: {
-      tile: {
-        textColor: "blue"
-      },
-      ...props
-    },
-
-    data: () => ({
-      number: 1
-    })
-  });
-}

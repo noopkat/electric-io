@@ -17,7 +17,6 @@
     "@azure/event-hubs": "^2.1.1",
     "@babel/runtime": "^7.5.5",
     "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0",
-    "axe-core": "^3.3.0",
     "azure-iothub": "^1.10.0",
     "body-parser": "^1.19.0",
     "chart.js": "^2.8.0",
@@ -28,8 +27,7 @@
     "marked": "^0.7.0",
     "socket.io": "^2.2.0",
     "vue": "^2.6.10",
-    "vue-a11y-dialog": "^0.5.0",
-    "whatwg-fetch": "^3.0.0"
+    "vue-a11y-dialog": "^0.5.0"
   },
   "engines": {
     "node": ">= 10"
@@ -49,7 +47,9 @@
     "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-stage-2": "^7.0.0",
+    "@types/jest": "^24.0.15",
     "@vue/test-utils": "^1.0.0-beta.29",
+    "axe-core": "^3.3.0",
     "babel-jest": "^24.8.0",
     "babel-loader": "^8.0.6",
     "babel-minify-webpack-plugin": "^0.3.1",

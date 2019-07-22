@@ -1,16 +1,36 @@
-import { shallowMount } from "@vue/test-utils";
 import axe from "axe-core";
+import { shallowMount } from "@vue/test-utils";
+
 import DataPropertyField from "../DataPropertyField";
+
+function shallowMountComponent(props = {}) {
+  return shallowMount(DataPropertyField, {
+    propsData: {
+      name: "property",
+      value: "",
+      tileId: "",
+      ...props
+    }
+  });
+}
 
 describe("DataPropertyField", () => {
   test("component can mount", () => {
-    const wrapper = shallowMountDataPropertyField("property", "", "");
+    const wrapper = shallowMountComponent({
+      name: "property",
+      value: "",
+      tileId: ""
+    });
 
     expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
   test("has one input element with the expected name", () => {
-    const wrapper = shallowMountDataPropertyField("unusual-property", "", "");
+    const wrapper = shallowMountComponent({
+      name: "unusual-property",
+      value: "",
+      tileId: ""
+    });
 
     const inputs = wrapper.findAll("input[name=unusual-property]");
 
@@ -22,7 +42,11 @@ describe("DataPropertyField", () => {
     const validValue = "this.is.a.valid.value";
 
     test("has aria-invalid attribute unset", () => {
-      const wrapper = shallowMountDataPropertyField("property", validValue, "");
+      const wrapper = shallowMountComponent({
+        name: "property",
+        value: validValue,
+        tileId: ""
+      });
 
       const input = wrapper.find("input[name=property]");
 
@@ -30,7 +54,11 @@ describe("DataPropertyField", () => {
     });
 
     test("has aria-describedby attribute unset", () => {
-      const wrapper = shallowMountDataPropertyField("property", validValue, "");
+      const wrapper = shallowMountComponent({
+        name: "property",
+        value: validValue,
+        tileId: ""
+      });
 
       const input = wrapper.find("input[name=property]");
 
@@ -42,11 +70,11 @@ describe("DataPropertyField", () => {
     const invalidValue = "this is not a valid value";
 
     test("has aria-invalid attribute set to 'true'", () => {
-      const wrapper = shallowMountDataPropertyField(
-        "property",
-        invalidValue,
-        ""
-      );
+      const wrapper = shallowMountComponent({
+        name: "property",
+        value: invalidValue,
+        tileId: ""
+      });
 
       const input = wrapper.find("input[name=property]");
 
@@ -54,11 +82,11 @@ describe("DataPropertyField", () => {
     });
 
     test("has aria-describedby attribute set to an element that exists in the component", () => {
-      const wrapper = shallowMountDataPropertyField(
-        "property",
-        invalidValue,
-        ""
-      );
+      const wrapper = shallowMountComponent({
+        name: "property",
+        value: invalidValue,
+        tileId: ""
+      });
 
       const input = wrapper.find("input[name=property]");
       const attributeValue = input.attributes("aria-describedby");
@@ -69,23 +97,18 @@ describe("DataPropertyField", () => {
     });
   });
 
-  test("verify component is accessible", () => {
-    const wrapper = shallowMountDataPropertyField("property", "value", "");
+  /**
+   * TODO:
+   *
+   * The Axe tests run and pass, but they don’t actually test the component in a properly mounted
+   * state. Introducing a deliberate error (i.e. an unlabeled form control) don’t make them fail.
+   *
+   * Feel free to fix them. 👋
+   */
+  test.skip("Axe doesn’t find any violations", async () => {
+    const wrapper = shallowMountComponent();
 
-    axe.run(wrapper, (err, { violations }) => {
-      expect(err).toBe(null);
-      expect(violations).toHaveLength(0);
-      done();
-    });
+    const error = await axe.run(wrapper.vm.$el);
+    expect(error).toBe(null);
   });
 });
-
-function shallowMountDataPropertyField(name, value, tileId) {
-  return shallowMount(DataPropertyField, {
-    propsData: {
-      name: name,
-      value: value,
-      tileId: tileId
-    }
-  });
-}
