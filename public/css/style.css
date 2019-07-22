@@ -72,7 +72,6 @@ textarea {
 
 textarea {
   resize: vertical;
-  overflow: auto;
 }
 
 select {
