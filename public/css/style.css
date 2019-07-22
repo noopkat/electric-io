@@ -68,6 +68,9 @@ textarea {
   border: 1px solid lightgrey;
   border-radius: 3px;
   font-size: 14px;
+}
+
+textarea {
   resize: vertical;
   overflow: auto;
 }
