@@ -70,6 +70,10 @@ textarea {
   font-size: 14px;
 }
 
+textarea {
+  resize: vertical;
+}
+
 select {
   border-radius: 3px;
 }
