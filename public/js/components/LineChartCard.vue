@@ -1,10 +1,9 @@
 <template>
-  <canvas :id="tile.id" :style="canvasStyle" />
+  <div :id="chartId" class="chart" :style="chartStyle"></div>
 </template>
 
 <script>
-import Chart from "chart.js";
-import chartOptions from "../lib/chartOptions.js";
+import Chartist from "chartist";
 import { evaluatePath } from "../lib/messagePropertyEvaluation.js";
 
 export default {
@@ -27,32 +26,21 @@ export default {
 
   data() {
     return {
-      ctx: this.tile.id,
-      chart: null,
-      chartOptions,
       chartData: {
-        datasets: [
-          {
-            label: "",
-            data: [],
-            fill: false,
-            borderColor: this.tile.lineColor,
-            borderWidth: 3,
-            pointBorderWidth: 2,
-            pointBackgroundColor: "#ffffff",
-            pointBorderColor: this.tile.lineColor,
-            lineTension: 0
-          }
-        ]
-      }
+        series: []
+      },
+      chart: null,
+      lineColor: this.tile.lineColor,
+      chartId: `chart-${this.tile.id}`
     };
   },
 
   computed: {
-    canvasStyle: function() {
+    chartStyle: function() {
       return {
         width: `${this.blockSize[0] * this.tile.size[0] - 30}px`,
-        height: `${this.blockSize[1] * this.tile.size[1] - 70}px`
+        height: `${this.blockSize[1] * this.tile.size[1] - 70}px`,
+        "--stroke-color": this.lineColor
       };
     }
   },
@@ -67,18 +55,21 @@ export default {
         }))
         .filter(msg => msg.y)
         .splice(-20);
-      this.chartData.datasets[0].data = newData;
-      this.chart.update();
+
+      this.chartData.series[0] = newData;
+      this.chart.update(this.chartData);
     }
   },
 
   mounted() {
-    this.chart = new Chart(this.ctx, {
-      type: "line",
-      data: this.chartData,
-      options: this.chartOptions
-    });
-    this.chart.update();
+    this.chart = new Chartist.Line(`#${this.chartId}`, this.chartData);
   }
 };
 </script>
+
+<style>
+div.chart .ct-series-a .ct-line,
+div.chart .ct-series-a .ct-point {
+  stroke: var(--stroke-color);
+}
+</style>
