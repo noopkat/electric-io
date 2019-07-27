@@ -3,7 +3,7 @@
     <h2>Settings</h2>
 
     <form @submit.prevent="onSubmit">
-      <input name="id" type="hidden" value="tile.id" />
+      <input name="id" type="hidden" :value="tile.id" />
 
       <label>
         Title
