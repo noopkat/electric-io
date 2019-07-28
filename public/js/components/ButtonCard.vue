@@ -1,9 +1,12 @@
 <template>
   <div>
-    <button class="action-button" @click="onClick">
+    <button
+      class="action-button"
+      @click="onClick"
+      v-bind:aria-label="ariaLabel"
+    >
       {{ tile.buttonText }}
     </button>
-
     <p :class="statusClass">
       {{ statusText }}
     </p>
@@ -17,6 +20,10 @@ export default {
   props: {
     tile: {
       type: Object,
+      required: true
+    },
+    ariaLabel: {
+      type: String,
       required: true
     }
   },
