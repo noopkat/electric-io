@@ -107,7 +107,7 @@ describe("LineChartCard", () => {
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
-  test("verify component is accessible", async () => {
+  test("Axe doesn’t find any violations", async () => {
     const wrapper = shallowMountComponent();
     const html = wrapper.html();
 

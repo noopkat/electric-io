@@ -100,7 +100,7 @@ describe("DataPropertyField", () => {
     });
   });
 
-  test("verify component is accessible", async () => {
+  test("Axe doesn’t find any violations", async () => {
     const wrapper = shallowMountComponent({
       name: "property", 
       value: "temperature",

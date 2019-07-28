@@ -223,7 +223,7 @@ describe("App", () => {
     expect(configFns.getDeviceList).toHaveBeenCalled();
   });
 
-  test("verify component is accessible", async () => {
+  test("Axe doesn’t find any violations", async () => {
     const wrapper = shallowMountComponent();
     const html = wrapper.html();
 

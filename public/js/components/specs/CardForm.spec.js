@@ -46,7 +46,7 @@ describe("CardFrom", () => {
     expect(wrapper.emitted("save-settings")).toBeTruthy();
   });
 
-  test("verify component is accessible", async () => {
+  test("Axe doesn’t find any violations", async () => {
     const wrapper = shallowMountComponent();
     const html = wrapper.html();
 
