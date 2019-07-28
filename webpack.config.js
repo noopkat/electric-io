@@ -22,7 +22,8 @@ module.exports = {
   resolve: {
     extensions: [".js", ".vue"],
     alias: {
-      vue$: "vue/dist/vue.esm.js"
+      vue$: "vue/dist/vue.esm.js",
+      chartist$: "chartist/dist/chartist.min.js"
     }
   },
   module: {
@@ -38,6 +39,10 @@ module.exports = {
         options: {
           presets: ["@babel/preset-env"]
         }
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"]
       }
     ]
   },

@@ -1,6 +1,6 @@
 import { shallowMount } from "@vue/test-utils";
 import { axe, toHaveNoViolations } from "jest-axe";
-import Chart from "chart.js";
+import Chartist from "chartist";
 
 import LineChartCard from "../LineChartCard";
 
@@ -37,7 +37,7 @@ function shallowMountComponent(props = {}) {
   });
 }
 
-jest.mock("chart.js");
+jest.mock("chartist");
 expect.extend(toHaveNoViolations);
 
 describe("LineChartCard", () => {
@@ -47,18 +47,18 @@ describe("LineChartCard", () => {
     expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
-  test("new Chart is called in mounted lifecycle hook", () => {
+  test("new Chartist is called in mounted lifecycle hook", () => {
     const { vm } = shallowMountComponent();
     vm.chart.update = jest.fn();
 
-    expect(Chart).toHaveBeenCalled();
+    expect(Chartist.Line).toHaveBeenCalled();
   });
 
-  test("computes the CanvasStyle width and height object and object property values", () => {
+  test("computes the chartStyle width and height object and object property values", () => {
     const { vm } = shallowMountComponent();
 
     // Test the object returned in the computed method
-    expect(vm.canvasStyle).toEqual(
+    expect(vm.chartStyle).toEqual(
       expect.objectContaining({
         width: expect.any(String),
         height: expect.any(String)
@@ -66,9 +66,11 @@ describe("LineChartCard", () => {
     );
 
     // Test the calcuation based upon the mock propsData
-    expect(vm.canvasStyle).toEqual({
+    expect(vm.chartStyle).toEqual({
+      "--stroke-color": "#FF6384",
       height: "305px",
-      width: "370px"
+      marginLeft: "-20px",
+      width: "400px"
     });
   });
 
