@@ -1,5 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe, toHaveNoViolations } from "jest-axe";
 
 import CardForm from "../CardForm";
 
@@ -49,6 +49,6 @@ describe("CardFrom", () => {
     const wrapper = shallowMountComponent();
     const html = wrapper.html();
 
-    expect(await axe(html)).toHaveNoViolations()
+    expect(await axe(html)).toHaveNoViolations();
   });
 });

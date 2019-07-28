@@ -1,5 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe, toHaveNoViolations } from "jest-axe";
 import Chart from "chart.js";
 
 import LineChartCard from "../LineChartCard";

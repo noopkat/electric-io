@@ -1,5 +1,5 @@
 import { mount, shallowMount } from "@vue/test-utils";
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe, toHaveNoViolations } from "jest-axe";
 
 import App from "../App";
 import * as configFns from "../../lib/configuration";

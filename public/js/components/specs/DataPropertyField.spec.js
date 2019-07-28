@@ -1,5 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe, toHaveNoViolations } from "jest-axe";
 
 import DataPropertyField from "../DataPropertyField";
 
@@ -101,7 +101,7 @@ describe("DataPropertyField", () => {
 
   test("Axe doesn’t find any violations", async () => {
     const wrapper = shallowMountComponent({
-      name: "property", 
+      name: "property",
       value: "temperature",
       titleId: ""
     });
