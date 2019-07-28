@@ -3,7 +3,6 @@ import { axe, toHaveNoViolations } from 'jest-axe';
 
 import CardForm from "../CardForm";
 
-
 function shallowMountComponent(props = {}) {
   return shallowMount(CardForm, {
     propsData: {
@@ -53,5 +52,3 @@ describe("CardFrom", () => {
     expect(await axe(html)).toHaveNoViolations()
   });
 });
-
-

@@ -4,7 +4,6 @@ import Chart from "chart.js";
 
 import LineChartCard from "../LineChartCard";
 
-
 function shallowMountComponent(props = {}) {
   return shallowMount(LineChartCard, {
     propsData: {
@@ -37,7 +36,6 @@ function shallowMountComponent(props = {}) {
     }
   });
 }
-
 
 jest.mock("chart.js");
 expect.extend(toHaveNoViolations);

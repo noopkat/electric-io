@@ -3,7 +3,6 @@ import { axe, toHaveNoViolations } from 'jest-axe';
 
 import DataPropertyField from "../DataPropertyField";
 
-
 function shallowMountComponent(props = {}) {
   return shallowMount(DataPropertyField, {
     propsData: {

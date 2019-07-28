@@ -5,7 +5,6 @@ import App from "../App";
 import * as configFns from "../../lib/configuration";
 import { TITLE_EMOJI_REGEX } from "../../utils/constants.js";
 
-
 // Mock dashboard data
 const mockDashboardData = {
   dashboard: {
