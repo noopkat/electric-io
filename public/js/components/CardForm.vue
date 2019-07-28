@@ -5,7 +5,7 @@
     <form @submit.prevent="onSubmit">
       <input name="id" type="hidden" :value="tile.id" />
 
-      <label>
+      <label for="title">
         Title
         <input
           ref="firstFocusableElement"
