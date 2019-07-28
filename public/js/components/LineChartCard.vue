@@ -38,7 +38,8 @@ export default {
   computed: {
     chartStyle: function() {
       return {
-        width: `${this.blockSize[0] * this.tile.size[0] - 30}px`,
+        marginLeft: "-20px",
+        width: `${this.blockSize[0] * this.tile.size[0]}px`,
         height: `${this.blockSize[1] * this.tile.size[1] - 70}px`,
         "--stroke-color": this.lineColor
       };

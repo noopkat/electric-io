@@ -69,7 +69,8 @@ describe("LineChartCard", () => {
     expect(vm.chartStyle).toEqual({
       "--stroke-color": "#FF6384",
       height: "305px",
-      width: "370px"
+      marginLeft: "-20px",
+      width: "400px"
     });
   });
 
