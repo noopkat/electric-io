@@ -1,7 +1,8 @@
-import axe from "axe-core";
 import { shallowMount } from "@vue/test-utils";
+import { axe, toHaveNoViolations } from 'jest-axe';
 
 import DataPropertyField from "../DataPropertyField";
+
 
 function shallowMountComponent(props = {}) {
   return shallowMount(DataPropertyField, {
@@ -13,6 +14,8 @@ function shallowMountComponent(props = {}) {
     }
   });
 }
+
+expect.extend(toHaveNoViolations);
 
 describe("DataPropertyField", () => {
   test("component can mount", () => {
@@ -97,18 +100,14 @@ describe("DataPropertyField", () => {
     });
   });
 
-  /**
-   * TODO:
-   *
-   * The Axe tests run and pass, but they don’t actually test the component in a properly mounted
-   * state. Introducing a deliberate error (i.e. an unlabeled form control) don’t make them fail.
-   *
-   * Feel free to fix them. 👋
-   */
-  test.skip("Axe doesn’t find any violations", async () => {
-    const wrapper = shallowMountComponent();
+  test("verify component is accessible", async () => {
+    const wrapper = shallowMountComponent({
+      name: "property", 
+      value: "temperature",
+      titleId: ""
+    });
+    const html = wrapper.html();
 
-    const error = await axe.run(wrapper.vm.$el);
-    expect(error).toBe(null);
+    expect(await axe(html)).toHaveNoViolations();
   });
 });

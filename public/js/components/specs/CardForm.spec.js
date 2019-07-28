@@ -1,7 +1,8 @@
-import axe from "axe-core";
 import { shallowMount } from "@vue/test-utils";
+import { axe, toHaveNoViolations } from 'jest-axe';
 
 import CardForm from "../CardForm";
+
 
 function shallowMountComponent(props = {}) {
   return shallowMount(CardForm, {
@@ -21,6 +22,8 @@ function shallowMountComponent(props = {}) {
     attachToDocument: true
   });
 }
+
+expect.extend(toHaveNoViolations);
 
 describe("CardFrom", () => {
   test("Component can be mounted", () => {
@@ -43,18 +46,12 @@ describe("CardFrom", () => {
     expect(wrapper.emitted("save-settings")).toBeTruthy();
   });
 
-  /**
-   * TODO:
-   *
-   * The Axe tests run and pass, but they don’t actually test the component in a properly mounted
-   * state. Introducing a deliberate error (i.e. an unlabeled form control) don’t make them fail.
-   *
-   * Feel free to fix them. 👋
-   */
-  test.skip("Axe doesn’t find any violations", async () => {
+  test("verify component is accessible", async () => {
     const wrapper = shallowMountComponent();
+    const html = wrapper.html();
 
-    const error = await axe.run(wrapper.vm.$el);
-    expect(error).toBe(null);
+    expect(await axe(html)).toHaveNoViolations()
   });
 });
+
+

@@ -1,9 +1,10 @@
-import axe from "axe-core";
 import { mount, shallowMount } from "@vue/test-utils";
+import { axe, toHaveNoViolations } from 'jest-axe';
 
 import App from "../App";
 import * as configFns from "../../lib/configuration";
 import { TITLE_EMOJI_REGEX } from "../../utils/constants.js";
+
 
 // Mock dashboard data
 const mockDashboardData = {
@@ -52,6 +53,8 @@ function shallowMountComponent(props = {}) {
     }
   });
 }
+
+expect.extend(toHaveNoViolations);
 
 describe("App", () => {
   test("Component can be mounted", () => {
@@ -220,21 +223,10 @@ describe("App", () => {
     expect(configFns.getDeviceList).toHaveBeenCalled();
   });
 
-  /**
-   * TODO:
-   *
-   * The Axe tests run and pass, but they don’t actually test the component in a properly mounted
-   * state. Introducing a deliberate error (i.e. an unlabeled form control) don’t make them fail.
-   *
-   * Feel free to fix them. 👋
-   */
-  test.skip("Axe doesn’t find any violations", async () => {
+  test("verify component is accessible", async () => {
     const wrapper = shallowMountComponent();
+    const html = wrapper.html();
 
-    // wrapper.vm.$el.children returns an empty collection, so from Axe Core’s perspective,
-    // wrapper.vm.$el doesn’t contain anything testable and produces this error:
-    // “No elements found for include in page Context”
-    const error = await axe.run(wrapper.vm.$el);
-    expect(error).toBe(null);
+    expect(await axe(html)).toHaveNoViolations();
   });
 });
