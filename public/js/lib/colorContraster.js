@@ -71,7 +71,12 @@ function parseRGB(color) {
 function parseName(color) {
   // papayawhip or Papaya Whip
   const justColor = color.replace(/\s/g, "").toLowerCase();
-  const hexColor = colorNames[color];
+  const hexColor = colorNames[justColor];
+
+  if (hexColor === undefined) {
+    return null;
+  }
+
   return parseHex(hexColor);
 }
 
