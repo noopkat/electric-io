@@ -47,15 +47,32 @@ describe("ButtonCard", () => {
     expect(wrapper.vm.statusClass).toEqual("status");
   });
 
-  test("the onClick method", () => {
-    const spy = jest.spyOn(global, "fetch");
+  test("the onClick method with successful response", async () => {
+    global.fetch = jest.fn().mockImplementationOnce(() =>
+      Promise.resolve({
+        ok: true
+      })
+    );
 
     const wrapper = shallowMountComponent();
+    const spy = jest.spyOn(global, "fetch");
+    const response = `${wrapper.vm.apiUrlBase}/method/${wrapper.vm.tile.deviceMethod},
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({})
+      }`;
+
     const button = wrapper.find("button");
 
     button.trigger("click");
 
     expect(wrapper.vm.statusText).toEqual("calling device method...");
+
+    await response;
+
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith(
       `${wrapper.vm.apiUrlBase}/method/${wrapper.vm.tile.deviceMethod}`,
@@ -67,6 +84,66 @@ describe("ButtonCard", () => {
         body: JSON.stringify({})
       }
     );
+    expect(wrapper.vm.statusText).toEqual("done!");
+    expect(wrapper.vm.statusClass).toEqual("status success");
+  });
+
+  test("the onClick method's logic when the request fails", async () => {
+    global.fetch = jest.fn().mockImplementationOnce(() =>
+      Promise.resolve({
+        ok: false
+      })
+    );
+
+    const wrapper = shallowMountComponent();
+    const spy = jest.spyOn(global, "fetch");
+    const response = `${wrapper.vm.apiUrlBase}/method/${wrapper.vm.tile.deviceMethod},
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({})
+      }`;
+
+    const button = wrapper.find("button");
+
+    button.trigger("click");
+
+    expect(wrapper.vm.statusText).toEqual("calling device method...");
+
+    await response;
+
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(wrapper.vm.statusText).toEqual(
+      "oops, that device method might not exist!"
+    );
+    expect(wrapper.vm.statusClass).toEqual("status error");
+  });
+
+  test("the status text in the Promise.catch method", async () => {
+    global.fetch = jest.fn(() => Promise.reject(true));
+
+    const wrapper = shallowMountComponent();
+    const spy = jest.spyOn(global, "fetch");
+    const response = `${wrapper.vm.apiUrlBase}/method/${wrapper.vm.tile.deviceMethod},
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({})
+      }`;
+
+    const button = wrapper.find("button");
+
+    button.trigger("click");
+
+    expect(wrapper.vm.statusText).toEqual("calling device method...");
+
+    await response;
+
+    expect(wrapper.vm.statusText).toEqual("something went wrong...");
   });
 
   test("Axe doesn’t find any violations", async () => {
