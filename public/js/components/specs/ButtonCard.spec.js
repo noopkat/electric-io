@@ -121,31 +121,6 @@ describe("ButtonCard", () => {
     expect(wrapper.vm.statusClass).toEqual("status error");
   });
 
-  test("the status text in the Promise.catch method", async () => {
-    global.fetch = jest.fn(() => Promise.reject(true));
-
-    const wrapper = shallowMountComponent();
-    const spy = jest.spyOn(global, "fetch");
-    const response = `${wrapper.vm.apiUrlBase}/method/${wrapper.vm.tile.deviceMethod},
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({})
-      }`;
-
-    const button = wrapper.find("button");
-
-    button.trigger("click");
-
-    expect(wrapper.vm.statusText).toEqual("calling device method...");
-
-    await response;
-
-    expect(wrapper.vm.statusText).toEqual("something went wrong...");
-  });
-
   test("Axe doesn’t find any violations", async () => {
     const wrapper = shallowMountComponent();
     const html = wrapper.html();
