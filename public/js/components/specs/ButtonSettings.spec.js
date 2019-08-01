@@ -32,6 +32,23 @@ describe("ButtonSettings", () => {
     expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
+  test("the iniital state of the data object", () => {
+    const defaultData = ButtonSettings.data();
+
+    expect(defaultData).toEqual({
+      typeOptions: [
+        {
+          text: "Direct Method",
+          value: "method"
+        },
+        {
+          text: "C2D Message",
+          value: "message"
+        }
+      ]
+    });
+  });
+
   test("Axe doesn’t find any violations", async () => {
     const wrapper = shallowMountComponent();
     const html = wrapper.html();
