@@ -145,6 +145,125 @@ describe("BaseCard", () => {
     expect(spy).toHaveBeenCalled();
   });
 
+  //   test("test if the custom event listeners are created after the component mounts", () => {
+  //     const wrapper = shallowMountComponent();
+
+  //     wrapper.find()
+  //   });
+
+  test("the assigndialogRef method", () => {
+    const { vm } = shallowMountComponent();
+
+    vm.assignDialogRef(dialog => {
+      expect(vm.dialog).toEqual(dialog);
+    });
+  });
+
+  test("the openCardDeleteModal method", () => {
+    const spy = jest.spyOn(BaseCard.methods, "openCardDeleteModal");
+    const wrapper = shallowMountComponent();
+
+    const button = wrapper.find(".delete-button");
+
+    button.trigger("click");
+
+    expect(spy).toHaveBeenCalled();
+  });
+
+  test("onTileDelete method", () => {
+    const wrapper = shallowMountComponent();
+    const tileId = wrapper.vm.tile.id;
+
+    const button = wrapper.find(".action-button");
+
+    button.trigger("click");
+
+    expect(wrapper.vm.$emit("tile-delete")).toBeTruthy();
+  });
+
+  test("the onSaveSettings method", () => {
+    const wrapper = shallowMountComponent();
+
+    expect(wrapper.vm.editingCard).toEqual(false);
+
+    const button = wrapper.find(".edit-button");
+
+    button.trigger("click");
+
+    expect(wrapper.vm.editingCard).toEqual(true);
+
+    wrapper.find({ name: "CardForm" }).vm.$emit("save-settings", {
+      bgColor: "#fff",
+      bgImageRepeat: true,
+      bgImageUrl: "",
+      title: "\u2700 IoT Dashboard"
+    });
+
+    expect(wrapper.vm.$emit("save-settings")).toBeTruthy();
+  });
+
+  test("the updateCardPosition method", () => {
+    const wrapper = shallowMountComponent();
+
+    expect(wrapper.vm.x).toEqual(200);
+    expect(wrapper.vm.y).toEqual(246);
+
+    wrapper.vm.updateCardPosition({
+      x: 253,
+      y: 310
+    });
+
+    expect(wrapper.vm.x).toEqual(253);
+    expect(wrapper.vm.y).toEqual(310);
+  });
+
+  test("if the updateCardPosition method is called in the dragCard method", () => {
+    const spy = jest.spyOn(BaseCard.methods, "updateCardPosition");
+    const { vm } = shallowMountComponent();
+
+    const event = {
+      preventDefault: jest.fn()
+    };
+
+    vm.dragCard(event);
+
+    expect(event.preventDefault).not.toHaveBeenCalled();
+    expect(vm.cardHasBeenMoved).toEqual(false);
+    expect(spy).not.toHaveBeenCalled();
+
+    vm.draggingCard = true;
+    vm.editingCard = false;
+
+    vm.dragCard(event);
+
+    expect(event.preventDefault).toHaveBeenCalled();
+    expect(vm.cardHasBeenMoved).toEqual(true);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  test("check and make sure the emitCardPosition method is called when stopDraggingCard or moveCardWithArrows are invoked", () => {
+    const spy = jest.spyOn(BaseCard.methods, "emitCardPosition");
+    const { vm } = shallowMountComponent();
+    const event = {
+      preventDefault: jest.fn(),
+      key: "ArrowUp"
+    };
+
+    vm.editingCard = false;
+    vm.$el = document.activeElement;
+
+    vm.moveCardWithArrows(event);
+
+    expect(event.preventDefault).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
+
+    vm.stopDraggingCard();
+    vm.cardHasBeenMoved = true;
+
+    expect(vm.draggingCard).toEqual(false);
+    expect(spy).toHaveBeenCalled();
+  });
+
   test("Axe doesn’t find any violations", async () => {
     const wrapper = shallowMountComponent();
     const html = wrapper.html();
