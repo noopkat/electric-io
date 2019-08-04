@@ -15,7 +15,7 @@
 
     <label>
       Call Type
-      <select id="callTypeSelect" name="callType" v-model="tile.callType">
+      <select id="callTypeSelect" v-model="tile.callType" name="callType">
         <option
           v-for="option in typeOptions"
           :key="option.value"
@@ -27,7 +27,7 @@
       </select>
     </label>
 
-    <label for="deviceMethod" v-if="tile.callType === 'method'">
+    <label v-if="tile.callType === 'method'" for="deviceMethod">
       Method Name
       <input
         id="deviceMethod"

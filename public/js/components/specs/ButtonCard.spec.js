@@ -16,7 +16,8 @@ function shallowMountComponent() {
         size: [2, 1.5],
         title: "Line Chart",
         type: "line-chart",
-        callType: "method"
+        callType: "method",
+        buttonText: "button-action"
       },
       ariaLabel: "Init Card Creation"
     },
