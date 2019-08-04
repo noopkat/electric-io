@@ -140,16 +140,18 @@ describe("BaseCard", () => {
       }
     };
 
+    vm.editingCard = true;
+
+    vm.startDraggingCard(event);
+
+    expect(spy).not.toHaveBeenCalled();
+
+    vm.editingCard = false;
+
     vm.startDraggingCard(event);
 
     expect(spy).toHaveBeenCalled();
   });
-
-  //   test("test if the custom event listeners are created after the component mounts", () => {
-  //     const wrapper = shallowMountComponent();
-
-  //     wrapper.find()
-  //   });
 
   test("the assigndialogRef method", () => {
     const { vm } = shallowMountComponent();
@@ -168,11 +170,12 @@ describe("BaseCard", () => {
     button.trigger("click");
 
     expect(spy).toHaveBeenCalled();
+
+    wrapper.vm.dialog = true;
   });
 
-  test("onTileDelete method", () => {
+  test("tileDelete method", () => {
     const wrapper = shallowMountComponent();
-    const tileId = wrapper.vm.tile.id;
 
     const button = wrapper.find(".action-button");
 
@@ -182,6 +185,7 @@ describe("BaseCard", () => {
   });
 
   test("the onSaveSettings method", () => {
+    const spy = jest.spyOn(BaseCard.methods, "onSaveSettings");
     const wrapper = shallowMountComponent();
 
     expect(wrapper.vm.editingCard).toEqual(false);
@@ -200,6 +204,7 @@ describe("BaseCard", () => {
     });
 
     expect(wrapper.vm.$emit("save-settings")).toBeTruthy();
+    expect(spy).toHaveBeenCalled();
   });
 
   test("the updateCardPosition method", () => {
@@ -250,7 +255,7 @@ describe("BaseCard", () => {
     };
 
     vm.editingCard = false;
-    vm.$el = document.activeElement;
+    vm.$el.focus();
 
     vm.moveCardWithArrows(event);
 
@@ -261,6 +266,139 @@ describe("BaseCard", () => {
     vm.cardHasBeenMoved = true;
 
     expect(vm.draggingCard).toEqual(false);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  test("the startDraggingCardWithMouse method", () => {
+    const spyWithMouse = jest.spyOn(
+      BaseCard.methods,
+      "startDraggingCardWithMouse"
+    );
+    const spy = jest.spyOn(BaseCard.methods, "startDraggingCard");
+    const wrapper = shallowMountComponent();
+    const event = {
+      clientX: 615,
+      clientY: 423,
+      buttons: 1,
+      target: {
+        tagName: "div"
+      }
+    };
+    const card = wrapper.find(".card");
+
+    card.trigger("mousedown.stop.passive");
+
+    expect(spyWithMouse).toHaveBeenCalled();
+
+    wrapper.vm.startDraggingCardWithMouse(event);
+
+    expect(spy).toHaveBeenCalled();
+  });
+
+  test("the startDraggingCardWithTouch method", () => {
+    const spyWithMouse = jest.spyOn(
+      BaseCard.methods,
+      "startDraggingCardWithTouch"
+    );
+    const spy = jest.spyOn(BaseCard.methods, "startDraggingCard");
+    const wrapper = shallowMountComponent();
+    const event = {
+      touches: [
+        {
+          clientX: 615,
+          clientY: 423
+        }
+      ],
+      buttons: 1,
+      target: {
+        tagName: "div"
+      }
+    };
+
+    // We are invoking the method rather than simulating a touch event due to it requring a touch
+    // event to be passed as an arguement. Jest does not allow you to pass an event as an argument
+    // when triggering events.
+    wrapper.vm.startDraggingCardWithTouch(event);
+
+    expect(spyWithMouse).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalled();
+  });
+
+  test("the moveCardWithArrows method", () => {
+    const spyWithArrows = jest.spyOn(BaseCard.methods, "moveCardWithArrows");
+    const spyUpdateCardPosition = jest.spyOn(
+      BaseCard.methods,
+      "updateCardPosition"
+    );
+    const spyEmitCardPosition = jest.spyOn(
+      BaseCard.methods,
+      "emitCardPosition"
+    );
+    const wrapper = shallowMountComponent();
+    const event = {
+      preventDefault: jest.fn(),
+      key: "ArrowDown"
+    };
+    const card = wrapper.find(".card");
+
+    wrapper.vm.editingCard = false;
+    wrapper.vm.$el.focus();
+
+    card.trigger("keydown");
+
+    expect(spyWithArrows).toHaveBeenCalled();
+
+    wrapper.vm.moveCardWithArrows(event);
+
+    expect(spyUpdateCardPosition).toHaveBeenCalled();
+    expect(spyEmitCardPosition).toHaveBeenCalled();
+  });
+
+  test("the methods in the registered custom event listeners", () => {
+    const spyDragCard = jest.spyOn(BaseCard.methods, "dragCard");
+    const { vm } = shallowMountComponent();
+    const clickEvent = {
+      clientX: 615,
+      clientY: 423
+    };
+    const touchEvent = {
+      touches: [
+        {
+          clientX: 615,
+          clientY: 423
+        }
+      ]
+    };
+
+    vm.dragCardWithMouse(clickEvent);
+
+    expect(spyDragCard).toHaveBeenCalled();
+
+    vm.dragCardWithTouch(touchEvent);
+
+    expect(spyDragCard).toHaveBeenCalled();
+  });
+
+  test("that the draggingCard watcher is called when the startDraggingCard, dragCard, or stopDraggingCard methods are invoked", () => {
+    const spy = jest.spyOn(BaseCard.watch, "draggingCard");
+    const wrapper = shallowMountComponent();
+    const event = {
+      preventDefault: jest.fn(),
+      target: {
+        tagName: "H2"
+      }
+    };
+
+    wrapper.vm.startDraggingCard(event);
+
+    expect(spy).toHaveBeenCalled();
+
+    wrapper.vm.dragCard(event);
+
+    expect(spy).toHaveBeenCalled();
+
+    wrapper.vm.stopDraggingCard();
+
     expect(spy).toHaveBeenCalled();
   });
 
