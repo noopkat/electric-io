@@ -27,20 +27,30 @@
       </select>
     </label>
 
-    <label v-if="tile.callType === 'method'">
+    <label v-if="tile.callType === 'method'" for="deviceMethod">
       Method Name
-      <input type="text" name="deviceMethod" :value="tile.deviceMethod" />
+      <input
+        id="deviceMethod"
+        name="deviceMethod"
+        type="text"
+        :value="tile.deviceMethod"
+      />
     </label>
 
-    <label>
+    <label for="callPayload">
       <span v-if="tile.callType === 'method'">Method</span>
       <span v-else>Message</span> Payload (must be valid JSON pls!)
-      <textarea name="callPayload" :value="tile.callPayload" />
+      <textarea id="callPayload" name="callPayload" :value="tile.callPayload" />
     </label>
 
-    <label>
+    <label for="buttonText">
       Button Text
-      <input type="text" name="buttonText" :value="tile.buttonText" />
+      <input
+        id="buttonText"
+        name="buttonText"
+        type="text"
+        :value="tile.buttonText"
+      />
     </label>
   </div>
 </template>

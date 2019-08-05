@@ -3,7 +3,6 @@
     <button class="action-button" @click="onClick">
       {{ tile.buttonText }}
     </button>
-
     <p :class="statusClass">
       {{ statusText }}
     </p>
