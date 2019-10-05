@@ -18,7 +18,8 @@ function shallowMountComponent() {
         type: "line-chart",
         callType: "method"
       },
-      blockSize: [200, 250],
+      blockWidth: 200,
+      blockHeight: 250,
       deviceList: ["AZ3166", "Tessel2", "Jenn"],
       messages: [
         {
@@ -82,9 +83,9 @@ describe("BaseCard", () => {
     const inlineStyles = {
       top: wrapper.vm.top,
       left: wrapper.vm.left,
-      "--card-tile-width": `${wrapper.vm.blockSize[0] *
+      "--card-tile-width": `${wrapper.vm.blockWidth *
         wrapper.vm.tile.size[0]}px`,
-      minHeight: `${wrapper.vm.blockSize[1] * wrapper.vm.tile.size[1]}px`
+      minHeight: `${wrapper.vm.blockHeight * wrapper.vm.tile.size[1]}px`
     };
 
     expect(wrapper.vm.style).toEqual(inlineStyles);

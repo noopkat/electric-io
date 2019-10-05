@@ -37,7 +37,8 @@
       <component
         :is="childCard"
         :tile="tile"
-        :block-size="blockSize"
+        :block-width="blockWidth"
+        :block-height="blockHeight"
         :messages="messages"
       />
     </div>
@@ -113,8 +114,12 @@ export default {
       required: false,
       default: () => ({})
     },
-    blockSize: {
-      type: Array,
+    blockWidth: {
+      type: Number,
+      required: true
+    },
+    blockHeight: {
+      type: Number,
       required: true
     },
     deviceList: {
@@ -169,8 +174,8 @@ export default {
       return {
         top: this.top,
         left: this.left,
-        "--card-tile-width": `${this.blockSize[0] * this.tile.size[0]}px`,
-        minHeight: `${this.blockSize[1] * this.tile.size[1]}px`
+        "--card-tile-width": `${this.blockWidth * this.tile.size[0]}px`,
+        minHeight: `${this.blockHeight * this.tile.size[1]}px`
       };
     },
 
