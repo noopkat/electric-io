@@ -7,6 +7,8 @@ function shallowMountComponent() {
   return shallowMount(ButtonCard, {
     propsData: {
       tile: {
+        buttonText: "button-action",
+        callType: "method",
         deviceId: "AZ3166",
         deviceMethod: "stop",
         id: "ac57912f-1a04-4cc2-a587-1bc116e8cc54",
@@ -15,9 +17,7 @@ function shallowMountComponent() {
         property: "",
         size: [2, 1.5],
         title: "Line Chart",
-        type: "line-chart",
-        callType: "method",
-        buttonText: "button-action"
+        type: "line-chart"
       },
       ariaLabel: "Init Card Creation"
     },

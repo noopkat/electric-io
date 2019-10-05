@@ -112,7 +112,12 @@ export default {
     tile: {
       type: Object,
       required: false,
-      default: () => ({})
+      default: () => ({}),
+      validator: tile => {
+        return ["id", "position", "size", "title", "type"].every(prop => {
+          return tile.hasOwnProperty(prop);
+        });
+      }
     },
     blockWidth: {
       type: Number,
@@ -125,7 +130,9 @@ export default {
     deviceList: {
       type: Array,
       required: false,
-      default: () => []
+      default: () => [],
+      validator: deviceList =>
+        deviceList.every(deviceId => typeof deviceId === "string")
     },
     messages: {
       type: Array,

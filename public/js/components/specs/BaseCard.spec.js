@@ -7,6 +7,7 @@ function shallowMountComponent() {
   return shallowMount(BaseCard, {
     propsData: {
       tile: {
+        callType: "method",
         deviceId: "AZ3166",
         deviceMethod: "stop",
         id: "ac57912f-1a04-4cc2-a587-1bc116e8cc54",
@@ -15,8 +16,7 @@ function shallowMountComponent() {
         property: "",
         size: [2, 1.5],
         title: "Line Chart",
-        type: "line-chart",
-        callType: "method"
+        type: "line-chart"
       },
       blockWidth: 200,
       blockHeight: 250,

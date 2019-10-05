@@ -7,6 +7,10 @@ function shallowMountComponent() {
   return shallowMount(FormFields, {
     propsData: {
       tile: {
+        id: "88e12934-c628-48cb-8b84-b16c2e313305",
+        position: [200, 246],
+        size: [2, 1.5],
+        title: "Line chart",
         type: "line-chart",
         callType: "method"
       },
