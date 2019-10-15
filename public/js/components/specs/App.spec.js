@@ -1,8 +1,9 @@
 import { mount, shallowMount } from "@vue/test-utils";
+import { axe, toHaveNoViolations } from "jest-axe";
+
 import App from "../App";
 import * as configFns from "../../lib/configuration";
 import { TITLE_EMOJI_REGEX } from "../../utils/constants.js";
-import axe from "axe-core";
 
 // Mock dashboard data
 const mockDashboardData = {
@@ -33,27 +34,42 @@ const mockDashboardData = {
       }
     ],
     editMode: "unlocked"
-  }
+  },
+  deviceList: ["AZ3166", "Tessel2", "Jenn"]
 };
 
-// Mock device data
-const mockDeviceList = ["AZ3166", "Tessel2", "Jenn"];
+// Shallow mount App component as reusable function for tests
+function shallowMountComponent(props = {}) {
+  return shallowMount(App, {
+    propsData: {
+      ...props
+    },
 
-describe("Number card", () => {
-  test("component can mount", () => {
-    const wrapper = shallowMountApp();
+    data() {
+      return {
+        ...mockDashboardData
+      };
+    }
+  });
+}
+
+expect.extend(toHaveNoViolations);
+
+describe("App", () => {
+  test("Component can be mounted", () => {
+    const wrapper = shallowMountComponent();
 
     expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
-  test("if child components mount", () => {
-    const wrapper = shallowMountApp();
+  test("Child components can be mounted", () => {
+    const wrapper = shallowMountComponent();
 
-    expect(wrapper.find({ name: "dashboard-settings" }).exists()).toBe(true);
-    expect(wrapper.find({ name: "base-card" }).exists()).toBe(true);
+    expect(wrapper.find({ name: "DashboardSettings" }).exists()).toBe(true);
+    expect(wrapper.find({ name: "BaseCard" }).exists()).toBe(true);
   });
 
-  test("check before component is created that the default data is clean", () => {
+  test("Default data is clean", () => {
     const { vm } = shallowMount(App);
 
     expect(vm.dashboard.blockSize).toEqual([]);
@@ -63,27 +79,37 @@ describe("Number card", () => {
     expect(vm.simulating).toEqual(SIMULATING);
   });
 
-  test("h1 heading style based upon headingStyle computed method", () => {
-    const { vm } = shallowMountApp();
+  test("Title style is based on the computed property headingStyle", () => {
+    const wrapper = shallowMountComponent();
+    expect(wrapper.vm.headingStyle).toEqual({ color: "#000" });
 
-    expect(vm.headingStyle).toEqual({ color: "#000" });
+    // Test whether `headingStyle` fallback color is used
+    wrapper.setData({
+      dashboard: {
+        bgColor: "hsl(270, 50%, 80%)",
+        bgImageUrl: "http://test",
+        bgImageRepeat: false
+      }
+    });
+    expect(wrapper.vm.headingStyle).toEqual({ color: "#000" });
   });
 
-  test("don't display dashboard-settings based upon showSettings computed method", () => {
-    const wrapper = shallowMountApp();
+  test("DashboardSettings are shown based on computed property showSettings", () => {
+    const wrapper = shallowMountComponent();
 
     expect(wrapper.vm.showSettings).toEqual(true);
+    expect(wrapper.find({ name: "DashboardSettings" }).exists()).toBe(true);
 
     wrapper.vm.dashboard.editMode = "locked";
 
     expect(wrapper.vm.showSettings).toEqual(false);
-    expect(wrapper.find({ name: "dashboard-settings" }).exists()).toBe(false);
+    expect(wrapper.find({ name: "DashboardSettings" }).exists()).toBe(false);
   });
 
   test("compute the appTitle with or without an emoji using the TITLE_EMOJI_REGEX constant", () => {
-    const { vm } = shallowMountApp();
-    const title = TITLE_EMOJI_REGEX.exec(mockDashboardData.dashboard.title);
+    const { vm } = shallowMountComponent();
 
+    const title = TITLE_EMOJI_REGEX.exec(mockDashboardData.dashboard.title);
     title[1] = "\u2700";
     title[2] = "IoT Dashboard";
 
@@ -94,11 +120,11 @@ describe("Number card", () => {
 
   test("onSaveSettings method", () => {
     jest.spyOn(configFns, "saveDashboard");
-    const wrapper = shallowMountApp();
+    const wrapper = shallowMountComponent();
 
     wrapper.vm.dashboard.editMode = "unlocked";
 
-    wrapper.find({ name: "dashboard-settings" }).vm.$emit("save-settings", {
+    wrapper.find({ name: "DashboardSettings" }).vm.$emit("save-settings", {
       bgColor: "#fff",
       bgImageRepeat: true,
       bgImageUrl: "",
@@ -120,7 +146,7 @@ describe("Number card", () => {
   });
 
   test("onTileChange method", () => {
-    const { vm } = shallowMountApp();
+    const { vm } = shallowMountComponent();
 
     expect(vm.dashboard).toEqual(mockDashboardData.dashboard);
 
@@ -140,16 +166,18 @@ describe("Number card", () => {
       title: "MXChip sending",
       type: "button"
     });
+
+    expect(vm.dashboard.tiles.length).toBe(2);
   });
 
   test("onTileDelete method", () => {
-    const wrapper = shallowMountApp();
+    const wrapper = shallowMountComponent();
     const tileId = mockDashboardData.dashboard.tiles[0].id;
 
     wrapper.vm.onTileDelete(tileId);
 
     expect(
-      wrapper.find({ name: "base-card" }).vm.$emit("tile-delete")
+      wrapper.find({ name: "BaseCard" }).vm.$emit("tile-delete")
     ).toBeTruthy();
 
     expect(wrapper.vm.dashboard.tiles.length).toBe(1);
@@ -157,9 +185,9 @@ describe("Number card", () => {
 
   test("onTileCreate method", () => {
     jest.spyOn(configFns, "saveDashboard");
-    const wrapper = shallowMountApp();
+    const wrapper = shallowMountComponent();
 
-    wrapper.find({ name: "dashboard-settings" }).vm.$emit("tile-create", {
+    wrapper.find({ name: "DashboardSettings" }).vm.$emit("tile-create", {
       deviceId: "",
       id: "2ece272b-a403-46d6-b136-e35906fe1d0d",
       lineColor: "#FF6384",
@@ -175,7 +203,7 @@ describe("Number card", () => {
   });
 
   test("onDeviceListReceived method", () => {
-    const { vm } = shallowMountApp();
+    const { vm } = shallowMountComponent();
     let deviceList;
 
     vm.onDeviceListReceived(deviceList);
@@ -194,26 +222,10 @@ describe("Number card", () => {
     expect(configFns.getDeviceList).toHaveBeenCalled();
   });
 
-  test("verify component is accessible", () => {
-    const { vm } = shallowMountApp();
+  test("Axe doesn’t find any violations", async () => {
+    const wrapper = shallowMountComponent();
+    const html = wrapper.html();
 
-    axe.run(vm, (err, { violations }) => {
-      expect(err).toBe(null);
-      expect(violations).toHaveLength(0);
-      done();
-    });
+    expect(await axe(html)).toHaveNoViolations();
   });
 });
-
-// Mock mounting configuration
-const mountingConfiguration = {
-  data: () => ({
-    dashboard: mockDashboardData.dashboard,
-    deviceList: mockDeviceList
-  })
-};
-
-// Shallow mount App component as reusable function for tests
-function shallowMountApp() {
-  return shallowMount(App, mountingConfiguration);
-}

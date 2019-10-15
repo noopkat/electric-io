@@ -12,6 +12,9 @@
   --focus-color: hotpink;
   --focus-outline: 2px solid var(--focus-color);
   --focus-box-shadow: 0 0 0 2px var(--focus-color);
+
+  --invalid-color: #da2727;
+  --invalid-focus-outline: 2px solid var(--invalid-color);
 }
 
 html,
@@ -32,6 +35,10 @@ body {
   outline: var(--focus-outline);
 }
 
+.invalid :focus {
+  outline: var(--invalid-focus-outline);
+}
+
 .bold {
   font-weight: bold;
 }
@@ -41,11 +48,10 @@ p {
 }
 
 form {
-  background-color: cyan;
+  background-color: papayawhip;
   padding: 15px;
   display: inline-block;
   width: 100%;
-  max-width: 340px;
   border-radius: 3px;
 }
 
@@ -62,6 +68,14 @@ textarea {
   border: 1px solid lightgrey;
   border-radius: 3px;
   font-size: 14px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+select {
+  border-radius: 3px;
 }
 
 li {
@@ -86,6 +100,7 @@ footer > a {
   --card-border-radius: 6px;
   --card-border-width: 2px;
 
+  width: var(--card-tile-width);
   position: relative;
   padding: 15px;
   border: var(--card-border-width) solid #222;
@@ -101,6 +116,11 @@ footer > a {
 
 .card:not(.card--is-being-edited) {
   cursor: grab;
+}
+
+.card--is-being-edited {
+  width: auto !important;
+  min-width: var(--card-tile-width);
 }
 
 .card:focus {
@@ -315,12 +335,16 @@ p.success {
   color: #048401;
 }
 
+.cardForm {
+  --card-form-width: 340px;
+}
+
 .cardForm form {
   padding: 0;
   background-color: white;
   display: inline-block;
   width: 100%;
-  max-width: 340px;
+  max-width: var(--card-form-width);
 }
 
 input {
@@ -336,6 +360,7 @@ input {
 label {
   font-size: 13px;
   display: block;
+  margin-bottom: 10px;
 }
 
 select {
@@ -349,6 +374,10 @@ select {
   margin-top: -7px;
   margin-bottom: 15px;
   display: block;
+}
+
+.cardForm .invalid {
+  color: var(--invalid-color);
 }
 
 /* -------------- */
@@ -416,7 +445,6 @@ select {
 }
 
 .settings select {
-  height: 30px;
   width: 100%;
 }
 

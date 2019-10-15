@@ -1,33 +1,76 @@
 <template>
   <div>
-    <label>
+    <label :for="`deviceId-${tile.id}`">
       Device Id
-      <select name="deviceId" id="deviceSelect">
+      <select :id="`deviceId-${tile.id}`" name="deviceId">
         <option
-          v-for="device in deviceList"
-          v-bind:selected="device === tile.deviceId"
+          v-for="(device, index) in deviceList"
+          :key="`device-list-${index}`"
+          :selected="device === tile.deviceId"
         >
           {{ device }}
         </option>
       </select>
     </label>
 
-    <label>
-      Data Property (supports
-      <a href="http://jmespath.org/tutorial.html" target="_blank">JMESPath</a>)
-      <input type="text" name="property" v-bind:value="tile.property" />
+    <data-property-field
+      name="property"
+      :value="tile.property"
+      :tile-id="tile.id"
+    />
+
+    <label :for="`textColor-${tile.id}`">
+      Text Color
+      <input
+        :id="`textColor-${tile.id}`"
+        v-model="textColor"
+        type="hidden"
+        name="textColor"
+      />
     </label>
 
-    <label>
-      Text Color
-      <input type="text" name="textColor" v-bind:value="tile.textColor" />
-    </label>
+    <color-picker
+      :uid="tile.id"
+      :color="textColor"
+      style="--cp-background-color: transparent; --cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
+      @change="updateValue"
+    />
   </div>
 </template>
 
 <script>
+import ColorPicker from "./ColorPicker";
+import DataPropertyField from "./DataPropertyField";
+
 export default {
-  name: "number-settings",
-  props: ["tile", "deviceList"]
+  name: "NumberSettings",
+
+  components: {
+    ColorPicker,
+    DataPropertyField
+  },
+
+  props: {
+    tile: {
+      type: Object,
+      required: true
+    },
+    deviceList: {
+      type: Array,
+      required: true
+    }
+  },
+
+  data() {
+    return {
+      textColor: this.tile.textColor
+    };
+  },
+
+  methods: {
+    updateValue(value) {
+      this.textColor = value;
+    }
+  }
 };
 </script>

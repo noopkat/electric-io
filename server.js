@@ -19,7 +19,6 @@ const partitionFilter = process.env.PARTITION_FILTER || [];
 
 // server options
 const simulating = process.env.SIMULATING;
-const editMode = process.env.EDIT_MODE || "unlocked";
 const platform = process.env.PLATFORM || "default";
 const port = process.env.PORT || 3000;
 

@@ -6,49 +6,77 @@
     <div class="settings__header">
       <button
         class="settings__toggle-btn"
-        @click="onToggleSettingsPanel"
-        :aria-expanded="settingsPanelOpen ? 'true' : 'false'"
         aria-labelledby="settings-toggle-label"
+        :aria-expanded="settingsPanelOpen ? 'true' : 'false'"
+        @click="onToggleSettingsPanel"
       >
-        <span class="screen-reader-only" id="settings-toggle-label">
+        <span id="settings-toggle-label" class="screen-reader-only">
           {{
             settingsPanelOpen ? "Close settings panel" : "Open settings panel"
           }}
         </span>
+
         <span aria-hidden="true">
           {{ settingsPanelOpen ? "&rarr;" : "⚙️" }}
         </span>
       </button>
 
-      <h2 class="settings__title">Settings</h2>
+      <h2 class="settings__title">
+        Settings
+      </h2>
     </div>
 
     <div class="settings__body">
-      <form v-on:submit.prevent="onSaveSettings">
-        <label>
+      <form @submit.prevent="onSaveSettings">
+        <label for="dashboard-settings-title">
           App Title
-          <input type="text" name="title" :value="dashboard.title" />
+          <input
+            id="title"
+            type="text"
+            name="dashboard-settings-title"
+            :value="dashboard.title"
+          />
         </label>
 
-        <label>
+        <label for="dashboard-settings-bgColor">
           Background Color
-          <compact-picker :value="bgColor" @input="updateValue" />
-          <input type="text" name="bgColor" v-model="bgColor" />
+          <input
+            id="dashboard-settings-bgColor"
+            v-model="bgColor"
+            type="hidden"
+            name="bgColor"
+          />
         </label>
 
-        <label>
+        <color-picker
+          :uid="'dashboard-settings'"
+          :color="bgColor"
+          style="--cp-background-color: transparent; --cp-focus-color: var(--focus-color)"
+          @change="updateValue"
+        />
+
+        <label for="dashboard-settings-bgImageUrl">
           Background Image URL
-          <input type="text" name="bgImageUrl" :value="dashboard.bgImageUrl" />
+          <input
+            id="dashboard-settings-bgImageUrl"
+            type="text"
+            name="bgImageUrl"
+            :value="dashboard.bgImageUrl"
+          />
         </label>
 
-        <label class="settings__checkbox-label">
+        <label
+          class="settings__checkbox-label"
+          for="dashboard-settings-bgImageRepeat"
+        >
           <span>Repeat background image?</span>
           <input
+            id="dashboard-settings-bgImageRepeat"
+            v-model="dashboard.bgImageRepeat"
             class="settings__checkbox"
             type="checkbox"
             name="bgImageRepeat"
             :value="dashboard.bgImageRepeat"
-            v-model="dashboard.bgImageRepeat"
           />
         </label>
 
@@ -57,10 +85,10 @@
 
       <h3>New Card</h3>
 
-      <form v-on:submit.prevent="onCreateCard">
-        <label>
+      <form @submit.prevent="onCreateCard">
+        <label for="dashboard-settings-type">
           Card Type
-          <select name="type">
+          <select id="dashboard-settings-type" name="type">
             <option value="button">button</option>
             <option value="lineChart">line chart</option>
             <option value="number">number</option>
@@ -76,14 +104,25 @@
 </template>
 
 <script>
-import { Compact } from "vue-color";
+import ColorPicker from "./ColorPicker";
 import { saveDashboard } from "../lib/configuration.js";
 import templates from "../lib/templates.js";
 import createGuid from "../lib/guid.js";
 
 export default {
-  name: "dashboard-settings",
-  props: ["dashboard"],
+  name: "DashboardSettings",
+
+  components: {
+    ColorPicker
+  },
+
+  props: {
+    dashboard: {
+      type: Object,
+      required: true
+    }
+  },
+
   data() {
     return {
       status: "",
@@ -91,11 +130,9 @@ export default {
       bgColor: this.dashboard.bgColor
     };
   },
-  components: {
-    "compact-picker": Compact
-  },
+
   methods: {
-    onSaveSettings: function(event) {
+    onSaveSettings(event) {
       const formData = new FormData(event.target);
       const eventData = {};
       formData.forEach((value, name) => {
@@ -104,7 +141,8 @@ export default {
 
       this.$emit("save-settings", eventData);
     },
-    onCreateCard: function(event) {
+
+    onCreateCard(event) {
       const formData = new FormData(event.target);
       const id = createGuid();
       const tileTemplate = templates[formData.get("type")];
@@ -112,11 +150,13 @@ export default {
 
       this.$emit("tile-create", newTile);
     },
+
     onToggleSettingsPanel() {
       this.settingsPanelOpen = this.settingsPanelOpen === true ? false : true;
     },
+
     updateValue(value) {
-      this.bgColor = value.hex;
+      this.bgColor = value;
     }
   }
 };

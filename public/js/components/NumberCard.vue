@@ -1,30 +1,39 @@
 <template>
-  <p class="number" v-bind:style="numberStyle">{{ number }}</p>
+  <p class="number" :style="numberStyle">{{ number }}</p>
 </template>
 
 <script>
 import { evaluatePath } from "../lib/messagePropertyEvaluation.js";
 
 export default {
-  name: "number-card",
+  name: "NumberCard",
+
   props: {
     tile: {
-      default: () => ({})
-    },
-    blockSize: {
-      default: () => []
+      type: Object,
+      required: true
     },
     messages: {
+      type: Array,
+      required: false,
       default: () => []
     }
   },
-  data: function() {
+
+  data() {
     return {
       number: 0
     };
   },
+
+  computed: {
+    numberStyle() {
+      return { color: this.tile.textColor };
+    }
+  },
+
   watch: {
-    messages: function() {
+    messages() {
       const lastMessage = this.messages.pop();
       if (lastMessage) {
         const value = evaluatePath(this.tile.property, lastMessage);
@@ -32,11 +41,6 @@ export default {
       } else {
         this.number = 0;
       }
-    }
-  },
-  computed: {
-    numberStyle: function() {
-      return { color: this.tile.textColor };
     }
   }
 };

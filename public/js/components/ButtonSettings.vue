@@ -2,11 +2,11 @@
   <div>
     <label>
       Device Id
-      <select name="deviceId" id="deviceSelect">
+      <select id="deviceSelect" name="deviceId">
         <option
           v-for="(device, index) in deviceList"
-          v-bind:selected="device === tile.deviceId"
-          v-bind:key="`device-list-option-${index}`"
+          :key="`device-list-option-${index}`"
+          selected="device === tile.deviceId"
         >
           {{ device }}
         </option>
@@ -15,39 +15,61 @@
 
     <label>
       Call Type
-      <select name="callType" id="callTypeSelect" v-model="tile.callType">
+      <select id="callTypeSelect" v-model="tile.callType" name="callType">
         <option
           v-for="option in typeOptions"
-          v-bind:key="option.value"
-          v-bind:selected="option.value === tile.callType"
-          v-bind:value="option.value"
-          >{{ option.text }}</option
+          :key="option.value"
+          :selected="option.value === tile.callType"
+          :value="option.value"
         >
+          {{ option.text }}
+        </option>
       </select>
     </label>
 
-    <label v-if="tile.callType === 'method'">
+    <label v-if="tile.callType === 'method'" for="deviceMethod">
       Method Name
-      <input type="text" name="deviceMethod" v-bind:value="tile.deviceMethod" />
+      <input
+        id="deviceMethod"
+        name="deviceMethod"
+        type="text"
+        :value="tile.deviceMethod"
+      />
     </label>
 
-    <label>
+    <label for="callPayload">
       <span v-if="tile.callType === 'method'">Method</span>
       <span v-else>Message</span> Payload (must be valid JSON pls!)
-      <textarea name="callPayload" v-bind:value="tile.callPayload"></textarea>
+      <textarea id="callPayload" name="callPayload" :value="tile.callPayload" />
     </label>
 
-    <label>
+    <label for="buttonText">
       Button Text
-      <input type="text" name="buttonText" v-bind:value="tile.buttonText" />
+      <input
+        id="buttonText"
+        name="buttonText"
+        type="text"
+        :value="tile.buttonText"
+      />
     </label>
   </div>
 </template>
 
 <script>
 export default {
-  name: "button-settings",
-  props: ["tile", "deviceList"],
+  name: "ButtonSettings",
+
+  props: {
+    tile: {
+      type: Object,
+      required: true
+    },
+    deviceList: {
+      type: Array,
+      required: true
+    }
+  },
+
   data() {
     return {
       typeOptions: [

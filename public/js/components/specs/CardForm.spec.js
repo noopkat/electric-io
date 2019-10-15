@@ -1,40 +1,9 @@
 import { shallowMount } from "@vue/test-utils";
+import { axe, toHaveNoViolations } from "jest-axe";
+
 import CardForm from "../CardForm";
-import axe from "axe-core";
 
-describe("CardFrom", () => {
-  test("component can mount", () => {
-    const wrapper = shallowMountCardForm();
-
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-
-  test("the new FormData", () => {
-    const wrapper = shallowMountCardForm();
-    const formData = document.querySelector(".cardForm form");
-    wrapper.setProps({ editing: true });
-
-    const event = {
-      target: formData
-    };
-
-    wrapper.vm.onSubmit(event);
-
-    expect(wrapper.emitted("save-settings")).toBeTruthy();
-  });
-});
-
-test("verify component is accessible", () => {
-  const wrapper = shallowMountCardForm();
-
-  axe.run(wrapper, (err, { violations }) => {
-    expect(err).toBe(null);
-    expect(violations).toHaveLength(0);
-    done();
-  });
-});
-
-function shallowMountCardForm() {
+function shallowMountComponent(props = {}) {
   return shallowMount(CardForm, {
     propsData: {
       tile: {
@@ -46,8 +15,40 @@ function shallowMountCardForm() {
         type: "sticker",
         url: "https://media.giphy.com/media/1wXeLxuTVBZe0Ht7Zu/giphy.gif"
       },
-      deviceList: ["AZ3166", "Tessel2", "Jenn"]
+      deviceList: ["AZ3166", "Tessel2", "Jenn"],
+      ...props
     },
     attachToDocument: true
   });
 }
+
+expect.extend(toHaveNoViolations);
+
+describe("CardFrom", () => {
+  test("Component can be mounted", () => {
+    const wrapper = shallowMountComponent();
+
+    expect(wrapper.isVueInstance()).toBeTruthy();
+  });
+
+  test("save-settings event is emitted", () => {
+    const wrapper = shallowMountComponent();
+    const formData = document.querySelector(".cardForm form");
+    wrapper.setProps({ editing: true });
+
+    const event = {
+      target: formData
+    };
+
+    wrapper.vm.onSubmit(event);
+
+    expect(wrapper.emitted("save-settings")).toBeTruthy();
+  });
+
+  test("Axe doesn’t find any violations", async () => {
+    const wrapper = shallowMountComponent();
+    const html = wrapper.html();
+
+    expect(await axe(html)).toHaveNoViolations();
+  });
+});

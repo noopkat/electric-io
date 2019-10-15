@@ -1,40 +1,9 @@
 import { shallowMount } from "@vue/test-utils";
+import { axe, toHaveNoViolations } from "jest-axe";
+
 import LineChartSettings from "../LineChartSettings";
-import axe from "axe-core";
 
-describe("LineChartSettings", () => {
-  test("component can mount", () => {
-    const wrapper = shallowMountLineChartSettings();
-
-    expect(wrapper.isVueInstance()).toBeTruthy();
-  });
-
-  test("the deviceList prop is populated", () => {
-    const { vm } = shallowMountLineChartSettings();
-
-    expect(vm.deviceList.length).toBe(3);
-  });
-
-  test("that there are 3 labels in the LineChartSettings window", () => {
-    const wrapper = shallowMountLineChartSettings();
-
-    const labels = wrapper.findAll("label");
-
-    expect(labels.exists()).toBe(true);
-    expect(labels.length).toEqual(3);
-  });
-  test("verify component is accessible", () => {
-    const wrapper = shallowMountLineChartSettings();
-
-    axe.run(wrapper, (err, { violations }) => {
-      expect(err).toBe(null);
-      expect(violations).toHaveLength(0);
-      done();
-    });
-  });
-});
-
-function shallowMountLineChartSettings() {
+function shallowMountComponent(props = {}) {
   return shallowMount(LineChartSettings, {
     propsData: {
       tile: {
@@ -48,6 +17,64 @@ function shallowMountLineChartSettings() {
         type: "line-chart"
       },
       deviceList: ["AZ3166", "Tessel2", "Jenn"]
-    }
+    },
+    ...props
   });
 }
+
+expect.extend(toHaveNoViolations);
+
+describe("LineChartSettings", () => {
+  test("component can mount", () => {
+    const wrapper = shallowMountComponent();
+
+    expect(wrapper.isVueInstance()).toBeTruthy();
+  });
+
+  test("the deviceList prop is populated", () => {
+    const { vm } = shallowMountComponent();
+
+    expect(vm.deviceList.length).toBe(3);
+  });
+
+  test("that there is a device ID field in the LineChartSettings window", () => {
+    const wrapper = shallowMountComponent();
+
+    const elements = wrapper.findAll("[name=deviceId]");
+
+    expect(elements.exists()).toBe(true);
+    expect(elements.length).toEqual(1);
+  });
+
+  test("that there is a data property field in the LineChartSettings window", () => {
+    const wrapper = shallowMountComponent();
+
+    const elements = wrapper.findAll("[name=property]");
+
+    expect(elements.exists()).toBe(true);
+    expect(elements.length).toEqual(1);
+  });
+
+  test("that there is a line color field in the LineChartSettings window", () => {
+    const wrapper = shallowMountComponent();
+
+    const elements = wrapper.findAll("[name=lineColor]");
+
+    expect(elements.exists()).toBe(true);
+    expect(elements.length).toEqual(1);
+  });
+
+  test("updateValue()", () => {
+    const wrapper = shallowMountComponent();
+    const spy = jest.spyOn(wrapper.vm, "updateValue");
+    wrapper.vm.updateValue("#ff8800");
+    expect(spy).toBeCalled();
+  });
+
+  test("Axe doesn’t find any violations", async () => {
+    const wrapper = shallowMountComponent();
+    const html = wrapper.html();
+
+    expect(await axe(html)).toHaveNoViolations();
+  });
+});

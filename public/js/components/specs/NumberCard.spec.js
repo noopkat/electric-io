@@ -1,26 +1,42 @@
 import { shallowMount } from "@vue/test-utils";
+import { axe, toHaveNoViolations } from "jest-axe";
+
 import NumberCard from "../NumberCard";
-import axe from "axe-core";
+
+function shallowMountComponent(props = {}) {
+  return shallowMount(NumberCard, {
+    propsData: {
+      tile: {
+        textColor: "blue"
+      },
+      ...props
+    },
+
+    data: () => ({
+      number: 1
+    })
+  });
+}
+
+expect.extend(toHaveNoViolations);
 
 describe("NumberCard", () => {
   test("component can mount", () => {
-    const wrapper = shallowMountNumberCard();
+    const wrapper = shallowMountComponent();
 
     expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
   test("renders with color and number value", () => {
-    const wrapper = shallowMountNumberCard();
+    const wrapper = shallowMountComponent();
 
     expect(wrapper.html()).toMatchSnapshot();
   });
 
   test("the messages watch method", () => {
     const spy = jest.spyOn(NumberCard.watch, "messages");
-    const wrapper = shallowMount(NumberCard, {
-      propsData: {
-        messages: []
-      }
+    const wrapper = shallowMountComponent({
+      messages: []
     });
 
     expect(spy).toHaveBeenCalledTimes(0);
@@ -45,28 +61,10 @@ describe("NumberCard", () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  test("verify component is accessible", () => {
-    const wrapper = shallowMountNumberCard();
+  test("Axe doesn’t find any violations", async () => {
+    const wrapper = shallowMountComponent();
+    const html = wrapper.html();
 
-    axe.run(wrapper, (err, { violations }) => {
-      expect(err).toBe(null);
-      expect(violations).toHaveLength(0);
-      done();
-    });
+    expect(await axe(html)).toHaveNoViolations();
   });
 });
-
-const mountingConfiguration = {
-  propsData: {
-    tile: {
-      textColor: "blue"
-    }
-  },
-  data: () => ({
-    number: 1
-  })
-};
-
-function shallowMountNumberCard() {
-  return shallowMount(NumberCard, mountingConfiguration);
-}
