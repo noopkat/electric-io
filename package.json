@@ -11,7 +11,8 @@
     "watch:server": "nodemon server.js",
     "test": "jest",
     "test:watch": "jest --watchAll",
-    "build": "webpack --progress --colors"
+    "build": "webpack --progress --colors",
+    "alex": "alex"
   },
   "dependencies": {
     "@azure/event-hubs": "^2.1.1",
@@ -49,6 +50,7 @@
     "@babel/preset-stage-2": "^7.0.0",
     "@types/jest": "^24.0.18",
     "@vue/test-utils": "^1.0.0-beta.29",
+    "alex": "^8.0.0",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
     "babel-minify-webpack-plugin": "^0.3.1",
