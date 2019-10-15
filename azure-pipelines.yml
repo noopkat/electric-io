@@ -4,29 +4,29 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- master
+    - master
 
 pool:
-  vmImage: 'ubuntu-16.04'
+    vmImage: "ubuntu-16.04"
 
 strategy:
-  matrix:
-    node_8_x:
-      node_version: 8.x
-    node_9_x:
-      node_version: 9.x
-    node_10_x:
-      node_version: 10.x
-    node_11_x:
-      node_version: 11.x
+    matrix:
+        node_8_x:
+            node_version: 8.x
+        node_9_x:
+            node_version: 9.x
+        node_10_x:
+            node_version: 10.x
+        node_11_x:
+            node_version: 11.x
 
 steps:
-- task: NodeTool@0 
-  inputs:
-    versionSpec: $(node_version)
+    - task: NodeTool@0
+      inputs:
+          versionSpec: $(node_version)
 
-
-- script: |
-    npm install
-    npm test
-  displayName: 'npm install and test'
+    - script: |
+          npm install
+          npm test
+          npm alex
+      displayName: "npm install, test, and Alex lint"
