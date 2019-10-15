@@ -28,5 +28,5 @@ steps:
     - script: |
           npm install
           npm test
-          npm alex
+          npm run alex
       displayName: "npm install, test, and Alex lint"
