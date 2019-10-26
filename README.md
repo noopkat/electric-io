@@ -74,7 +74,7 @@ We have two different ways you can do this. You can do this via the [native inst
 
 7. Navigate to `http://localhost:3000` in your favourite modern browser and away you go! Try adding new cards via the settings pane on the right and click “edit” to fill in the details.
 
-### Docker Installation Method
+### Docker Installation
 
 #### Install Docker
 
