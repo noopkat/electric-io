@@ -37,7 +37,8 @@
       <component
         :is="childCard"
         :tile="tile"
-        :block-size="blockSize"
+        :block-width="blockWidth"
+        :block-height="blockHeight"
         :messages="messages"
       />
     </div>
@@ -111,16 +112,27 @@ export default {
     tile: {
       type: Object,
       required: false,
-      default: () => ({})
+      default: () => ({}),
+      validator: tile => {
+        return ["id", "position", "size", "title", "type"].every(prop => {
+          return tile.hasOwnProperty(prop);
+        });
+      }
     },
-    blockSize: {
-      type: Array,
+    blockWidth: {
+      type: Number,
+      required: true
+    },
+    blockHeight: {
+      type: Number,
       required: true
     },
     deviceList: {
       type: Array,
       required: false,
-      default: () => []
+      default: () => [],
+      validator: deviceList =>
+        deviceList.every(deviceId => typeof deviceId === "string")
     },
     messages: {
       type: Array,
@@ -169,8 +181,8 @@ export default {
       return {
         top: this.top,
         left: this.left,
-        "--card-tile-width": `${this.blockSize[0] * this.tile.size[0]}px`,
-        minHeight: `${this.blockSize[1] * this.tile.size[1]}px`
+        "--card-tile-width": `${this.blockWidth * this.tile.size[0]}px`,
+        minHeight: `${this.blockHeight * this.tile.size[1]}px`
       };
     },
 

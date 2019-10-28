@@ -7,7 +7,13 @@ function shallowMountComponent(props = {}) {
   return shallowMount(NumberCard, {
     propsData: {
       tile: {
-        textColor: "blue"
+        id: "ac57912f-1a14-4cc2-a587-1bc116e8cc54",
+        position: [930, 417],
+        property: "",
+        size: [0.98, 0.73],
+        textColor: "blue",
+        title: "Number",
+        type: "number"
       },
       ...props
     },

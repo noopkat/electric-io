@@ -17,7 +17,8 @@ function shallowMountComponent(props = {}) {
         title: "Line Chart",
         type: "line-chart"
       },
-      blockSize: [200, 250],
+      blockWidth: 200,
+      blockHeight: 250,
       messages: [
         {
           deviceId: "BU2802",
@@ -78,7 +79,8 @@ describe("LineChartCard", () => {
     const spy = jest.spyOn(LineChartCard.watch, "messages");
     const wrapper = shallowMountComponent({
       messages: [],
-      blockSize: [200, 250],
+      blockWidth: 200,
+      blockHeight: 250,
       tile: {
         deviceId: "AZ3166",
         id: "ac57912f-1a04-4cc2-a587-1bc116e8cc54",

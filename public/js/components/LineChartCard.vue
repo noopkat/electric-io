@@ -14,8 +14,12 @@ export default {
       type: Object,
       required: true
     },
-    blockSize: {
-      type: Array,
+    blockWidth: {
+      type: Number,
+      required: true
+    },
+    blockHeight: {
+      type: Number,
       required: true
     },
     messages: {
@@ -39,8 +43,8 @@ export default {
     chartStyle: function() {
       return {
         marginLeft: "-20px",
-        width: `${this.blockSize[0] * this.tile.size[0]}px`,
-        height: `${this.blockSize[1] * this.tile.size[1] - 70}px`,
+        width: `${this.blockWidth * this.tile.size[0]}px`,
+        height: `${this.blockHeight * this.tile.size[1] - 70}px`,
         "--stroke-color": this.lineColor
       };
     }
