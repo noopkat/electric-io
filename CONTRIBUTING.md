@@ -5,13 +5,13 @@ Hey! Thanks for your interest in contributing to this project! I really apprecia
 This page should get you up and running with how to run locally and how to adhere to this project’s style guide also.
 
 1. [Installation](#installation)
-   - [With a real Azure IoT Hub](#with-a-real-azure-iot-hub)
-   - [With the device and hub simulator](#with-the-built-in-device-and-hub-simulator)
+    - [With a real Azure IoT Hub](#with-a-real-azure-iot-hub)
+    - [With the device and hub simulator](#with-the-built-in-device-and-hub-simulator)
 2. [Style guide](#style-guide)
-   - [Tests](#tests)
-   - [Mobile support](#mobile-support)
+    - [Tests](#tests)
+    - [Mobile support](#mobile-support)
 3. [Pull requests](#pull-requests)
-   - [Avoiding merge conflicts](#merge-conflicts)
+    - [Avoiding merge conflicts](#merge-conflicts)
 
 ## Installation
 
@@ -31,35 +31,35 @@ You can also list your connections strings [via the command line](https://docs.m
 2. Install [Git](https://git-scm.org).
 3. Open your terminal and do the following:
 
-   1. Clone the [electric-io repository](https://github.com/noopkat/electric-io):
+    1. Clone the [electric-io repository](https://github.com/noopkat/electric-io):
 
-      ```
-      git clone https://github.com/noopkat/electric-io.git
-      ```
+        ```
+        git clone https://github.com/noopkat/electric-io.git
+        ```
 
-      If this fails with an error message, you can [have a look at GitHub HTTPS cloning errors](https://help.github.com/articles/https-cloning-errors/).
+        If this fails with an error message, you can [have a look at GitHub HTTPS cloning errors](https://help.github.com/articles/https-cloning-errors/).
 
-   2. Navigate to the electric-iodirectory:
+    2. Navigate to the electric-iodirectory:
 
-      ```
-      cd electric-io
-      ```
+        ```
+        cd electric-io
+        ```
 
-   3. Install electric-io’s dependencies:
+    3. Install electric-io’s dependencies:
 
-      ```
-      npm install
-      ```
+        ```
+        npm install
+        ```
 
-      If this fails with an error message, you can [have a look at common NPM errors](https://docs.npmjs.com/common-errors).
+        If this fails with an error message, you can [have a look at common NPM errors](https://docs.npmjs.com/common-errors).
 
 4. Open the file `.env` in and fill in the `CONNECTION_STRING` property with your Azure IoT Hub connection string.
 5. Optional. Specify the `CONSUMER_GROUP` in `.env`. _If in doubt, you can skip this step_.
 6. Go back to your terminal and start electric-io:
 
-   ```
-   npm start
-   ```
+    ```
+    npm start
+    ```
 
 7. Navigate to `http://localhost:3000` in your favourite modern browser and away you go! Try adding new cards via the settings pane on the right and click “edit” to fill in the details.
 
@@ -71,11 +71,11 @@ This application also features a simulator that features three “devices” tha
 2. Navigate to the `.data` directory where you’ll note a file called `dashboard.json.sim`. Copy this file to the same directory and name it `dashboard.json`. This will set you up with a pre-made dashboard layout with some cards already listening to data from the simulated devices 😎
 3. In your terminal, run:
 
-   ```
-   SIMULATING=true npm start
-   ```
+    ```
+    SIMULATING=true npm start
+    ```
 
-   On Windows, run `set SIMULATING=true`, then run `npm start`.
+    On Windows, run `set SIMULATING=true`, then run `npm start`.
 
 4. Navigate to `http://localhost:3000` in your favourite modern browser and away you go!
 
@@ -88,8 +88,8 @@ Example payload:
 
 ```json
 {
-  "temperature": 25.8976,
-  "humidity": 40.679
+    "temperature": 25.8976,
+    "humidity": 40.679
 }
 ```
 
@@ -102,8 +102,8 @@ Example payload:
 
 ```json
 {
-  "light": 0.45689,
-  "sound": 0.23878
+    "light": 0.45689,
+    "sound": 0.23878
 }
 ```
 
@@ -116,7 +116,7 @@ Example payload:
 
 ```json
 {
-  "coolness": 98.56
+    "coolness": 98.56
 }
 ```
 
@@ -126,9 +126,9 @@ ESLint is installed by default with this repository, and many IDEs will automati
 
 This said, some caveats remain in order to keep this approachable:
 
-- Target NodeJS 10+
-- Stick to plain CSS. SASS/SCSS is probably a little much for this project anyway.
-- Idiomatic Vue style. This is way less scary than it might sound. Just keep things looking like the documentation. 🌻
+-   Target NodeJS 10+
+-   Stick to plain CSS. SASS/SCSS is probably a little much for this project anyway.
+-   Idiomatic Vue style. This is way less scary than it might sound. Please keep things looking like the documentation. 🌻
 
 If you want a build toolchain for doing extra things like SASS or Vue related transpiling, go for it! But please do this in your own fork and keep it as your own project rather than trying to change this one 💜
 
@@ -146,7 +146,7 @@ Mobile support for this app is not great at the moment. I’d suggest the follow
 2. Larger “edit” and “delete” buttons on mobile.
 3. Settings can be an expandable menu item (really this should be a thing for the desktop version)
 
-Just some ideas ✨ Add your own if you geek out about mobile responsive designs!
+Some ideas ✨ Add your own if you geek out about mobile responsive designs!
 
 ## Pull requests
 
@@ -162,7 +162,7 @@ Then, check out a new branch with `git checkout -b my-branch-name`
 
 Create your code / documentation changes in this branch, and commit when done. Once done, `git push fork your-branch-name`
 
-Once this is finished pushing, you can go to your fork on GitHub. It should now ask you right away if you want to create a pull request. Clicking that button should set you up with a text field just like when creating a new issue on GitHub. Fill it out and submit the pull request. Then, we can review it “Pull requests” in this original repository.
+Once this is finished pushing, you can go to your fork on GitHub. It should now ask you right away if you want to create a pull request. Clicking that button should set you up with a text field similar to when creating a new issue on GitHub. Fill it out and submit the pull request. Then, we can review it “Pull requests” in this original repository.
 
 ### Merge Conflicts
 
@@ -183,10 +183,10 @@ git merge master
 
 This will:
 
-- Switch to your own `master` branch
-- Download changes from the primary repository `noopkat/electric-io`
-- Switch back to your `feature/...` or `issue/...` branch
-- Merge changes into your branch
+-   Switch to your own `master` branch
+-   Download changes from the primary repository `noopkat/electric-io`
+-   Switch back to your `feature/...` or `issue/...` branch
+-   Merge changes into your branch
 
 You can then `git push` to update the PR if you’ve already submitted one.
 
