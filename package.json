@@ -25,7 +25,7 @@
     "express": "^4.17.1",
     "express-sanitizer": "^1.0.5",
     "jmespath": "^0.15.0",
-    "marked": "^0.7.0",
+    "marked": "^0.8.0",
     "socket.io": "^2.3.0",
     "vue": "^2.6.10",
     "vue-a11y-dialog": "^0.5.0"
