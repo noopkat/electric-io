@@ -69,7 +69,7 @@
     "vue-jest": "4.0.0-beta.2",
     "vue-loader": "15.7.1",
     "vue-template-compiler": "2.6.10",
-    "webpack": "4.41.0",
+    "webpack": "4.41.5",
     "webpack-cli": "3.3.9",
     "webpack-watch-server": "1.2.1",
     "whatwg-fetch": "3.0.0"
