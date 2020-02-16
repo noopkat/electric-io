@@ -48,7 +48,7 @@
     "@babel/plugin-transform-runtime": "7.8.3",
     "@babel/preset-env": "7.8.4",
     "@babel/preset-stage-2": "7.8.3",
-    "@types/jest": "24.0.18",
+    "@types/jest": "24.9.1",
     "@vue/test-utils": "1.0.0-beta.31",
     "alex": "8.1.1",
     "babel-jest": "24.9.0",
