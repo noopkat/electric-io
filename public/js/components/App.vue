@@ -169,9 +169,11 @@ export default {
 
       const socket = io();
       socket.on("message", message => {
-        const deviceId = message.annotations["iothub-connection-device-id"];
+        const deviceId =
+          message.systemProperties["iothub-connection-device-id"];
         message.body.deviceId = deviceId;
-        message.body.enqueuedTime = message.annotations["iothub-enqueuedtime"];
+        message.body.enqueuedTime =
+          message.systemProperties["iothub-enqueuedtime"];
         if (this.messages.length > 500) this.messages.shift();
         this.messages.push(message.body);
       });

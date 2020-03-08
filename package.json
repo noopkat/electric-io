@@ -15,7 +15,7 @@
     "alex": "alex"
   },
   "dependencies": {
-    "@azure/event-hubs": "^2.1.1",
+    "@azure/event-hubs": "^5.0.1",
     "@babel/runtime": "^7.6.2",
     "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0",
     "azure-iothub": "^1.11.0",

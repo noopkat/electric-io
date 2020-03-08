@@ -13,7 +13,35 @@ const simHub = require("./lib/simHub");
 const routes = require("./lib/routes.js");
 
 // hub options
-const connectionString = process.env.CONNECTION_STRING;
+if (!process.env.IOTHUB_CONNECTION_STRING && process.env.CONNECTION_STRING) {
+  console.error(
+    "It looks like you recently upgraded electric-io and need to update your"
+  );
+  console.error("configuration.");
+  console.error("");
+  console.error(
+    "Previous versions of electric-io required the IoT Hub connection string"
+  );
+  console.error("in the CONNECTION_STRING environment variable.");
+  console.error("");
+  console.error(
+    "This version requires both the IoT Hub connection string and the Event"
+  );
+  console.error("Hub-compatible endpoint connection string:");
+  console.error("  IOTHUB_CONNECTION_STRING=...");
+  console.error("  EVENTHUB_CONNECTION_STRING=...");
+  console.error("");
+  console.error(
+    "For more information about how to configure these connection strings, go to"
+  );
+  console.error(
+    "https://github.com/noopkat/electric-io/blob/master/README.md#installation"
+  );
+
+  process.exit(1);
+}
+const iotHubConnectionString = process.env.IOTHUB_CONNECTION_STRING;
+const eventHubConnectionString = process.env.EVENTHUB_CONNECTION_STRING;
 const consumerGroup = process.env.CONSUMER_GROUP || "$Default";
 const partitionFilter = process.env.PARTITION_FILTER || [];
 
@@ -38,10 +66,10 @@ function errorHandler(error) {
 }
 
 const hubOptions = {
-  connectionString,
+  iotHubConnectionString,
+  eventHubConnectionString,
   consumerGroup,
   partitionFilter,
-  startTime: Date.now(),
   receiveHandler,
   errorHandler
 };
