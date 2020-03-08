@@ -12,7 +12,7 @@ services:
       - CONSUMER_GROUP
       - PLATFORM=azure
       - IOTHUB_CONNECTION_STRING=<IoTHubConnectionString>
-      - EVENTTHUB_CONNECTION_STRING=<EventHubConnectionString>
+      - EVENTHUB_CONNECTION_STRING=<EventHubConnectionString>
       - EDIT_MODE=unlocked
     volumes: # For file editing, watching, etc
       - electric-io:/usr/app
