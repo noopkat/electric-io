@@ -28,13 +28,9 @@ This will be remixable on Glitch pretty soon, but if you want to run it locally 
 
 You’ll need to have an Azure IoT Hub instance of your own running in Azure, as this is what the dashboard is designed for. If you’d like to see more IoT messaging providers, let me know by [opening an issue](https://github.com/noopkat/electric-io/issues/new?title=Request+to+add+messaging+provider).
 
-You’ll need to have your Azure IoT Hub connection string and Event Hub-compatible endpoint connection string handy.
+You’ll need to have your Azure IoT Hub connection string handy. You can find it under your “Shared Access Policies” section in the IoT Hub’s Azure Portal blade. Choose a policy that allows “registry read”, “service connect” and “device connect” at the least.
 
-- You can find your Iot Hub connection string under the “Shared Access Policies” section in the IoT Hub’s Azure Portal blade. Choose a policy that allows “registry read”, “service connect” and “device connect” at the least.
-
-  You can also list your connections strings [via the command line](https://docs.microsoft.com/en-us/cli/azure/iot/hub?view=azure-cli-latest#az-iot-hub-show-connection-string).
-
-- You can find your Event Hub-compatible endpoint connection string under the “Built-in endpoints” section in the IoT Hub's Azure Portal blade.
+You can also list your connections strings [via the command line](https://docs.microsoft.com/en-us/cli/azure/iot/hub?view=azure-cli-latest#az-iot-hub-show-connection-string).
 
 **Now you’re ready to install the app.**
 
@@ -68,7 +64,7 @@ We have two different ways you can do this. You can do this via the [native inst
 
       If this fails with an error message, you can [have a look at common NPM errors](https://docs.npmjs.com/common-errors).
 
-4. Open the file `.env` in a text editor. Fill in the `IOTHUB_CONNECTION_STRING` property with your Azure IoT Hub connection string. Fill in the `EVENTHUB_CONNECTION_STRING` property with your Event Hub-compatible endpoint connection string.
+4. Open the file `.env` in and fill in the `CONNECTION_STRING` property with your Azure IoT Hub connection string.
 5. Optional. Specify the `CONSUMER_GROUP` in `.env`. _If in doubt, you can skip this step_.
 6. Go back to your terminal and start electric-io:
 

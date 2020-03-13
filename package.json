@@ -15,6 +15,7 @@
     "alex": "alex"
   },
   "dependencies": {
+    "@azure/core-amqp": "^1.1.0",
     "@azure/event-hubs": "^5.0.1",
     "@babel/runtime": "^7.6.2",
     "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0",
@@ -26,6 +27,7 @@
     "express-sanitizer": "^1.0.5",
     "jmespath": "^0.15.0",
     "marked": "^0.8.0",
+    "rhea-promise": "^1.0.0",
     "socket.io": "^2.3.0",
     "vue": "^2.6.11",
     "vue-a11y-dialog": "^0.5.0"

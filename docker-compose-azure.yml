@@ -11,11 +11,9 @@ services:
       - DEBUG
       - CONSUMER_GROUP
       - PLATFORM=azure
-      - IOTHUB_CONNECTION_STRING=<IoTHubConnectionString>
-      - EVENTHUB_CONNECTION_STRING=<EventHubConnectionString>
+      - CONNECTION_STRING=<IoTHubConnectionString>
       - EDIT_MODE=unlocked
     volumes: # For file editing, watching, etc
       - electric-io:/usr/app
       - /usr/app/node_modules
-volumes:
-  electric-io:
+volumes: electric-io:
