@@ -5,6 +5,8 @@ import BaseCard from "../BaseCard";
 
 function shallowMountComponent() {
   return shallowMount(BaseCard, {
+    attachToDocument: true,
+
     propsData: {
       tile: {
         callType: "method",
@@ -93,7 +95,7 @@ describe("BaseCard", () => {
     const card = wrapper.find(".card");
 
     expect(card.attributes().style).toBe(
-      `top: ${inlineStyles.top}; left: ${inlineStyles.left}; min-height: ${inlineStyles.minHeight};`
+      `top: ${inlineStyles.top}; left: ${inlineStyles.left}; --card-tile-width: ${inlineStyles["--card-tile-width"]}; min-height: ${inlineStyles.minHeight};`
     );
   });
 
