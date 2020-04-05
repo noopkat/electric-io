@@ -41,7 +41,6 @@ const hubOptions = {
   connectionString,
   consumerGroup,
   partitionFilter,
-  startTime: Date.now(),
   receiveHandler,
   errorHandler
 };
