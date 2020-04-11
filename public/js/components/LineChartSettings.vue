@@ -2,11 +2,15 @@
   <div>
     <label :for="`deviceId-${tile.id}`">
       Device Id
-      <select :id="`deviceId-${tile.id}`" name="deviceId">
+      <select
+        :id="`deviceId-${tile.id}`"
+        name="deviceId"
+        :value="tile.deviceId"
+      >
         <option
           v-for="(device, index) in deviceList"
           :key="`device-list-${index}`"
-          :selected="device === tile.deviceId"
+          :value="device"
         >
           {{ device }}
         </option>
