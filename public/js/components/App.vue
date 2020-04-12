@@ -25,30 +25,39 @@
         :device-list="deviceList"
         :block-width="dashboard.blockSize[0]"
         :block-height="dashboard.blockSize[1]"
-        @tile-position="onTileChange"
-        @tile-settings="onTileChange"
+        @tile-position="onTilePositionChange"
+        @tile-settings="onTileSettingsChange"
         @tile-delete="onTileDelete"
       />
     </main>
+
+    <ElectricToaster :toasts="electricToasts" />
   </div>
 </template>
 
 <script>
 import io from "socket.io-client";
-import BaseCard from "./BaseCard";
-import DashboardSettings from "./DashboardSettings";
+
+import BaseCard from "./BaseCard.vue";
+import DashboardSettings from "./DashboardSettings.vue";
+import ElectricToaster from "./electric-toaster/ElectricToaster.vue";
+
 import {
   saveDashboard,
   getDashboard,
   getDeviceList
 } from "../lib/configuration.js";
-
 import contrastColor from "../lib/colorContraster.js";
 import { TITLE_EMOJI_REGEX } from "../utils/constants.js";
 
 export default {
   name: "App",
-  components: { BaseCard, DashboardSettings },
+
+  components: {
+    BaseCard,
+    DashboardSettings,
+    ElectricToaster
+  },
 
   data() {
     return {
@@ -58,7 +67,8 @@ export default {
       },
       messages: [],
       deviceList: [],
-      simulating: SIMULATING
+      simulating: SIMULATING,
+      electricToasts: []
     };
   },
 
@@ -116,18 +126,32 @@ export default {
 
   created() {
     // TODO: handle errors here
-    getDashboard().then(r => (this.dashboard = r.dashboard));
-    getDeviceList().then(r => this.onDeviceListReceived(r));
+    getDashboard().then(response => (this.dashboard = response.dashboard));
+    getDeviceList().then(response => this.onDeviceListReceived(response));
   },
 
   methods: {
     onSaveSettings(event) {
       this.dashboard = Object.assign({}, this.dashboard, event);
-      saveDashboard(this.dashboard).then(r => console.log(r.ok));
+      saveDashboard(this.dashboard).then(() => {
+        this.createElectricToast({ content: "💾 dashboard saved" });
+      });
+    },
+
+    onTilePositionChange(event) {
+      this.onTileChange(event);
+    },
+
+    onTileSettingsChange(event) {
+      this.onTileChange(event).then(response => {
+        this.createElectricToast({ content: "💾 card saved" });
+      });
     },
 
     onTileChange(event) {
-      const tileIndex = this.dashboard.tiles.findIndex(t => t.id === event.id);
+      const tileIndex = this.dashboard.tiles.findIndex(
+        tile => tile.id === event.id
+      );
       const updatedTile = Object.assign(
         {},
         this.dashboard.tiles[tileIndex],
@@ -139,8 +163,7 @@ export default {
         tiles: updatedTiles
       });
 
-      // TODO: this needs to be handled properly in the UI
-      saveDashboard(this.dashboard).then(r => console.log(r.ok));
+      return saveDashboard(this.dashboard);
     },
 
     onTileDelete(tileId) {
@@ -149,8 +172,9 @@ export default {
         tiles: updatedTiles
       });
 
-      // TODO: this needs to be handled properly in the UI
-      saveDashboard(this.dashboard).then(r => console.log(r.ok));
+      saveDashboard(this.dashboard).then(() => {
+        this.createElectricToast({ content: "🚮 card deleted" });
+      });
     },
 
     onTileCreate(event) {
@@ -160,8 +184,7 @@ export default {
         tiles: updatedTiles
       });
 
-      // TODO: this needs to be handled properly in the UI
-      saveDashboard(this.dashboard).then(r => console.log(r.ok));
+      saveDashboard(this.dashboard);
     },
 
     onDeviceListReceived(deviceList) {
@@ -181,6 +204,31 @@ export default {
         if (this.messages.length > 500) this.messages.shift();
         this.messages.push(message.body);
       });
+    },
+
+    /**
+     * Creates a new electric toast object.
+     *
+     * @param {object} electricToastOptions
+     *   An electric toast options object.
+     *   Its only required property is “content”.
+     *   Optionally, you can provide an option for
+     *   whether the toast should be automatically dismissed
+     *   and how long the dismiss timeout should be.
+     */
+    createElectricToast({
+      content,
+      shouldAutoDismiss = true,
+      autoDismissTimeoutInSeconds = 5
+    }) {
+      const nextToastIndex = this.electricToasts.length + 1;
+      const toast = {
+        id: `toast-${nextToastIndex}`,
+        content,
+        shouldAutoDismiss
+      };
+
+      this.electricToasts.push(toast);
     }
   }
 };
