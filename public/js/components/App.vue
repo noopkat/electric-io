@@ -169,6 +169,10 @@ export default {
 
       const socket = io();
       socket.on("message", message => {
+        if (!("systemProperties" in message)) {
+          return;
+        }
+
         const deviceId =
           message.systemProperties["iothub-connection-device-id"];
         message.body.deviceId = deviceId;

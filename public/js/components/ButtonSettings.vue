@@ -2,11 +2,11 @@
   <div>
     <label>
       Device Id
-      <select id="deviceSelect" name="deviceId">
+      <select id="deviceSelect" name="deviceId" :value="tile.deviceId">
         <option
           v-for="(device, index) in deviceList"
           :key="`device-list-option-${index}`"
-          selected="device === tile.deviceId"
+          :value="device"
         >
           {{ device }}
         </option>
@@ -15,11 +15,15 @@
 
     <label>
       Call Type
-      <select id="callTypeSelect" v-model="tile.callType" name="callType">
+      <select
+        id="callTypeSelect"
+        v-model="tile.callType"
+        name="callType"
+        :value="tile.callType"
+      >
         <option
           v-for="option in typeOptions"
           :key="option.value"
-          :selected="option.value === tile.callType"
           :value="option.value"
         >
           {{ option.text }}

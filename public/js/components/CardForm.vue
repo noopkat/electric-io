@@ -31,7 +31,6 @@
 
 <script>
 import FormFields from "./FormFields";
-import { Script } from "vm";
 
 export default {
   name: "CardForm",
@@ -64,6 +63,7 @@ export default {
       formData.forEach((value, name) => {
         eventData[name] = value;
       });
+
       this.$emit("save-settings", eventData);
     },
 

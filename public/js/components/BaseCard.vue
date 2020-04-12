@@ -45,10 +45,8 @@
 
     <card-form
       v-if="editingCard"
-      :editing="editingCard"
       :tile="tile"
       :device-list="deviceList"
-      :card-type="childCard"
       @save-settings="onSaveSettings"
       @cancel-editing="editingCard = false"
     />
@@ -310,6 +308,10 @@ export default {
     },
 
     stopDraggingCard() {
+      if (!this.draggingCard) {
+        return;
+      }
+
       this.draggingCard = false;
 
       if (this.cardHasBeenMoved) {
