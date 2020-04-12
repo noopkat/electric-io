@@ -25,30 +25,39 @@
         :device-list="deviceList"
         :block-width="dashboard.blockSize[0]"
         :block-height="dashboard.blockSize[1]"
-        @tile-position="onTileChange"
-        @tile-settings="onTileChange"
+        @tile-position="onTilePositionChange"
+        @tile-settings="onTileSettingsChange"
         @tile-delete="onTileDelete"
       />
     </main>
+
+    <ElectricToaster :toasts="electricToasts" />
   </div>
 </template>
 
 <script>
 import io from "socket.io-client";
-import BaseCard from "./BaseCard";
-import DashboardSettings from "./DashboardSettings";
+
+import BaseCard from "./BaseCard.vue";
+import DashboardSettings from "./DashboardSettings.vue";
+import ElectricToaster from "./electric-toaster/ElectricToaster.vue";
+
 import {
   saveDashboard,
   getDashboard,
   getDeviceList
 } from "../lib/configuration.js";
-
 import contrastColor from "../lib/colorContraster.js";
 import { TITLE_EMOJI_REGEX } from "../utils/constants.js";
 
 export default {
   name: "App",
-  components: { BaseCard, DashboardSettings },
+
+  components: {
+    BaseCard,
+    DashboardSettings,
+    ElectricToaster
+  },
 
   data() {
     return {
@@ -58,7 +67,8 @@ export default {
       },
       messages: [],
       deviceList: [],
-      simulating: SIMULATING
+      simulating: SIMULATING,
+      electricToasts: []
     };
   },
 
@@ -114,20 +124,55 @@ export default {
     }
   },
 
-  created() {
-    // TODO: handle errors here
-    getDashboard().then(r => (this.dashboard = r.dashboard));
-    getDeviceList().then(r => this.onDeviceListReceived(r));
+  async created() {
+    try {
+      const response = await getDashboard();
+      this.dashboard = response.dashboard;
+    } catch (error) {
+      this.createElectricToast({
+        content: `🚨 ${error.message}`,
+        shouldAutoDismiss: false
+      });
+    }
+
+    try {
+      const response = await getDeviceList();
+      this.onDeviceListReceived(response);
+    } catch (error) {
+      this.createElectricToast({
+        content: `🚨 ${error.message}`,
+        shouldAutoDismiss: false
+      });
+    }
   },
 
   methods: {
-    onSaveSettings(event) {
+    async onSaveSettings(event) {
       this.dashboard = Object.assign({}, this.dashboard, event);
-      saveDashboard(this.dashboard).then(r => console.log(r.ok));
+
+      try {
+        const response = await saveDashboard(this.dashboard);
+        this.createElectricToast({ content: `💾 ${response.data.message}` });
+      } catch (error) {
+        this.createElectricToast({ content: `🚨 ${error.message}` });
+      }
     },
 
-    onTileChange(event) {
-      const tileIndex = this.dashboard.tiles.findIndex(t => t.id === event.id);
+    onTilePositionChange(event) {
+      this.onTileChange(event);
+    },
+
+    async onTileSettingsChange(event) {
+      try {
+        const response = await this.onTileChange(event);
+        this.createElectricToast({ content: "💾 Card saved." });
+      } catch (error) {}
+    },
+
+    async onTileChange(event) {
+      const tileIndex = this.dashboard.tiles.findIndex(
+        tile => tile.id === event.id
+      );
       const updatedTile = Object.assign(
         {},
         this.dashboard.tiles[tileIndex],
@@ -139,29 +184,39 @@ export default {
         tiles: updatedTiles
       });
 
-      // TODO: this needs to be handled properly in the UI
-      saveDashboard(this.dashboard).then(r => console.log(r.ok));
+      try {
+        return await saveDashboard(this.dashboard);
+      } catch (error) {
+        this.createElectricToast({ content: `🚨 ${error.message}` });
+      }
     },
 
-    onTileDelete(tileId) {
+    async onTileDelete(tileId) {
       const updatedTiles = this.dashboard.tiles.filter(t => t.id !== tileId);
       this.dashboard = Object.assign({}, this.dashboard, {
         tiles: updatedTiles
       });
 
-      // TODO: this needs to be handled properly in the UI
-      saveDashboard(this.dashboard).then(r => console.log(r.ok));
+      try {
+        await saveDashboard(this.dashboard);
+        this.createElectricToast({ content: "🚮 Card deleted." });
+      } catch (error) {
+        this.createElectricToast({ content: `🚨 ${error.message}` });
+      }
     },
 
-    onTileCreate(event) {
+    async onTileCreate(event) {
       const updatedTiles = this.dashboard.tiles.slice();
       updatedTiles.push(event);
       this.dashboard = Object.assign({}, this.dashboard, {
         tiles: updatedTiles
       });
 
-      // TODO: this needs to be handled properly in the UI
-      saveDashboard(this.dashboard).then(r => console.log(r.ok));
+      try {
+        await saveDashboard(this.dashboard);
+      } catch (error) {
+        this.createElectricToast({ content: `🚨 ${error.message}` });
+      }
     },
 
     onDeviceListReceived(deviceList) {
@@ -181,6 +236,31 @@ export default {
         if (this.messages.length > 500) this.messages.shift();
         this.messages.push(message.body);
       });
+    },
+
+    /**
+     * Creates a new electric toast object.
+     *
+     * @param {object} electricToastOptions
+     *   An electric toast options object.
+     *   Its only required property is “content”.
+     *   Optionally, you can provide an option for
+     *   whether the toast should be automatically dismissed
+     *   and how long the dismiss timeout should be.
+     */
+    createElectricToast({
+      content,
+      shouldAutoDismiss = true,
+      autoDismissTimeoutInSeconds = 5
+    }) {
+      const nextToastIndex = this.electricToasts.length + 1;
+      const toast = {
+        id: `toast-${nextToastIndex}`,
+        content,
+        shouldAutoDismiss
+      };
+
+      this.electricToasts.push(toast);
     }
   }
 };

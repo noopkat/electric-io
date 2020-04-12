@@ -1,4 +1,4 @@
-import { mount, shallowMount } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import { axe, toHaveNoViolations } from "jest-axe";
 
 import App from "../App";
@@ -56,31 +56,54 @@ function shallowMountComponent(props = {}) {
 expect.extend(toHaveNoViolations);
 
 describe("App", () => {
+  beforeEach(() => {
+    jest.restoreAllMocks();
+
+    jest
+      .spyOn(configFns, "getDashboard")
+      .mockImplementation(() => Promise.resolve(mockDashboardData));
+    jest
+      .spyOn(configFns, "getDeviceList")
+      .mockImplementation(() => Promise.resolve([]));
+    jest.spyOn(configFns, "saveDashboard").mockImplementation(() =>
+      Promise.resolve({
+        data: {
+          message: "Dashboard saved."
+        }
+      })
+    );
+  });
+
   test("Component can be mounted", () => {
-    const wrapper = shallowMountComponent();
+    const wrapper = shallowMount(App);
 
     expect(wrapper.isVueInstance()).toBeTruthy();
   });
 
-  test("Child components can be mounted", () => {
-    const wrapper = shallowMountComponent();
+  test("Child components can be mounted", async () => {
+    const wrapper = shallowMount(App);
+
+    await wrapper.vm.$nextTick();
 
     expect(wrapper.find({ name: "DashboardSettings" }).exists()).toBe(true);
     expect(wrapper.find({ name: "BaseCard" }).exists()).toBe(true);
   });
 
   test("Default data is clean", () => {
-    const { vm } = shallowMount(App);
+    const wrapper = shallowMount(App);
 
-    expect(vm.dashboard.blockSize).toEqual([]);
-    expect(vm.dashboard.tiles).toEqual([]);
-    expect(vm.messages).toEqual([]);
-    expect(vm.deviceList).toEqual([]);
-    expect(vm.simulating).toEqual(SIMULATING);
+    expect(wrapper.vm.dashboard.blockSize).toEqual([]);
+    expect(wrapper.vm.dashboard.tiles).toEqual([]);
+    expect(wrapper.vm.messages).toEqual([]);
+    expect(wrapper.vm.deviceList).toEqual([]);
+    expect(wrapper.vm.simulating).toEqual(SIMULATING);
   });
 
-  test("Title style is based on the computed property headingStyle", () => {
-    const wrapper = shallowMountComponent();
+  test("Title style is based on the computed property headingStyle", async () => {
+    const wrapper = shallowMount(App);
+
+    await wrapper.vm.$nextTick();
+
     expect(wrapper.vm.headingStyle).toEqual({ color: "#000" });
 
     // Test whether `headingStyle` fallback color is used
@@ -94,8 +117,10 @@ describe("App", () => {
     expect(wrapper.vm.headingStyle).toEqual({ color: "#000" });
   });
 
-  test("DashboardSettings are shown based on computed property showSettings", () => {
-    const wrapper = shallowMountComponent();
+  test("DashboardSettings are shown based on computed property showSettings", async () => {
+    const wrapper = shallowMount(App);
+
+    await wrapper.vm.$nextTick();
 
     expect(wrapper.vm.showSettings).toEqual(true);
     expect(wrapper.find({ name: "DashboardSettings" }).exists()).toBe(true);
@@ -107,20 +132,21 @@ describe("App", () => {
   });
 
   test("compute the appTitle with or without an emoji using the TITLE_EMOJI_REGEX constant", () => {
-    const { vm } = shallowMountComponent();
+    const wrapper = shallowMountComponent();
 
     const title = TITLE_EMOJI_REGEX.exec(mockDashboardData.dashboard.title);
     title[1] = "\u2700";
     title[2] = "IoT Dashboard";
 
-    expect(vm.appTitle).toEqual(
+    expect(wrapper.vm.appTitle).toEqual(
       `<span class="hemoji">${title[1]}</span> ${title[2]}`
     );
   });
 
-  test("onSaveSettings method", () => {
-    jest.spyOn(configFns, "saveDashboard");
-    const wrapper = shallowMountComponent();
+  test("onSaveSettings method", async () => {
+    const wrapper = shallowMount(App);
+
+    await wrapper.vm.$nextTick();
 
     wrapper.vm.dashboard.editMode = "unlocked";
 
@@ -146,17 +172,17 @@ describe("App", () => {
   });
 
   test("onTileChange method", () => {
-    const { vm } = shallowMountComponent();
+    const wrapper = shallowMountComponent();
 
-    expect(vm.dashboard).toEqual(mockDashboardData.dashboard);
+    expect(wrapper.vm.dashboard).toEqual(mockDashboardData.dashboard);
 
     mockDashboardData.dashboard.tiles[0].buttonText = "stop it";
 
-    vm.onTileChange(event => {
+    wrapper.vm.onTileChange(event => {
       event.id = mockDashboardData.dashboard.tiles[0].id;
     });
 
-    expect(vm.dashboard.tiles[0]).toEqual({
+    expect(wrapper.vm.dashboard.tiles[0]).toEqual({
       buttonText: "stop it",
       deviceId: "AZ3166",
       deviceMethod: "stop",
@@ -167,11 +193,13 @@ describe("App", () => {
       type: "button"
     });
 
-    expect(vm.dashboard.tiles.length).toBe(2);
+    expect(wrapper.vm.dashboard.tiles.length).toBe(2);
   });
 
-  test("onTileDelete method", () => {
-    const wrapper = shallowMountComponent();
+  test("onTileDelete method", async () => {
+    const wrapper = shallowMount(App);
+    await wrapper.vm.$nextTick();
+
     const tileId = mockDashboardData.dashboard.tiles[0].id;
 
     wrapper.vm.onTileDelete(tileId);
@@ -183,9 +211,9 @@ describe("App", () => {
     expect(wrapper.vm.dashboard.tiles.length).toBe(1);
   });
 
-  test("onTileCreate method", () => {
-    jest.spyOn(configFns, "saveDashboard");
-    const wrapper = shallowMountComponent();
+  test("onTileCreate method", async () => {
+    const wrapper = shallowMount(App);
+    await wrapper.vm.$nextTick();
 
     wrapper.find({ name: "DashboardSettings" }).vm.$emit("tile-create", {
       deviceId: "",
@@ -203,27 +231,28 @@ describe("App", () => {
   });
 
   test("onDeviceListReceived method", () => {
-    const { vm } = shallowMountComponent();
+    const wrapper = shallowMountComponent();
+
     let deviceList;
+    wrapper.vm.onDeviceListReceived(deviceList);
 
-    vm.onDeviceListReceived(deviceList);
-
-    expect(deviceList).toEqual(vm.deviceList);
+    expect(deviceList).toEqual(wrapper.vm.deviceList);
 
     // TODO: test socket.on callback function
   });
 
-  test("the getDashboard and getDeviceList are invoked in the created lifecycle hook", () => {
-    jest.spyOn(configFns, "getDashboard");
-    jest.spyOn(configFns, "getDeviceList");
-    mount(App);
+  test("the getDashboard and getDeviceList are invoked in the created lifecycle hook", async () => {
+    const wrapper = shallowMount(App);
+    await wrapper.vm.$nextTick();
 
     expect(configFns.getDashboard).toHaveBeenCalled();
     expect(configFns.getDeviceList).toHaveBeenCalled();
   });
 
   test("Axe doesn’t find any violations", async () => {
-    const wrapper = shallowMountComponent();
+    const wrapper = shallowMount(App);
+    await wrapper.vm.$nextTick();
+
     const html = wrapper.html();
 
     expect(await axe(html)).toHaveNoViolations();
