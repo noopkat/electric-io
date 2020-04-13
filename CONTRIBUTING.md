@@ -39,7 +39,7 @@ You can also list your connections strings [via the command line](https://docs.m
 
         If this fails with an error message, you can [have a look at GitHub HTTPS cloning errors](https://help.github.com/articles/https-cloning-errors/).
 
-    2. Navigate to the electric-iodirectory:
+    2. Navigate to the electric-io directory:
 
         ```
         cd electric-io
@@ -53,7 +53,7 @@ You can also list your connections strings [via the command line](https://docs.m
 
         If this fails with an error message, you can [have a look at common NPM errors](https://docs.npmjs.com/common-errors).
 
-4. Open the file `.env` in and fill in the `CONNECTION_STRING` property with your Azure IoT Hub connection string.
+4. Open the file `.env` and fill in the `CONNECTION_STRING` property with your Azure IoT Hub connection string.
 5. Optional. Specify the `CONSUMER_GROUP` in `.env`. _If in doubt, you can skip this step_.
 6. Go back to your terminal and start electric-io:
 
