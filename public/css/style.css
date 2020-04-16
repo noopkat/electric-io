@@ -121,6 +121,7 @@ footer > a {
 .card--is-being-edited {
   width: auto !important;
   min-width: var(--card-tile-width);
+  z-index: 1;
 }
 
 .card:focus {
@@ -461,6 +462,31 @@ select {
 .settings__checkbox {
   margin: 0 0 0 5px;
   width: auto;
+}
+
+.settings__number__gradient-container {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.settings__number__gradient-container__value {
+  margin-right: 15px;
+  padding: 8px 0;
+}
+
+.settings__number__gradient-container__value__input {
+  width: 120px;
+}
+
+.settings__number__gradient-container__color {
+  padding: 8px 0;
+}
+
+.settings__number__gradient-container__colorpicker {
+  position: absolute;
+  width: 375px;
+  height: 400px;
+  margin-left: 10px;
 }
 
 .simulation-status {

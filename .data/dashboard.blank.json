@@ -5,6 +5,7 @@
     "tiles": [],
     "title": "\u26a1electric io",
     "bgImageUrl": "",
-    "bgImageRepeat": "true"
+    "bgImageRepeat": "true",
+    "version": 1
   }
 }

@@ -11,6 +11,11 @@ export default {
     type: "number",
     deviceId: "",
     textColor: "#000",
+    textColorMode: "single",
+    lowValue: 20,
+    lowTextColor: "#1282baff",
+    highValue: 40,
+    highTextColor: "#cb1475ff",
     property: "",
     position: [0, 0],
     size: [0.98, 0.73]
