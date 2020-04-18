@@ -7,9 +7,9 @@ const socket = require("socket.io");
 const expressSanitizer = require("express-sanitizer");
 const bodyParser = require("body-parser");
 
-const helpers = require("./lib/helpers");
-const liveHub = require("./lib/liveHub");
-const simHub = require("./lib/simHub");
+const createDashboardFileIfItDoesNotExist = require("./lib/utilities/createDashboardFileIfItDoesNotExist.js");
+const liveHub = require("./lib/liveHub.js");
+const simHub = require("./lib/simHub.js");
 const routes = require("./lib/routes.js");
 
 // hub options
@@ -47,29 +47,50 @@ const hubOptions = {
 
 const hub = simulating === "true" ? simHub : liveHub;
 
-hub
-  .startService(hubOptions)
-  .then(startServer)
-  .catch(error => {
-    throw error;
-  });
-
-function startServer(hubService) {
+async function startServer(iotHubService) {
   app.use(express.static(path.join(__dirname, "public")));
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(expressSanitizer());
-  app.use("/", routes({ io, hubService }));
+  app.use("/", routes({ iotHubService }));
 
   io.on("connection", function(socket) {
     debug("a user connected");
     socket.emit("hello");
   });
 
-  helpers.createDashboardFileIfNotExists(function() {
-    debug("starting express server...");
+  try {
+    const result = await createDashboardFileIfItDoesNotExist();
+    console.info(result.message);
+    console.info(`Your dashboard file is stored at “${result.filePath}”.`);
+  } catch (error) {
+    debug(error);
+    console.error(error);
+  }
+
+  // Make sure that the server is not started when running tests.
+  if (process.env.NODE_ENV !== "test") {
+    // Note: This is `server.listen` intentionally. When using `app.listen`, it breaks socket.io.
     server.listen(port, function() {
-      console.log(`Server listening at port ${port}`);
+      console.info(
+        `The hub server is now awake and listening at port ${port}.`
+      );
     });
-  });
+  }
 }
+
+async function startHubServer() {
+  console.info("Starting the hub server …");
+
+  try {
+    const iotHubService = await hub.startService(hubOptions);
+    startServer(iotHubService);
+  } catch (error) {
+    console.error("Could not start the hub server.");
+    throw error;
+  }
+}
+
+startHubServer();
+
+module.exports = app;

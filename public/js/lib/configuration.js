@@ -12,7 +12,12 @@ async function makeRequest(path, init) {
   const response = await fetch(path, init);
 
   if (response.ok) {
-    return response.json();
+    const contentType = response.headers.get("Content-Type");
+    if (contentType !== null && contentType.includes("application/json")) {
+      return response.json();
+    } else {
+      return response.text();
+    }
   } else {
     let errorMessage;
 
