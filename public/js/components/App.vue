@@ -43,9 +43,9 @@ import DashboardSettings from "./DashboardSettings.vue";
 import ElectricToaster from "./electric-toaster/ElectricToaster.vue";
 
 import {
-  saveDashboard,
   getDashboard,
-  getDeviceList
+  getDeviceList,
+  saveDashboard
 } from "../lib/configuration.js";
 import contrastColor from "../lib/colorContraster.js";
 import { TITLE_EMOJI_REGEX } from "../utils/constants.js";
@@ -126,8 +126,8 @@ export default {
 
   async created() {
     try {
-      const response = await getDashboard();
-      this.dashboard = response.dashboard;
+      const dashboardSettings = await getDashboard();
+      this.dashboard = dashboardSettings.dashboard;
     } catch (error) {
       this.createElectricToast({
         content: `🚨 ${error.message}`,
@@ -136,8 +136,8 @@ export default {
     }
 
     try {
-      const response = await getDeviceList();
-      this.onDeviceListReceived(response);
+      const deviceList = await getDeviceList();
+      this.onDeviceListReceived(deviceList);
     } catch (error) {
       this.createElectricToast({
         content: `🚨 ${error.message}`,
@@ -151,8 +151,8 @@ export default {
       this.dashboard = Object.assign({}, this.dashboard, event);
 
       try {
-        const response = await saveDashboard(this.dashboard);
-        this.createElectricToast({ content: `💾 ${response.data.message}` });
+        await saveDashboard(this.dashboard);
+        this.createElectricToast({ content: "💾 Saved dashboard." });
       } catch (error) {
         this.createElectricToast({ content: `🚨 ${error.message}` });
       }
@@ -164,7 +164,7 @@ export default {
 
     async onTileSettingsChange(event) {
       try {
-        const response = await this.onTileChange(event);
+        await this.onTileChange(event);
         this.createElectricToast({ content: "💾 Card saved." });
       } catch (error) {}
     },
