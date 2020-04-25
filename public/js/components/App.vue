@@ -45,9 +45,9 @@ import ElectricToaster from "./electric-toaster/ElectricToaster.vue";
 import {
   getDashboard,
   getDeviceList,
-  saveDashboard,
-  upgradeDashboard
+  saveDashboard
 } from "../lib/configuration.js";
+import { upgradeDashboard } from "../lib/dashboardMigrations.js";
 import contrastColor from "../lib/colorContraster.js";
 import { TITLE_EMOJI_REGEX } from "../utils/constants.js";
 

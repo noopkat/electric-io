@@ -197,7 +197,7 @@ You can then `git push` to update the PR if you’ve already submitted one.
 
 If you change the structure of the dashboard settings in a way that would prevent an existing dashboard from loading correctly, you should add a migration.
 
-Dashboard migrations are functions in the `dashboardMigrations` array in `public/js/lib/configuration.js`. Each function in this array corresponds to a new dashboard version.
+Dashboard migrations are functions in the `dashboardMigrations` array in `public/js/lib/dashboardMigrations.js`. Each function in this array corresponds to a new dashboard version.
 
 The value of the dashboard `version` property is an integer corresponding to the number of migrations in the array of all dashboard migrations. An upgrade is required if the dashboard version is lower than the number of migrations in this array. When the dashboard is loaded from the server, the web app checks the `version` property and upgrades the dashboard if necessary. (A dashboard with no version property is at version "0".)
 
@@ -205,6 +205,6 @@ For example, say the dashboard is at version `2` and there are four functions in
 
 ### Adding a dashboard migration
 
-To add a dashboard migration, **append** a function to the list of migrations in `configuration.js`. This function should have one parameter, the dashboard settings object, and modify it so that the dashboard will load correctly in the current version. Always use sensible defaults to avoid showing users broken or surprising behaviour.
+To add a dashboard migration, write a function that performs the migration and **append** it to the list of migrations in `dashboardMigrations.js`. This function should have one parameter, the dashboard settings object, and modify it so that the dashboard will load correctly in the current version. Always use sensible defaults to avoid showing users broken or surprising behaviour.
 
 Do not forget to update the blank and default dashboard settings files in the `.data` directory if necessary.
