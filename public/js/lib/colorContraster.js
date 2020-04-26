@@ -10,7 +10,10 @@ export default function pickTextColorBasedOnBgColor(
   lightColor,
   darkColor
 ) {
-  if (!bgColor) return "#000000";
+  if (!bgColor) {
+    return "#000000";
+  }
+
   const rgb = parseColor(bgColor);
   if (rgb === null) {
     return null;
@@ -29,9 +32,13 @@ export default function pickTextColorBasedOnBgColor(
 }
 
 function parseColor(color) {
-  if (color.charAt(0) === "#") return parseHex(color);
-  if (color.toLowerCase().indexOf("rgb") === 0) return parseRGB(color);
-  else return parseName(color);
+  if (color.charAt(0) === "#") {
+    return parseHex(color);
+  } else if (color.toLowerCase().startsWith("rgb")) {
+    return parseRGB(color);
+  } else {
+    return parseName(color);
+  }
 }
 
 function parseHex(color) {
@@ -61,11 +68,32 @@ function parseHex(color) {
   return { r, g, b };
 }
 
+/**
+ * Parses an RGB color string.
+ *
+ * - rgb(23,255,8)
+ * - rgb(23.1,254.3,8.11)
+ * - rgba(23,255,8,0.5)
+ *
+ * @param {string} color
+ */
 function parseRGB(color) {
-  // rgb(23,255,8)
-  const justColor = color.substring(4, color.length - 1).replace(/\s/g, "");
-  const colorParts = justColor.split(",").map(n => parseInt(n));
-  return { r: colorParts[0], g: colorParts[1], b: colorParts[2] };
+  const justColor = color
+    .substring(color.indexOf("(") + 1, color.length - 1)
+    .replace(/\s/g, "");
+  const colorParts = justColor.split(",").map(n => parseInt(n, 10));
+
+  const colorObject = {
+    r: colorParts[0],
+    g: colorParts[1],
+    b: colorParts[2]
+  };
+
+  if (colorParts[3]) {
+    colorObject.a = colorParts[3];
+  }
+
+  return colorObject;
 }
 
 function parseName(color) {

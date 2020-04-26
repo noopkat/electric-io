@@ -134,13 +134,12 @@ describe("App", () => {
   test("compute the appTitle with or without an emoji using the TITLE_EMOJI_REGEX constant", () => {
     const wrapper = shallowMountComponent();
 
-    const title = TITLE_EMOJI_REGEX.exec(mockDashboardData.dashboard.title);
-    title[1] = "\u2700";
-    title[2] = "IoT Dashboard";
-
-    expect(wrapper.vm.appTitle).toEqual(
-      `<span class="hemoji">${title[1]}</span> ${title[2]}`
+    const titleEmojified = TITLE_EMOJI_REGEX.exec(
+      mockDashboardData.dashboard.title
     );
+
+    expect(wrapper.vm.dashboardTitle).toBe(mockDashboardData.dashboard.title);
+    expect(wrapper.vm.dashboardTitleEmojified).toEqual(titleEmojified);
   });
 
   test("onSaveSettings method", async () => {

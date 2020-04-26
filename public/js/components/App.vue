@@ -1,9 +1,29 @@
 <template>
-  <div id="dashboard">
+  <div class="dashboard">
     <header>
-      <h1 :style="headingStyle" v-html="appTitle" />
+      <h1 class="dashboard-title" :style="headingStyle">
+        <template
+          v-if="
+            Array.isArray(dashboardTitleEmojified) &&
+              dashboardTitleEmojified.length === 3
+          "
+        >
+          <span class="dashboard-title__hemoji">{{
+            dashboardTitleEmojified[1]
+          }}</span
+          >{{ dashboardTitleEmojified[2] }}
+        </template>
 
-      <div v-if="simulating" :style="headingStyle" class="simulation-status">
+        <template v-else>
+          {{ dashboardTitle }}
+        </template>
+      </h1>
+
+      <div
+        v-if="simulating"
+        class="dashboard-simulation-status"
+        :style="headingStyle"
+      >
         ⚠️ Using simulated data
       </div>
     </header>
@@ -94,17 +114,12 @@ export default {
       return allowedModes.includes(this.dashboard.editMode);
     },
 
-    /**
-     * @returns {String}
-     */
-    appTitle() {
-      const title = TITLE_EMOJI_REGEX.exec(this.dashboard.title);
+    dashboardTitle() {
+      return this.dashboard.title ? this.dashboard.title : "\u26a1electric io";
+    },
 
-      if (title !== null) {
-        return `<span class="hemoji">${title[1]}</span>${title[2]}`;
-      }
-
-      return this.dashboard.title;
+    dashboardTitleEmojified() {
+      return TITLE_EMOJI_REGEX.exec(this.dashboardTitle);
     }
   },
 
@@ -264,3 +279,33 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.dashboard {
+  padding: 25px;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.dashboard-title {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-family: "Nanum Pen Script", sans-serif;
+  font-size: 50px;
+  font-weight: bold;
+  color: #000;
+}
+
+.dashboard-title__hemoji {
+  font-size: 0.8em;
+}
+
+.dashboard-simulation-status {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-family: "Chivo", sans-serif;
+  font-size: 0.875rem;
+}
+</style>
