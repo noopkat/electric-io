@@ -7,6 +7,8 @@ const socket = require("socket.io");
 const expressSanitizer = require("express-sanitizer");
 const bodyParser = require("body-parser");
 
+const DashboardService = require("./lib/services/dashboard.service.js");
+const DashboardMigrationService = require("./lib/services/dashboard-migrations.service.js");
 const createDashboardFileIfItDoesNotExist = require("./lib/utilities/createDashboardFileIfItDoesNotExist.js");
 const liveHub = require("./lib/liveHub.js");
 const simHub = require("./lib/simHub.js");
@@ -59,17 +61,28 @@ async function startServer(iotHubService) {
     socket.emit("hello");
   });
 
-  try {
-    const result = await createDashboardFileIfItDoesNotExist();
-    console.info(result.message);
-    console.info(`Your dashboard file is stored at “${result.filePath}”.`);
-  } catch (error) {
-    debug(error);
-    console.error(error);
-  }
-
-  // Make sure that the server is not started when running tests.
+  // Make sure that the dashboard file is not modified and server is not started when running tests.
   if (process.env.NODE_ENV !== "test") {
+    try {
+      const result = await createDashboardFileIfItDoesNotExist();
+      console.info(result.message);
+      console.info(`Your dashboard file is stored at “${result.filePath}”.`);
+
+      const dashboardSettings = await DashboardService.getDashboardSettings();
+      const wasUpgraded = DashboardMigrationService.upgradeDashboard(
+        dashboardSettings
+      );
+      if (wasUpgraded) {
+        console.info(
+          `Your dashboard was upgraded to version ${dashboardSettings.version}`
+        );
+        await DashboardService.saveDashboardSettings(dashboardSettings);
+      }
+    } catch (error) {
+      debug(error);
+      console.error(error);
+    }
+
     // Note: This is `server.listen` intentionally. When using `app.listen`, it breaks socket.io.
     server.listen(port, function() {
       console.info(

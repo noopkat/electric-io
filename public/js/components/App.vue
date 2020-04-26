@@ -47,7 +47,6 @@ import {
   getDeviceList,
   saveDashboard
 } from "../lib/configuration.js";
-import { upgradeDashboard } from "../lib/dashboardMigrations.js";
 import contrastColor from "../lib/colorContraster.js";
 import { TITLE_EMOJI_REGEX } from "../utils/constants.js";
 
@@ -127,16 +126,7 @@ export default {
 
   async created() {
     try {
-      const dashboardSettings = await getDashboard();
-      const dashboard = dashboardSettings.dashboard;
-      const wasUpgraded = upgradeDashboard(dashboard);
-      if (wasUpgraded) {
-        this.createElectricToast({
-          content:
-            "🚀 Your dashboard was updated to work with this version of Electric I/O!"
-        });
-      }
-      this.dashboard = dashboard;
+      this.dashboard = await getDashboard();
     } catch (error) {
       this.createElectricToast({
         content: `🚨 ${error.message}`,

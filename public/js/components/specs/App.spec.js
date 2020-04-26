@@ -61,7 +61,7 @@ describe("App", () => {
 
     jest
       .spyOn(configFns, "getDashboard")
-      .mockImplementation(() => Promise.resolve(mockDashboardData));
+      .mockImplementation(() => Promise.resolve(mockDashboardData.dashboard));
     jest
       .spyOn(configFns, "getDeviceList")
       .mockImplementation(() => Promise.resolve([]));
