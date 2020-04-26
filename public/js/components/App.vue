@@ -126,8 +126,7 @@ export default {
 
   async created() {
     try {
-      const dashboardSettings = await getDashboard();
-      this.dashboard = dashboardSettings.dashboard;
+      this.dashboard = await getDashboard();
     } catch (error) {
       this.createElectricToast({
         content: `🚨 ${error.message}`,

@@ -1,9 +1,11 @@
 <template>
-  <p class="number" :style="numberStyle">{{ number }}</p>
+  <p class="number" :style="numberStyle">{{ numberValue }}</p>
 </template>
 
 <script>
 import { evaluatePath } from "../lib/messagePropertyEvaluation.js";
+import convert from "../lib/colorConversions.js";
+import { mixHsv, ilerp } from "../lib/colorInterpolation.js";
 
 export default {
   name: "NumberCard",
@@ -22,13 +24,21 @@ export default {
 
   data() {
     return {
-      number: 0
+      number: null
     };
   },
 
   computed: {
     numberStyle() {
-      return { color: this.tile.textColor };
+      return { color: this.getColor() };
+    },
+
+    numberValue() {
+      if (this.number !== null) {
+        return this.number.toString();
+      } else {
+        return "🤔";
+      }
     }
   },
 
@@ -39,8 +49,27 @@ export default {
         const value = evaluatePath(this.tile.property, lastMessage);
         this.number = parseFloat(value).toFixed(1);
       } else {
-        this.number = 0;
+        this.number = null;
       }
+    }
+  },
+
+  methods: {
+    getColor() {
+      if (this.tile.textColorMode === "single") {
+        return this.tile.textColor;
+      }
+
+      if (this.tile.textColorMode === "gradient") {
+        const { lowValue, lowTextColor, highValue, highTextColor } = this.tile;
+        const from = convert.css.hsv(lowTextColor);
+        const to = convert.css.hsv(highTextColor);
+        const factor = ilerp(lowValue, highValue, this.number);
+        const hsv = mixHsv(from, to, factor);
+        return convert.hsv.hex(hsv);
+      }
+
+      return "#000000ff";
     }
   }
 };

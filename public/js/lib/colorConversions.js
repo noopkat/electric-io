@@ -28,6 +28,10 @@ export default {
     hsv: convertHexToHsv,
     hwb: convertHexToHwb,
     rgb: convertHexToRgb
+  },
+  css: {
+    rgb: convertCssToRgb,
+    hsv: convertCssToHsv
   }
 };
 
@@ -362,4 +366,25 @@ function convertHexToHsv(hex) {
 function convertHexToHwb(hex) {
   const rgb = convertHexToRgb(hex);
   return convertRgbToHwb(rgb);
+}
+
+function convertCssToRgb(color) {
+  document.head.style.color = color;
+  const computedColor = getComputedStyle(document.head).color;
+  const [r, g, b, a] = computedColor
+    .substring(computedColor.indexOf("(") + 1, computedColor.indexOf(")"))
+    .replace(" ", "")
+    .split(",");
+  const rgb = {
+    r: r / 255.0,
+    g: g / 255.0,
+    b: b / 255.0,
+    a: isNaN(a) ? 1.0 : a / 255.0
+  };
+  return rgb;
+}
+
+function convertCssToHsv(color) {
+  const rgb = convertCssToRgb(color);
+  return convertRgbToHsv(rgb);
 }

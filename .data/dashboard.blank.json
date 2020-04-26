@@ -3,8 +3,9 @@
     "blockSize": [250, 200],
     "bgColor": "papayawhip",
     "tiles": [],
-    "title": "\u26a1electric io",
+    "title": "⚡electric io",
     "bgImageUrl": "",
     "bgImageRepeat": "true"
-  }
+  },
+  "version": 1
 }

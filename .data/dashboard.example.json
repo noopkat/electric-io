@@ -24,7 +24,7 @@
       },
       {
         "title": "Study Temperature",
-        "type": "lineChart",
+        "type": "line-chart",
         "lineColor": "#FF6384",
         "deviceId": "AZ3166",
         "property": "temperature",
@@ -34,7 +34,7 @@
       },
       {
         "title": "Jenn's Coolness Factor 😎",
-        "type": "lineChart",
+        "type": "line-chart",
         "lineColor": "#6b66ff",
         "deviceId": "Jenn",
         "property": "coolness",
@@ -50,11 +50,16 @@
         "property": "humidity",
         "position": [296, 465],
         "size": [1, 1],
-        "id": "101ca6cb-ba75-4e5c-9db6-d29ba7ab9f51"
+        "id": "101ca6cb-ba75-4e5c-9db6-d29ba7ab9f51",
+        "textColorMode": "single",
+        "lowValue": 20,
+        "lowTextColor": "#1282baff",
+        "highValue": 40,
+        "highTextColor": "#cb1475ff"
       },
       {
         "title": "Noise 🙉",
-        "type": "lineChart",
+        "type": "line-chart",
         "lineColor": "#60dd4d",
         "deviceId": "Tessel2",
         "property": "sound",
@@ -70,6 +75,8 @@
         "size": [1, 1],
         "id": "88e12934-c628-48cb-8b84-b16c2e311105"
       }
-    ]
-  }
+    ],
+    "title": "⚡electric io"
+  },
+  "version": 1
 }

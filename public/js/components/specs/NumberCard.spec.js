@@ -11,6 +11,7 @@ function shallowMountComponent(props = {}) {
         position: [930, 417],
         property: "",
         size: [0.98, 0.73],
+        textColorMode: "single",
         textColor: "blue",
         title: "Number",
         type: "number"
