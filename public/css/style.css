@@ -177,15 +177,6 @@ main,
   font-size: 18px;
 }
 
-.card .number {
-  font-size: 64px;
-  font-weight: bold;
-  text-align: center;
-  padding: 0;
-  margin: 0;
-  font-family: "Chivo", sans-serif;
-}
-
 button {
   -webkit-appearance: none;
   appearance: none;

@@ -74,3 +74,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.number {
+  margin: 0;
+  padding: 0;
+  font-family: "Chivo", sans-serif;
+  font-size: 64px;
+  font-weight: bold;
+  text-align: center;
+}
+</style>
