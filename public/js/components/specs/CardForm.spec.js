@@ -33,7 +33,7 @@ describe("CardFrom", () => {
 
   test("save-settings event is emitted", () => {
     const wrapper = shallowMountComponent();
-    const formData = document.querySelector(".cardForm form");
+    const formData = document.querySelector(".card__form form");
     wrapper.setProps({ editing: true });
 
     const event = {

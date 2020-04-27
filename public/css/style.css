@@ -316,18 +316,6 @@ p.success {
   color: #048401;
 }
 
-.cardForm {
-  --card-form-width: 340px;
-}
-
-.cardForm form {
-  padding: 0;
-  background-color: white;
-  display: inline-block;
-  width: 100%;
-  max-width: var(--card-form-width);
-}
-
 input {
   display: block;
   margin-bottom: 10px;
@@ -351,15 +339,6 @@ select {
   height: 20px;
 }
 
-.cardForm .max-length-info {
-  margin-top: -7px;
-  margin-bottom: 15px;
-  display: block;
-}
-
-.cardForm .invalid {
-  color: var(--invalid-color);
-}
 
 
 .simulation-status {
