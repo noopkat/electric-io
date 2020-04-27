@@ -45,7 +45,7 @@
       <div class="cp-color-preview cp-column cp-tiled-background" />
 
       <div class="cp-column">
-        <button class="cp-copy-button" @click="copyColor">
+        <button class="cp-copy-button" type="button" @click="copyColor">
           <span class="cp-visually-hidden">Copy</span>
 
           <svg
@@ -378,6 +378,8 @@ export default {
 
     document.head.style.color = this.color;
     const rgbValue = getComputedStyle(document.head).color;
+    document.head.style.color = "";
+
     const functionArgument = rgbValue
       .substring(rgbValue.indexOf("(") + 1, rgbValue.indexOf(")"))
       .replace(" ", "");
