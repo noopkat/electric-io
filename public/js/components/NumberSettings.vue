@@ -73,8 +73,8 @@
           <label :for="`lowValue-${tile.id}`">Low Value</label>
           <input
             :id="`lowValue-${tile.id}`"
-            name="lowValue"
             v-model="lowValue"
+            name="lowValue"
             class="settings__number__gradient-container__value__input"
           />
         </div>
@@ -90,8 +90,8 @@
           </button>
           <div style="float:right">
             <div
-              class="card settings__number__gradient-container__colorpicker"
               v-if="editingColor === 'low'"
+              class="card settings__number__gradient-container__colorpicker"
             >
               <div class="settings__header">
                 <button
@@ -102,7 +102,7 @@
                   <span
                     :id="`close-colorpicker-label-${tile.Id}`"
                     aria-hidden="true"
-                    class="screen-reader-only"
+                    class="sr-only"
                     >Close color picker</span
                   >
                   <span aria-hidden="true">×</span>
@@ -126,8 +126,8 @@
           <label :for="`highValue-${tile.id}`">High Value</label>
           <input
             :id="`highValue-${tile.id}`"
-            name="highValue"
             v-model="highValue"
+            name="highValue"
             class="settings__number__gradient-container__value__input"
           />
         </div>
@@ -155,7 +155,7 @@
                   <span
                     :id="`close-colorpicker-label-${tile.Id}`"
                     aria-hidden="true"
-                    class="screen-reader-only"
+                    class="sr-only"
                     >Close color picker</span
                   >
                   <span aria-hidden="true">×</span>
@@ -225,3 +225,30 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.settings__number__gradient-container {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.settings__number__gradient-container__value {
+  margin-right: 15px;
+  padding: 8px 0;
+}
+
+.settings__number__gradient-container__value__input {
+  width: 120px;
+}
+
+.settings__number__gradient-container__color {
+  padding: 8px 0;
+}
+
+.settings__number__gradient-container__colorpicker {
+  position: absolute;
+  width: 375px;
+  height: 400px;
+  margin-left: 10px;
+}
+</style>

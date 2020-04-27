@@ -10,7 +10,7 @@
         :aria-expanded="settingsPanelOpen ? 'true' : 'false'"
         @click="onToggleSettingsPanel"
       >
-        <span id="settings-toggle-label" class="screen-reader-only">
+        <span id="settings-toggle-label" class="sr-only">
           {{
             settingsPanelOpen ? "Close settings panel" : "Open settings panel"
           }}
@@ -31,9 +31,9 @@
         <label for="dashboard-settings-title">
           App Title
           <input
-            id="title"
+            id="dashboard-settings-title"
             type="text"
-            name="dashboard-settings-title"
+            name="title"
             :value="dashboard.title"
           />
         </label>
@@ -80,7 +80,9 @@
           />
         </label>
 
-        <input class="action-button" type="submit" value="save" />
+        <button class="thick-button" type="submit">
+          save
+        </button>
       </form>
 
       <h3>New Card</h3>
@@ -97,7 +99,9 @@
           </select>
         </label>
 
-        <input class="action-button" type="submit" value="create" />
+        <button class="thick-button" type="submit">
+          create
+        </button>
       </form>
     </div>
   </div>
@@ -161,3 +165,84 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.settings {
+  min-width: 280px;
+  right: 0;
+  top: 50px;
+}
+
+.settings__header {
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.settings--closed {
+  min-width: auto;
+}
+
+.settings--closed .settings__header {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.settings--closed .settings__title {
+  display: none;
+  margin: 0 15px 0 0;
+}
+
+.settings--closed .settings__body {
+  display: none;
+}
+
+.settings .settings__toggle-btn {
+  background-color: transparent;
+  border: 2px solid #fff;
+  border-radius: 0;
+  box-shadow: none;
+  color: #000;
+  padding: 2px;
+}
+
+.settings .settings__toggle-btn:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.settings__toggle-btn:hover + .settings__title,
+.settings__toggle-btn:focus + .settings__title {
+  display: block;
+}
+
+.settings select {
+  width: 100%;
+}
+
+.settings__checkbox-label {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.settings__checkbox {
+  margin: 0 0 0 5px;
+  width: auto;
+}
+</style>
