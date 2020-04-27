@@ -606,3 +606,12 @@ https://snook.ca/archives/html_and_css/hiding-content-for-accessibility
   border: 0;
   white-space: nowrap; /* 1. */
 }
+
+/*
+Applies an emoji font stack to render emojis like ✏ or ⚡ as a colorful emoji.
+*/
+.emoji-font {
+  font-family: apple color emoji, segoe ui emoji, noto color emoji,
+    android emoji, emojisymbols, emojione mozilla, twemoji mozilla,
+    segoe ui symbol;
+}

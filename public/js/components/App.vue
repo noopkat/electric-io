@@ -8,7 +8,7 @@
               dashboardTitleEmojified.length === 3
           "
         >
-          <span class="dashboard-title__hemoji">{{
+          <span class="dashboard-title__hemoji emoji-font">{{
             dashboardTitleEmojified[1]
           }}</span
           >{{ dashboardTitleEmojified[2] }}

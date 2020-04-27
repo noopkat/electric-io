@@ -2,10 +2,10 @@
   "dashboard": {
     "blockSize": [250, 200],
     "bgColor": "papayawhip",
-    "tiles": [],
-    "title": "⚡electric io",
     "bgImageUrl": "",
-    "bgImageRepeat": "true"
+    "bgImageRepeat": "true",
+    "tiles": [],
+    "title": "⚡electric io"
   },
   "version": 1
 }

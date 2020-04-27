@@ -16,8 +16,8 @@
           }}
         </span>
 
-        <span aria-hidden="true">
-          {{ settingsPanelOpen ? "&rarr;" : "⚙️" }}
+        <span aria-hidden="true" class="emoji-font">
+          {{ settingsPanelOpen ? "→" : "⚙️" }}
         </span>
       </button>
 
