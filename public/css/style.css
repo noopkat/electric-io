@@ -297,25 +297,6 @@ input[type="submit"]::-moz-focus-inner {
   display: flex;
 }
 
-.card p.status {
-  position: relative;
-  margin-top: 20px;
-  font-size: 12px;
-}
-
-.card p.status:empty {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-p.error {
-  color: #da2727;
-}
-
-p.success {
-  color: #048401;
-}
-
 input {
   display: block;
   margin-bottom: 10px;

@@ -24,7 +24,7 @@ function shallowMountComponent() {
     data: () => ({
       apiUrlBase: "/api/device/AZ3166",
       statusText: "",
-      statusClass: "status"
+      statusClass: ""
     })
   });
 }
@@ -45,7 +45,7 @@ describe("ButtonCard", () => {
       `/api/device/${wrapper.vm.tile.deviceId}`
     );
     expect(wrapper.vm.statusText).toEqual("");
-    expect(wrapper.vm.statusClass).toEqual("status");
+    expect(wrapper.vm.statusClass).toEqual("");
   });
 
   test("the onClick method with successful response", async () => {
@@ -86,7 +86,7 @@ describe("ButtonCard", () => {
       }
     );
     expect(wrapper.vm.statusText).toEqual("done!");
-    expect(wrapper.vm.statusClass).toEqual("status success");
+    expect(wrapper.vm.statusClass).toEqual("success");
   });
 
   test("the onClick method's logic when the request fails", async () => {
@@ -119,7 +119,7 @@ describe("ButtonCard", () => {
     expect(wrapper.vm.statusText).toEqual(
       "oops, that device method might not exist!"
     );
-    expect(wrapper.vm.statusClass).toEqual("status error");
+    expect(wrapper.vm.statusClass).toEqual("error");
   });
 
   test("Axe doesn’t find any violations", async () => {
