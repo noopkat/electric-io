@@ -1,6 +1,6 @@
 # electric-io
 
-Simply The cutest IoT dashboard of your dreams ☁️
+The cutest IoT dashboard of your dreams ☁️
 
 ![screenshot of electric io dashboard](screenshot.png)
 
