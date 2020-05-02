@@ -3,7 +3,7 @@
     class="card"
     tabindex="0"
     :class="{
-      'card--is-being-dragged': draggingCard,
+      'card--is-being-dragged': isDraggingCard,
       'card--is-being-edited': editingCard
     }"
     :style="style"
@@ -11,38 +11,6 @@
     @touchstart.stop.passive="startDraggingCardWithTouch"
     @keydown="moveCardWithArrows"
   >
-    <div v-if="!editingCard">
-      <div v-if="showControls" class="controls">
-        <button
-          ref="editButton"
-          class="inline-button edit-button"
-          @click="editingCard = true"
-        >
-          edit
-        </button>
-
-        <button
-          class="inline-button delete-button"
-          aria-label="Remove card"
-          @click="openCardDeleteModal"
-        >
-          X
-        </button>
-      </div>
-
-      <h2 v-if="tile.title">
-        {{ tile.title }}
-      </h2>
-
-      <component
-        :is="childCard"
-        :tile="tile"
-        :block-width="blockWidth"
-        :block-height="blockHeight"
-        :messages="messages"
-      />
-    </div>
-
     <card-form
       v-if="editingCard"
       :tile="tile"
@@ -51,6 +19,66 @@
       @cancel-editing="editingCard = false"
     />
 
+    <template v-else>
+      <div class="card-header">
+        <h2 class="card-header__title">
+          <template v-if="tile.title">
+            {{ tile.title }}
+          </template>
+
+          <span v-else class="sr-only">
+            Card
+          </span>
+        </h2>
+
+        <div v-if="showCardActions" class="card-header__actions">
+          <button
+            ref="editButton"
+            class="card__action-button icon-button"
+            type="button"
+            data-test="card-edit-button"
+            @click="editingCard = true"
+          >
+            <span class="sr-only">Edit card</span>
+
+            <span class="emoji-font flip-horizontally" aria-hidden="true"
+              >✏</span
+            >
+          </button>
+
+          <button
+            class="card__action-button icon-button"
+            type="button"
+            data-test="card-remove-button"
+            @click="openCardRemoveModal"
+          >
+            <span class="sr-only">Remove card</span>
+
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              aria-hidden="true"
+            >
+              <path
+                d="m2,0l4,4 4,-4 2,2 -4,4 4,4 -2,2 -4,-4 -4,4 -2,-2 4,-4 -4,-4 Z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <component
+        :is="cardComponentName"
+        :tile="tile"
+        :block-width="blockWidth"
+        :block-height="blockHeight"
+        :messages="messages"
+      />
+    </template>
+
     <a11y-dialog
       :id="`app-dialog-${tile.id}`"
       app-root="#app"
@@ -58,41 +86,67 @@
       :class-names="{
         base: 'modal',
         title: 'modal__title',
-        closeButton: 'inline-button modal__close-button'
+        closeButton: 'modal__close-button icon-button'
       }"
-      close-button-label="Close the “Remove card” dialog"
       @dialog-ref="assignDialogRef"
     >
+      <template v-slot:closeButtonContent>
+        <span class="sr-only">Close the "Remove card" dialog</span>
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="12"
+          height="12"
+          viewBox="0 0 12 12"
+          aria-hidden="true"
+        >
+          <path
+            d="m2,0l4,4 4,-4 2,2 -4,4 4,4 -2,2 -4,-4 -4,4 -2,-2 4,-4 -4,-4 Z"
+            fill="currentColor"
+          />
+        </svg>
+      </template>
+
       <template v-slot:title>
         <span>Remove card</span>
       </template>
 
-      <template v-slot:closeButtonContent>
-        <span>X</span>
-      </template>
+      <p>Do you want to remove this card?</p>
 
-      <div>
-        <p>Oh, do you really want to remove this card?</p>
-
-        <button
-          class="button action-button"
-          type="button"
-          @click="deleteTile(tile.id)"
-        >
-          Yes, remove it
-        </button>
-      </div>
+      <button
+        class="thick-button"
+        type="button"
+        data-test="card-remove-confirm-button"
+        @click="deleteTile(tile.id)"
+      >
+        Yes, remove it
+      </button>
     </a11y-dialog>
   </div>
 </template>
 
 <script>
-import ButtonCard from "./ButtonCard";
-import CardForm from "./CardForm";
-import LineChartCard from "./LineChartCard";
-import NumberCard from "./NumberCard";
-import StickerCard from "./StickerCard";
-import TextCard from "./TextCard";
+import ButtonCard from "./ButtonCard.vue";
+import CardForm from "./CardForm.vue";
+import LineChartCard from "./LineChartCard.vue";
+import NumberCard from "./NumberCard.vue";
+import StickerCard from "./StickerCard.vue";
+import TextCard from "./TextCard.vue";
+
+/**
+ * A list of tag names whose elements will, when clicked, not cause a card being dragged around.
+ */
+const EXCLUDED_TAG_NAMES = [
+  "BUTTON",
+  "INPUT",
+  "TEXTAREA",
+  "SELECT",
+  "LABEL",
+  "IMG",
+  "A"
+];
+
+const ALLOWED_MODES = ["unlocked", "demo"];
 
 export default {
   name: "BaseCard",
@@ -111,32 +165,38 @@ export default {
       type: Object,
       required: false,
       default: () => ({}),
-      validator: tile => {
+      validator(tile) {
         return ["id", "position", "size", "title", "type"].every(prop => {
           return tile.hasOwnProperty(prop);
         });
       }
     },
+
     blockWidth: {
       type: Number,
       required: true
     },
+
     blockHeight: {
       type: Number,
       required: true
     },
+
     deviceList: {
       type: Array,
       required: false,
       default: () => [],
-      validator: deviceList =>
-        deviceList.every(deviceId => typeof deviceId === "string")
+      validator(deviceList) {
+        return deviceList.every(deviceId => typeof deviceId === "string");
+      }
     },
+
     messages: {
       type: Array,
       required: false,
       default: () => []
     },
+
     editMode: {
       type: String,
       required: true
@@ -148,7 +208,7 @@ export default {
       editingCard: false,
 
       // Used to attach an HTML class to the card.
-      draggingCard: false,
+      isDraggingCard: false,
 
       // Used to only emit card position changes when the card is being moved.
       cardHasBeenMoved: false,
@@ -179,32 +239,33 @@ export default {
       return {
         top: this.top,
         left: this.left,
-        "--card-tile-width": `${this.blockWidth * this.tile.size[0]}px`,
-        minHeight: `${this.blockHeight * this.tile.size[1]}px`
+        minHeight: `${this.blockHeight * this.tile.size[1]}px`,
+        "--card-tile-width": `${this.blockWidth * this.tile.size[0]}px`
       };
     },
 
-    childCard() {
+    cardComponentName() {
       return `${this.tile.type.toLowerCase()}-card`;
     },
 
-    showControls() {
-      const allowedModes = ["unlocked", "demo"];
-      return allowedModes.includes(this.editMode);
+    showCardActions() {
+      return ALLOWED_MODES.includes(this.editMode);
     }
   },
 
   watch: {
-    draggingCard(dragging) {
-      if (dragging) {
-        document.body.classList.add("dragging");
-      } else if (document.body.classList.contains("dragging")) {
-        document.body.classList.remove("dragging");
+    isDraggingCard(isDraggingCard) {
+      if (isDraggingCard) {
+        document.body.classList.add("is-being-dragged");
+      } else if (document.body.classList.contains("is-being-dragged")) {
+        document.body.classList.remove("is-being-dragged");
       }
     }
   },
 
-  mounted() {
+  created() {
+    this.breakPoint = 768;
+
     // It’s necessary that this event handler is registered on the window rather than the card
     // itself. If it’s registered on the card, a fast movement of the mouse can escape the card
     // quicker than what causes to the card to be re-rendered at the new position. This leads to
@@ -214,11 +275,12 @@ export default {
     });
 
     // Touch-based event listeners are passive by default, but we actually need to call
-    // event.preventDefault() so we need to explicitly make them active.
+    // event.preventDefault() so we need to explicitly mark them as active.
     document.addEventListener("touchmove", this.dragCardWithTouch, {
       capture: true,
       passive: false
     });
+
     document.addEventListener("mouseup", this.stopDraggingCard);
     document.addEventListener("touchend", this.stopDraggingCard);
   },
@@ -256,20 +318,43 @@ export default {
      * @param {MouseEvent|TouchEvent} event
      */
     startDraggingCard(event, clientX, clientY) {
-      const allowedModes = ["unlocked", "demo"];
-      const excludedNodes = ["INPUT", "TEXTAREA", "SELECT", "LABEL"];
+      const isLargerScreen = window.matchMedia(
+        `(min-width: ${this.breakPoint}px)`
+      ).matches;
 
       if (
+        !isLargerScreen ||
         this.editingCard ||
-        excludedNodes.includes(event.target.tagName) ||
-        !allowedModes.includes(this.editMode)
+        !ALLOWED_MODES.includes(this.editMode)
       ) {
         return;
       }
 
-      this.draggingCard = true;
+      if (this.isExcludedElementInDispatchChain(event.target, this.$el)) {
+        return;
+      }
+
+      this.isDraggingCard = true;
       this.offsetY = clientY - this.y;
       this.offsetX = clientX - this.x;
+    },
+
+    /**
+     * Used to detect when we *don’t* want to drag a card around
+     * (e.g. when clicking in a button or draggin and image).
+     *
+     * @param {EventTarget} eventTarget
+     * @param {Element} anchorElement
+     * @returns {boolean}
+     */
+    isExcludedElementInDispatchChain(eventTarget, anchorElement) {
+      const dispatchChainElements = getDispatchChainElements(
+        eventTarget,
+        anchorElement
+      );
+      return dispatchChainElements.some(element =>
+        EXCLUDED_TAG_NAMES.includes(element.tagName)
+      );
     },
 
     /**
@@ -292,7 +377,7 @@ export default {
      * @param {MouseEvent|TouchEvent} event
      */
     dragCard(event, clientX, clientY) {
-      if (!this.draggingCard || this.editingCard) {
+      if (!this.isDraggingCard || this.editingCard) {
         return;
       }
 
@@ -308,18 +393,18 @@ export default {
     },
 
     stopDraggingCard() {
-      if (!this.draggingCard) {
+      if (!this.isDraggingCard) {
         return;
       }
 
-      this.draggingCard = false;
+      this.isDraggingCard = false;
 
       if (this.cardHasBeenMoved) {
         this.emitCardPosition();
       }
     },
 
-    openCardDeleteModal() {
+    openCardRemoveModal() {
       if (this.dialog) {
         this.dialog.show();
       }
@@ -396,4 +481,112 @@ export default {
     }
   }
 };
+
+/**
+ * Returns all elements (at most 10) in a dispatch chain of an event up to a given anchor element.
+ *
+ * @param {EventTarget} eventTarget
+ * @param {Element} anchorElement
+ * @returns {Element[]}
+ */
+function getDispatchChainElements(eventTarget, anchorElement) {
+  const dispatchChainElements = [];
+  let currentElement = eventTarget;
+
+  while (
+    currentElement &&
+    currentElement !== anchorElement &&
+    dispatchChainElements.length < 10
+  ) {
+    dispatchChainElements.push(currentElement);
+    currentElement = currentElement.parentElement;
+  }
+
+  return dispatchChainElements;
+}
 </script>
+
+<style>
+.card {
+  --card-border-radius: 6px;
+  --card-border-width: 2px;
+  --card-form-width: 340px;
+
+  width: var(--card-tile-width);
+  padding: 15px;
+  border: var(--card-border-width) solid #222;
+  border-radius: var(--card-border-radius);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+}
+
+@media (max-width: 767px) {
+  .card:not(:last-child) {
+    margin-bottom: 15px;
+  }
+}
+
+@media (min-width: 768px) {
+  .card {
+    position: absolute;
+  }
+
+  .card--is-being-dragged:hover {
+    cursor: move;
+    user-select: none;
+  }
+
+  .card:not(.card--is-being-edited):not(.settings) {
+    cursor: grab;
+  }
+}
+
+.card--is-being-edited {
+  width: auto !important;
+  min-width: var(--card-tile-width);
+  z-index: 1;
+}
+
+.card:focus {
+  outline: none;
+}
+
+.card:focus::before {
+  --focus-offset: calc(-2 * var(--card-border-width));
+
+  content: "";
+  position: absolute;
+  top: var(--focus-offset);
+  left: var(--focus-offset);
+  right: var(--focus-offset);
+  bottom: var(--focus-offset);
+  border: var(--card-border-width) dotted var(--background-color);
+  border-radius: var(--card-border-radius);
+  filter: invert(100%);
+  pointer-events: none;
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.card-header__title {
+  flex-grow: 1;
+  margin-bottom: 0;
+}
+
+.card-header__actions {
+  display: inline-flex;
+  align-items: center;
+}
+
+.card-header__actions > :not(:first-child) {
+  margin-left: 2px;
+}
+
+.flip-horizontally {
+  transform: scaleX(-1);
+}
+</style>

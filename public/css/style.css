@@ -1,10 +1,10 @@
-/* styles */
-/* called by your view template */
+/* ---- */
+/* Base */
+/* ---- */
 
-/* You might want to try something fancier: */
-/* less: http://lesscss.org/ */
-
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -14,7 +14,9 @@
   --focus-box-shadow: 0 0 0 2px var(--focus-color);
 
   --invalid-color: #da2727;
-  --invalid-focus-outline: 2px solid var(--invalid-color);
+
+  --border-color: lightgrey;
+  --border-radius: 3px;
 }
 
 html,
@@ -24,27 +26,39 @@ body {
 }
 
 body {
+  margin: 0;
   position: relative;
-  font-family: helvetica, arial, sans-serif;
-  background-color: var(--background-color);
-  background-image: var(--background-image);
-  background-repeat: var(--background-repeat);
+  font-size: 1em;
+  font-family: Lato, Numero, sans-serif;
+  background-color: var(--background-color, #fff);
+  background-image: var(--background-image, none);
+  background-repeat: var(--background-repeat, repeat);
 }
 
+/*
+1. Ensures focus styles are rendered on top of other elements.
+*/
 :focus {
   outline: var(--focus-outline);
+  isolation: isolate; /* 1. */
 }
 
-.invalid :focus {
-  outline: var(--invalid-focus-outline);
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  font-family: "Chivo", sans-serif;
 }
 
-.bold {
-  font-weight: bold;
+h2 {
+  font-size: 1.25em;
 }
 
-p {
-  max-width: 600px;
+h3 {
+  font-size: 1.125em;
 }
 
 form {
@@ -52,182 +66,95 @@ form {
   padding: 15px;
   display: inline-block;
   width: 100%;
-  border-radius: 3px;
+  border-radius: var(--border-radius);
 }
 
 form:not(:last-child) {
   margin-bottom: 25px;
 }
 
-input,
-textarea {
+label {
   display: block;
   margin-bottom: 10px;
-  padding: 5px;
-  width: 100%;
-  border: 1px solid lightgrey;
-  border-radius: 3px;
-  font-size: 14px;
+  font-size: 0.875em;
 }
 
-textarea {
-  resize: vertical;
+input[type="text"] {
+  display: block;
+  width: 100%;
+  margin: 0;
+  margin-bottom: 10px;
+  padding: 0.5em 0.25em;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font: inherit;
+  line-height: 1;
 }
 
 select {
-  border-radius: 3px;
-}
+  -webkit-appearance: none;
+  appearance: none;
 
-li {
-  margin-bottom: 5px;
-}
-
-footer {
-  margin-top: 50px;
-  padding-top: 25px;
-  border-top: 1px solid lightgrey;
-}
-
-footer > a {
-  color: #bbbbbb;
-}
-
-.nicejob {
-  text-decoration: line-through;
-}
-
-.card {
-  --card-border-radius: 6px;
-  --card-border-width: 2px;
-
-  width: var(--card-tile-width);
-  position: relative;
-  padding: 15px;
-  border: var(--card-border-width) solid #222;
-  border-radius: var(--card-border-radius);
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  background-color: white;
-}
-
-.card--is-being-dragged:hover {
-  cursor: move;
-  user-select: none;
-}
-
-.card:not(.card--is-being-edited):not(.settings) {
-  cursor: grab;
-}
-
-.card--is-being-edited {
-  width: auto !important;
-  min-width: var(--card-tile-width);
-  z-index: 1;
-}
-
-.card:focus {
-  outline: none;
-}
-
-.card:focus::before {
-  --focus-offset: calc(-2 * var(--card-border-width));
-
-  content: "";
-  position: absolute;
-  top: var(--focus-offset);
-  left: var(--focus-offset);
-  right: var(--focus-offset);
-  bottom: var(--focus-offset);
-  border: var(--card-border-width) dotted var(--background-color);
-  border-radius: var(--card-border-radius);
-  filter: invert(100%);
-  pointer-events: none;
-}
-
-.card:not(:last-child) {
-  margin-bottom: 15px;
-}
-
-@media (min-width: 768px) {
-  .card {
-    position: absolute;
-    margin-bottom: initial;
-  }
-}
-
-/*******************************************************************************************/
-/* this below is Suz code please forgive or improve */
-
-html,
-body,
-main,
-#app {
+  display: block;
+  width: 100%;
   margin: 0;
+  margin-bottom: 10px;
+  padding: 0.5em 0.8em 0.5em 0.25em;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: #fff;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23currentColor%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat, repeat;
+  background-position: right 0.55em top 50%, 0 0;
+  background-size: 0.7em auto, 100%;
+  font: inherit;
+  line-height: 1;
+  min-width: 5em;
 }
 
-.card h2 {
-  padding: 0;
-  margin: 0 0 15px 0;
-  font-size: 20px;
-  font-family: "Chivo", sans-serif;
-  word-wrap: break-word;
-}
-
-.card h3 {
-  font-family: "Chivo", sans-serif;
-  font-size: 18px;
+textarea {
+  display: block;
+  width: 100%;
+  margin: 0;
+  margin-bottom: 10px;
+  padding: 0.5em 0.25em;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font: inherit;
+  line-height: 1;
+  resize: vertical;
 }
 
 button {
   -webkit-appearance: none;
   appearance: none;
+
   padding: 0;
-  border: none;
+  border: 1px solid transparent;
+  border-radius: var(--border-radius);
   color: currentColor;
   background-color: #fff;
   font: inherit;
+}
+
+button:not(:disabled):hover {
+  cursor: pointer;
 }
 
 /*
 Remove very strange and unnecessary focus outline in Firefox.
 Firefox, why are you like this?
 */
-button::-moz-focus-inner,
-input[type="button"]::-moz-focus-inner,
-input[type="submit"]::-moz-focus-inner {
+button::-moz-focus-inner {
   padding: 0;
   border-style: none;
 }
 
-.inline-button {
-  padding: 5px;
-  border: 1px solid #fff;
-  border-radius: 3px;
-  font-size: 10px;
-}
+/* ------------- */
+/* Form controls */
+/* ------------- */
 
-/*
-1. Stops following elements from covering the focus outline.
-*/
-.inline-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 1px goldenrod;
-  transform: rotate(0); /* 1. */
-}
-
-.inline-button:hover {
-  border-color: currentColor;
-}
-
-.edit-button {
-  color: #00f;
-}
-
-.delete-button {
-  color: #da2727;
-  font-weight: bold;
-}
-
-.action-button {
+.thick-button {
   --c-button-bg: hsl(214, 45%, 47%);
   --c-button-bg-dark-1: hsl(214, 45%, 40%);
   --c-button-bg-dark-2: hsl(214, 45%, 30%);
@@ -242,98 +169,101 @@ input[type="submit"]::-moz-focus-inner {
     4px 5px var(--c-button-bg-dark-1), 6px 5px var(--c-button-bg-dark-2),
     5px 6px var(--c-button-bg-dark-1);
 
-  font-family: "Chivo", sans-serif;
-  border: none;
-  background-color: var(--c-button-bg);
-  color: white;
-  padding: 8px 14px;
-  font-weight: normal;
-  font-size: 18px;
-  text-decoration: none;
   display: inline-block;
+  padding: 8px 14px;
   outline: none;
-  border-radius: 3px;
-  cursor: pointer;
+  color: #fff;
+  background-color: var(--c-button-bg);
+
   /* needed for anchors */
   position: relative;
   box-shadow: var(--ext-box-shadow);
   width: calc(100% - 6px);
 }
 
-.action-button--secondary {
+.thick-button:not(:disabled):hover {
+  transform: translate(2px, 2px);
+  box-shadow: var(--base-box-shadow);
+}
+
+.thick-button:not(:disabled):focus {
+  box-shadow: 0 0 0 2px #333, var(--ext-box-shadow);
+}
+
+.thick-button:not(:disabled):active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+.thick-button + .thick-button {
+  margin-top: 10px;
+}
+
+.thick-button--secondary {
   --c-button-bg: hsl(214, 0%, 47%);
   --c-button-bg-dark-1: hsl(214, 0%, 40%);
   --c-button-bg-dark-2: hsl(214, 0%, 30%);
 }
 
-.action-button:hover {
-  transform: translate(2px, 2px);
-  box-shadow: var(--base-box-shadow);
+.icon-button {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.action-button:focus {
-  box-shadow: 0 0 0 2px #333, var(--ext-box-shadow);
-}
-
-.action-button:active {
-  transform: translate(4px, 4px);
-  box-shadow: none;
-}
-
-.card .controls {
-  position: relative;
-  margin-top: -12px;
-  margin-right: -10px;
-  float: right;
-  display: flex;
-}
-
-input {
-  display: block;
-  margin-bottom: 10px;
-  padding: 2px;
-  width: 100%;
-  border: 1px solid lightgrey;
-  border-radius: 3px;
-  font-size: 13px;
-}
-
-label {
-  font-size: 13px;
-  display: block;
-  margin-bottom: 10px;
-}
-
-select {
-  display: block;
-  font-size: 13px;
-  margin-bottom: 10px;
-  height: 20px;
-}
-
-
-
-.simulation-status {
-  font-family: "Chivo", sans-serif;
-  font-size: 0.875rem;
-  position: absolute;
-  top: 5px;
-  right: 10px;
+.icon-button:not(:disabled):hover {
+  border-color: currentColor;
 }
 
 /* -------------- */
 /* Helper classes */
 /* -------------- */
 
-.screen-reader-only {
-  border: 0;
+/*
+Utility: is-being-dragged
+
+Stops content from being selected (e.g. when moving around cards).
+*/
+.is-being-dragged {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/*
+Utility: sr-only
+
+Source: https://github.com/h5bp/html5-boilerplate
+
+Hide only visually, but have it available for screen readers:
+https://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+
+1. For long content, line feeds are not interpreted as spaces
+   and small width causes content to wrap 1 word per line:
+   https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
+*/
+.sr-only {
+  position: absolute;
+  overflow: hidden;
   clip: rect(0 0 0 0);
+  width: 1px;
   height: 1px;
   margin: -1px;
-  overflow: hidden;
   padding: 0;
-  position: absolute;
-  width: 1px;
+  border: 0;
+  white-space: nowrap; /* 1. */
+}
+
+/*
+Utility: emoji-font
+
+Applies an emoji font stack to render emojis like ✏ or ⚡ as a colorful emoji.
+*/
+.emoji-font {
+  font-family: apple color emoji, segoe ui emoji, noto color emoji,
+    android emoji, emojisymbols, emojione mozilla, twemoji mozilla,
+    segoe ui symbol;
 }
 
 /*
@@ -343,6 +273,7 @@ http://edenspiekermann.github.io/a11y-dialog/#styling-layer
 
 .modal-wrapper {
   position: fixed;
+  z-index: 3000;
   top: 0;
   right: 0;
   bottom: 0;
@@ -366,8 +297,6 @@ http://edenspiekermann.github.io/a11y-dialog/#styling-layer
   position: absolute;
   top: 5px;
   right: 5px;
-  font-size: 10px;
-  font-weight: bold;
 }
 
 dialog {
@@ -415,47 +344,4 @@ dialog[open] {
   margin-bottom: 10px;
   box-sizing: content-box;
   box-shadow: none;
-}
-
-/**
- * Stops content from being selected (e.g. when moving around cards).
- */
-body.dragging {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-/*
-Utility: sr-only
-
-Source: https://github.com/h5bp/html5-boilerplate
-
-Hide only visually, but have it available for screen readers:
-https://snook.ca/archives/html_and_css/hiding-content-for-accessibility
-
-1. For long content, line feeds are not interpreted as spaces
-   and small width causes content to wrap 1 word per line:
-   https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
-*/
-.sr-only {
-  position: absolute;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  border: 0;
-  white-space: nowrap; /* 1. */
-}
-
-/*
-Applies an emoji font stack to render emojis like ✏ or ⚡ as a colorful emoji.
-*/
-.emoji-font {
-  font-family: apple color emoji, segoe ui emoji, noto color emoji,
-    android emoji, emojisymbols, emojione mozilla, twemoji mozilla,
-    segoe ui symbol;
 }

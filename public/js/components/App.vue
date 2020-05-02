@@ -31,7 +31,10 @@
     <main>
       <dashboard-settings
         v-if="showSettings"
-        :dashboard="dashboard"
+        :dashboard-title="dashboard.title"
+        :dashboard-background-color="dashboard.bgColor"
+        :dashboard-background-image-url="dashboard.bgImageUrl"
+        :dashboard-background-image-repeat="Boolean(dashboard.bgImageRepeat)"
         @save-settings="onSaveSettings"
         @tile-create="onTileCreate"
       />

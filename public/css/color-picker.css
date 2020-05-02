@@ -1,21 +1,13 @@
 .cp-picker {
   --cp-width: 300px;
   --cp-spacing: 6px;
-  --cp-font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica,
-    Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-  --cp-text-color: #000;
-  --cp-background-color: #fff;
-  --cp-focus-color: dodgerblue;
+  --cp-focus-color: var(--focus-color, dodgerblue);
   --cp-box-shadow-focus: 0 0 0 2px var(--cp-focus-color);
 
   --cp-color: hsl(var(--hsl-h), var(--hsl-s), var(--hsl-l), var(--hsl-a));
 
   display: block;
   width: var(--cp-width);
-  font-size: 12px;
-  font-family: var(--cp-font-family);
-  color: var(--cp-text-color);
-  background-color: var(--cp-background-color);
 }
 
 .cp-picker *,
@@ -266,7 +258,6 @@
   background-size: 0.7em auto, 100%;
   font: inherit;
   line-height: 1;
-  height: 31px; /* ??? */
   min-width: 5em;
 }
 

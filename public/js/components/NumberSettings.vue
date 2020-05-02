@@ -62,7 +62,7 @@
       <color-picker
         :uid="`textColor-${tile.id}`"
         :color="textColor"
-        style="--cp-background-color: transparent; --cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
+        style="--cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
         @change="updateTextColor"
       />
     </template>
@@ -81,7 +81,7 @@
         <div class="settings__number__gradient-container__color">
           <button
             type="button"
-            class="action-button"
+            class="thick-button"
             aria-label="Open color picker for the low value"
             :style="`--c-button-bg: ${lowTextColor}`"
             @click.prevent="editingColor = 'low'"
@@ -113,7 +113,7 @@
                 key="low"
                 :uid="`lowTextColor-${tile.id}`"
                 :color="lowTextColor"
-                style="--cp-background-color: transparent; --cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
+                style="--cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
                 @change="updateLowTextColor"
               />
             </div>
@@ -134,7 +134,7 @@
         <div class="settings__number__gradient-container__color">
           <button
             type="button"
-            class="action-button"
+            class="thick-button"
             aria-label="Open color picker for the high value"
             :style="`--c-button-bg: ${highTextColor}`"
             @click.prevent="editingColor = 'high'"
@@ -166,7 +166,7 @@
                 key="high"
                 :uid="`highTextColor-${tile.id}`"
                 :color="highTextColor"
-                style="--cp-background-color: transparent; --cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
+                style="--cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
                 @change="updateHighTextColor"
               />
             </div>
