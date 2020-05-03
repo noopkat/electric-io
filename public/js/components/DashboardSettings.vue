@@ -4,83 +4,83 @@
     :class="{ 'settings--closed': !settingsPanelOpen }"
   >
     <div class="settings__header">
-      <button
-        class="settings__toggle-btn"
-        aria-labelledby="settings-toggle-label"
-        :aria-expanded="settingsPanelOpen ? 'true' : 'false'"
-        @click="onToggleSettingsPanel"
-      >
-        <span id="settings-toggle-label" class="screen-reader-only">
-          {{
-            settingsPanelOpen ? "Close settings panel" : "Open settings panel"
-          }}
-        </span>
-
-        <span aria-hidden="true">
-          {{ settingsPanelOpen ? "&rarr;" : "⚙️" }}
-        </span>
-      </button>
-
       <h2 class="settings__title">
         Settings
       </h2>
+
+      <button
+        class="icon-button"
+        :aria-expanded="settingsPanelOpen ? 'true' : 'false'"
+        type="button"
+        @click="onToggleSettingsPanel"
+      >
+        <span class="sr-only">
+          {{ settingsPanelOpen ? "Close" : "Open" }}
+          settings panel
+        </span>
+
+        <span aria-hidden="true" class="emoji-font">
+          {{ settingsPanelOpen ? "→" : "⚙️" }}
+        </span>
+      </button>
     </div>
 
     <div class="settings__body">
       <form @submit.prevent="onSaveSettings">
         <label for="dashboard-settings-title">
-          App Title
+          Dashboard title
+
           <input
-            id="title"
+            id="dashboard-settings-title"
             type="text"
-            name="dashboard-settings-title"
             :value="dashboard.title"
           />
         </label>
 
         <label for="dashboard-settings-bgColor">
           Background Color
+
           <input
             id="dashboard-settings-bgColor"
-            v-model="bgColor"
+            v-model="dashboard.bgColor"
             type="hidden"
-            name="bgColor"
           />
         </label>
 
         <color-picker
           :uid="'dashboard-settings'"
-          :color="bgColor"
-          style="--cp-background-color: transparent; --cp-focus-color: var(--focus-color)"
-          @change="updateValue"
+          :color="dashboard.bgColor"
+          style="--cp-focus-color: var(--focus-color)"
+          @change="updateBackgroundColor"
         />
 
-        <label for="dashboard-settings-bgImageUrl">
+        <label for="dashboard-settings-background-image-url">
           Background Image URL
+
           <input
-            id="dashboard-settings-bgImageUrl"
+            id="dashboard-settings-background-image-url"
+            v-model="dashboard.bgImageUrl"
             type="text"
-            name="bgImageUrl"
-            :value="dashboard.bgImageUrl"
           />
         </label>
 
         <label
           class="settings__checkbox-label"
-          for="dashboard-settings-bgImageRepeat"
+          for="dashboard-settings-background-image-repeat"
         >
-          <span>Repeat background image?</span>
           <input
-            id="dashboard-settings-bgImageRepeat"
+            id="dashboard-settings-background-image-repeat"
             v-model="dashboard.bgImageRepeat"
             class="settings__checkbox"
             type="checkbox"
-            name="bgImageRepeat"
-            :value="dashboard.bgImageRepeat"
           />
+
+          Repeat background image
         </label>
 
-        <input class="action-button" type="submit" value="save" />
+        <button class="thick-button" type="submit">
+          save
+        </button>
       </form>
 
       <h3>New Card</h3>
@@ -97,7 +97,9 @@
           </select>
         </label>
 
-        <input class="action-button" type="submit" value="create" />
+        <button class="thick-button" type="submit">
+          create
+        </button>
       </form>
     </div>
   </div>
@@ -117,29 +119,44 @@ export default {
   },
 
   props: {
-    dashboard: {
-      type: Object,
+    dashboardTitle: {
+      type: String,
       required: true
+    },
+
+    dashboardBackgroundColor: {
+      type: String,
+      required: true
+    },
+
+    dashboardBackgroundImageUrl: {
+      type: String,
+      required: false,
+      default: ""
+    },
+
+    dashboardBackgroundImageRepeat: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
 
   data() {
     return {
-      status: "",
       settingsPanelOpen: true,
-      bgColor: this.dashboard.bgColor
+      dashboard: {
+        title: this.dashboardTitle,
+        bgColor: this.dashboardBackgroundColor,
+        bgImageUrl: this.dashboardBackgroundImageUrl,
+        bgImageRepeat: Boolean(this.dashboardBackgroundImageRepeat)
+      }
     };
   },
 
   methods: {
-    onSaveSettings(event) {
-      const formData = new FormData(event.target);
-      const eventData = {};
-      formData.forEach((value, name) => {
-        eventData[name] = value;
-      });
-
-      this.$emit("save-settings", eventData);
+    onSaveSettings() {
+      this.$emit("save-settings", this.dashboard);
     },
 
     onCreateCard(event) {
@@ -152,12 +169,68 @@ export default {
     },
 
     onToggleSettingsPanel() {
-      this.settingsPanelOpen = this.settingsPanelOpen === true ? false : true;
+      this.settingsPanelOpen = !this.settingsPanelOpen;
     },
 
-    updateValue(value) {
-      this.bgColor = value;
+    updateBackgroundColor(value) {
+      this.dashboard.bgColor = value;
     }
   }
 };
 </script>
+
+<style scoped>
+.settings {
+  right: 0;
+  top: 50px;
+}
+
+.settings:not(.settings--closed) {
+  min-width: 280px;
+}
+
+.settings__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.settings--closed .settings__header {
+  align-items: center;
+}
+
+.settings__title {
+  margin-bottom: 0;
+}
+
+.settings--closed .settings__title {
+  display: none;
+}
+
+.settings__body {
+  margin-top: 15px;
+}
+
+.settings--closed .settings__body {
+  display: none;
+}
+
+.settings__toggle-btn:hover + .settings__title,
+.settings__toggle-btn:focus + .settings__title {
+  display: block;
+}
+
+.settings select {
+  width: 100%;
+}
+
+.settings__checkbox-label {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.settings__checkbox {
+  margin: 0;
+  margin-right: 5px;
+}
+</style>

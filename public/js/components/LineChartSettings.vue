@@ -36,7 +36,7 @@
     <color-picker
       :uid="tile.id"
       :color="lineColor"
-      style="--cp-background-color: transparent; --cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
+      style="--cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
       @change="updateValue"
     />
   </div>

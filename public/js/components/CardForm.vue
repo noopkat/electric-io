@@ -1,5 +1,5 @@
 <template>
-  <div class="cardForm">
+  <div class="card__form">
     <h2>Settings</h2>
 
     <form @submit.prevent="onSubmit">
@@ -17,14 +17,17 @@
 
       <form-fields :tile="tile" :device-list="deviceList" />
 
-      <input class="action-button" type="submit" value="save" />
+      <button class="thick-button" type="submit">
+        save
+      </button>
 
-      <input
-        class="action-button action-button--secondary"
+      <button
+        class="thick-button thick-button--secondary"
         type="button"
-        value="cancel"
         @click="cancelEditing"
-      />
+      >
+        cancel
+      </button>
     </form>
   </div>
 </template>
@@ -73,3 +76,21 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.card__form form {
+  padding: 0;
+  background-color: #fff;
+  max-width: var(--card-form-width);
+}
+
+.card__form .max-length-info {
+  margin-top: -7px;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.card__form .invalid {
+  color: var(--invalid-color);
+}
+</style>

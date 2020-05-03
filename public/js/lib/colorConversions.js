@@ -371,6 +371,8 @@ function convertHexToHwb(hex) {
 function convertCssToRgb(color) {
   document.head.style.color = color;
   const computedColor = getComputedStyle(document.head).color;
+  document.head.style.color = "";
+
   const [r, g, b, a] = computedColor
     .substring(computedColor.indexOf("(") + 1, computedColor.indexOf(")"))
     .replace(" ", "")

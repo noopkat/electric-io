@@ -45,6 +45,18 @@ function shallowMountComponent() {
   });
 }
 
+Object.defineProperty(window, "matchMedia", {
+  writable: true,
+  value: jest.fn().mockImplementation(query => ({
+    matches: true,
+    media: query,
+    onchange: null,
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn()
+  }))
+});
+
 expect.extend(toHaveNoViolations);
 
 describe("BaseCard", () => {
@@ -58,7 +70,7 @@ describe("BaseCard", () => {
     const { vm } = shallowMountComponent();
 
     expect(vm.editingCard).toEqual(false);
-    expect(vm.draggingCard).toEqual(false);
+    expect(vm.isDraggingCard).toEqual(false);
     expect(vm.cardHasBeenMoved).toEqual(false);
     expect(vm.x).toEqual(vm.tile.position[0]);
     expect(vm.y).toEqual(vm.tile.position[1]);
@@ -95,14 +107,14 @@ describe("BaseCard", () => {
     const card = wrapper.find(".card");
 
     expect(card.attributes().style).toBe(
-      `top: ${inlineStyles.top}; left: ${inlineStyles.left}; --card-tile-width: ${inlineStyles["--card-tile-width"]}; min-height: ${inlineStyles.minHeight};`
+      `top: ${inlineStyles.top}; left: ${inlineStyles.left}; min-height: ${inlineStyles.minHeight}; --card-tile-width: ${inlineStyles["--card-tile-width"]};`
     );
   });
 
-  test("the computed value of childCard", () => {
+  test("the computed value of cardComponentName", () => {
     const wrapper = shallowMountComponent();
 
-    expect(wrapper.vm.childCard).toEqual("line-chart-card");
+    expect(wrapper.vm.cardComponentName).toEqual("line-chart-card");
 
     wrapper.setProps({
       tile: {
@@ -119,23 +131,23 @@ describe("BaseCard", () => {
       }
     });
 
-    expect(wrapper.vm.childCard).toEqual("button-card");
+    expect(wrapper.vm.cardComponentName).toEqual("button-card");
   });
 
   test("the computed value of showControlers", () => {
     const wrapper = shallowMountComponent();
 
-    expect(wrapper.vm.showControls).toEqual(true);
+    expect(wrapper.vm.showCardActions).toEqual(true);
 
     wrapper.setProps({
       editMode: "locked"
     });
 
-    expect(wrapper.vm.showControls).toEqual(false);
+    expect(wrapper.vm.showCardActions).toEqual(false);
   });
 
-  test("the draggingCard watcher", () => {
-    const spy = jest.spyOn(BaseCard.watch, "draggingCard");
+  test("the isDraggingCard watcher", () => {
+    const spy = jest.spyOn(BaseCard.watch, "isDraggingCard");
     const { vm } = shallowMountComponent();
     const event = {
       target: {
@@ -164,11 +176,11 @@ describe("BaseCard", () => {
     });
   });
 
-  test("the openCardDeleteModal method", () => {
-    const spy = jest.spyOn(BaseCard.methods, "openCardDeleteModal");
+  test("the openCardRemoveModal method", () => {
+    const spy = jest.spyOn(BaseCard.methods, "openCardRemoveModal");
     const wrapper = shallowMountComponent();
 
-    const button = wrapper.find(".delete-button");
+    const button = wrapper.find("[data-test='card-remove-button']");
 
     button.trigger("click");
 
@@ -180,7 +192,7 @@ describe("BaseCard", () => {
   test("tileDelete method", () => {
     const wrapper = shallowMountComponent();
 
-    const button = wrapper.find(".action-button");
+    const button = wrapper.find("[data-test='card-remove-confirm-button']");
 
     button.trigger("click");
 
@@ -193,7 +205,7 @@ describe("BaseCard", () => {
 
     expect(wrapper.vm.editingCard).toEqual(false);
 
-    const button = wrapper.find(".edit-button");
+    const button = wrapper.find("[data-test='card-edit-button']");
 
     button.trigger("click");
 
@@ -239,7 +251,7 @@ describe("BaseCard", () => {
     expect(vm.cardHasBeenMoved).toEqual(false);
     expect(spy).not.toHaveBeenCalled();
 
-    vm.draggingCard = true;
+    vm.isDraggingCard = true;
     vm.editingCard = false;
 
     vm.dragCard(event);
@@ -268,7 +280,7 @@ describe("BaseCard", () => {
     vm.stopDraggingCard();
     vm.cardHasBeenMoved = true;
 
-    expect(vm.draggingCard).toEqual(false);
+    expect(vm.isDraggingCard).toEqual(false);
     expect(spy).toHaveBeenCalled();
   });
 
@@ -382,8 +394,8 @@ describe("BaseCard", () => {
     expect(spyDragCard).toHaveBeenCalled();
   });
 
-  test("that the draggingCard watcher is called when the startDraggingCard, dragCard, or stopDraggingCard methods are invoked", () => {
-    const spy = jest.spyOn(BaseCard.watch, "draggingCard");
+  test("that the isDraggingCard watcher is called when the startDraggingCard, dragCard, or stopDraggingCard methods are invoked", () => {
+    const spy = jest.spyOn(BaseCard.watch, "isDraggingCard");
     const wrapper = shallowMountComponent();
     const event = {
       preventDefault: jest.fn(),

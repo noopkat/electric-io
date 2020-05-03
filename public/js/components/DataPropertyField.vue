@@ -1,20 +1,29 @@
 <template>
-  <label :for="inputElementId" :class="{ invalid: !isValid }">
+  <label
+    :for="`data-property-input-${tileId}`"
+    class="label"
+    :class="{ 'label--invalid': !isValid }"
+  >
     Data Property (supports
-    <a href="http://jmespath.org/tutorial.html" target="_blank" rel="noopener">
-      JMESPath</a
+
+    <a href="http://jmespath.org/tutorial.html" target="_blank" rel="noopener"
+      >JMESPath</a
     >)
 
     <input
-      :id="inputElementId"
+      :id="`data-property-input-${tileId}`"
       v-model="model"
       type="text"
       :name="name"
       :aria-invalid="!isValid"
-      :aria-describedby="!isValid ? errorElementId : null"
+      data-test="data-prop-input"
     />
 
-    <span v-if="!isValid" :id="errorElementId">
+    <span
+      v-if="!isValid"
+      class="label__secondary"
+      data-test="data-prop-secondary-label"
+    >
       This is not a valid JMESPath.
     </span>
   </label>
@@ -31,10 +40,12 @@ export default {
       type: String,
       required: true
     },
+
     name: {
       type: String,
       required: true
     },
+
     value: {
       type: String,
       required: true
@@ -48,21 +59,23 @@ export default {
   },
 
   computed: {
-    isValid: function() {
+    isValid() {
       return pathIsValid(this.model);
-    },
-
-    inputElementId: function() {
-      return `data-property-input-${this.tileId}`;
-    },
-
-    errorElementId: function() {
-      return `data-property-error-${this.tileId}`;
     }
   },
 
-  mounted() {
+  created() {
     this.model = this.value;
   }
 };
 </script>
+
+<style scoped>
+.label--invalid input {
+  border-color: var(--invalid-color);
+}
+
+.label--invalid .label__secondary {
+  color: var(--invalid-color);
+}
+</style>

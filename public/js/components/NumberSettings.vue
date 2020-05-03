@@ -62,7 +62,7 @@
       <color-picker
         :uid="`textColor-${tile.id}`"
         :color="textColor"
-        style="--cp-background-color: transparent; --cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
+        style="--cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
         @change="updateTextColor"
       />
     </template>
@@ -73,15 +73,15 @@
           <label :for="`lowValue-${tile.id}`">Low Value</label>
           <input
             :id="`lowValue-${tile.id}`"
-            name="lowValue"
             v-model="lowValue"
+            name="lowValue"
             class="settings__number__gradient-container__value__input"
           />
         </div>
         <div class="settings__number__gradient-container__color">
           <button
             type="button"
-            class="action-button"
+            class="thick-button"
             aria-label="Open color picker for the low value"
             :style="`--c-button-bg: ${lowTextColor}`"
             @click.prevent="editingColor = 'low'"
@@ -90,8 +90,8 @@
           </button>
           <div style="float:right">
             <div
-              class="card settings__number__gradient-container__colorpicker"
               v-if="editingColor === 'low'"
+              class="card settings__number__gradient-container__colorpicker"
             >
               <div class="settings__header">
                 <button
@@ -102,7 +102,7 @@
                   <span
                     :id="`close-colorpicker-label-${tile.Id}`"
                     aria-hidden="true"
-                    class="screen-reader-only"
+                    class="sr-only"
                     >Close color picker</span
                   >
                   <span aria-hidden="true">×</span>
@@ -113,7 +113,7 @@
                 key="low"
                 :uid="`lowTextColor-${tile.id}`"
                 :color="lowTextColor"
-                style="--cp-background-color: transparent; --cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
+                style="--cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
                 @change="updateLowTextColor"
               />
             </div>
@@ -126,15 +126,15 @@
           <label :for="`highValue-${tile.id}`">High Value</label>
           <input
             :id="`highValue-${tile.id}`"
-            name="highValue"
             v-model="highValue"
+            name="highValue"
             class="settings__number__gradient-container__value__input"
           />
         </div>
         <div class="settings__number__gradient-container__color">
           <button
             type="button"
-            class="action-button"
+            class="thick-button"
             aria-label="Open color picker for the high value"
             :style="`--c-button-bg: ${highTextColor}`"
             @click.prevent="editingColor = 'high'"
@@ -155,7 +155,7 @@
                   <span
                     :id="`close-colorpicker-label-${tile.Id}`"
                     aria-hidden="true"
-                    class="screen-reader-only"
+                    class="sr-only"
                     >Close color picker</span
                   >
                   <span aria-hidden="true">×</span>
@@ -166,7 +166,7 @@
                 key="high"
                 :uid="`highTextColor-${tile.id}`"
                 :color="highTextColor"
-                style="--cp-background-color: transparent; --cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
+                style="--cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
                 @change="updateHighTextColor"
               />
             </div>
@@ -225,3 +225,30 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.settings__number__gradient-container {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.settings__number__gradient-container__value {
+  margin-right: 15px;
+  padding: 8px 0;
+}
+
+.settings__number__gradient-container__value__input {
+  width: 120px;
+}
+
+.settings__number__gradient-container__color {
+  padding: 8px 0;
+}
+
+.settings__number__gradient-container__colorpicker {
+  position: absolute;
+  width: 375px;
+  height: 400px;
+  margin-left: 10px;
+}
+</style>

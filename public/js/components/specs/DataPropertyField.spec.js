@@ -34,7 +34,7 @@ describe("DataPropertyField", () => {
       tileId: ""
     });
 
-    const inputs = wrapper.findAll("input[name=unusual-property]");
+    const inputs = wrapper.findAll("[data-test='data-prop-input']");
 
     expect(inputs.exists()).toBe(true);
     expect(inputs.length).toEqual(1);
@@ -50,7 +50,7 @@ describe("DataPropertyField", () => {
         tileId: ""
       });
 
-      const input = wrapper.find("input[name=property]");
+      const input = wrapper.find("[data-test='data-prop-input']");
 
       expect(input.attributes("aria-invalid")).toBeUndefined();
     });
@@ -62,7 +62,7 @@ describe("DataPropertyField", () => {
         tileId: ""
       });
 
-      const input = wrapper.find("input[name=property]");
+      const input = wrapper.find("[data-test='data-prop-input']");
 
       expect(input.attributes("aria-describedby")).toBeUndefined();
     });
@@ -78,7 +78,7 @@ describe("DataPropertyField", () => {
         tileId: ""
       });
 
-      const input = wrapper.find("input[name=property]");
+      const input = wrapper.find("[data-test='data-prop-input']");
 
       expect(input.attributes("aria-invalid")).toEqual("true");
     });
@@ -90,9 +90,9 @@ describe("DataPropertyField", () => {
         tileId: ""
       });
 
-      const input = wrapper.find("input[name=property]");
-      const attributeValue = input.attributes("aria-describedby");
-      const describedByElements = wrapper.findAll(`#${attributeValue}`);
+      const describedByElements = wrapper.findAll(
+        "[data-test='data-prop-secondary-label']"
+      );
 
       expect(describedByElements.exists()).toBe(true);
       expect(describedByElements.length).toEqual(1);

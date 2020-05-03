@@ -8,7 +8,7 @@
               dashboardTitleEmojified.length === 3
           "
         >
-          <span class="dashboard-title__hemoji">{{
+          <span class="dashboard-title__hemoji emoji-font">{{
             dashboardTitleEmojified[1]
           }}</span
           >{{ dashboardTitleEmojified[2] }}
@@ -31,7 +31,10 @@
     <main>
       <dashboard-settings
         v-if="showSettings"
-        :dashboard="dashboard"
+        :dashboard-title="dashboard.title"
+        :dashboard-background-color="dashboard.bgColor"
+        :dashboard-background-image-url="dashboard.bgImageUrl"
+        :dashboard-background-image-repeat="Boolean(dashboard.bgImageRepeat)"
         @save-settings="onSaveSettings"
         @tile-create="onTileCreate"
       />

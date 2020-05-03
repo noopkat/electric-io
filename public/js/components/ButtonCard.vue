@@ -1,9 +1,10 @@
 <template>
   <div>
-    <button class="action-button" @click="onClick">
+    <button class="thick-button" type="button" @click="onClick">
       {{ tile.buttonText }}
     </button>
-    <p :class="statusClass">
+
+    <p v-if="statusText" class="button-card-status" :class="statusClass">
       {{ statusText }}
     </p>
   </div>
@@ -22,45 +23,66 @@ export default {
 
   data() {
     return {
-      apiUrlBase: `/api/device/${this.tile.deviceId}`,
       statusText: "",
-      statusClass: "status"
+      statusClass: ""
     };
   },
 
   methods: {
-    onClick() {
-      this.statusText = "calling device method...";
+    async onClick() {
+      this.statusText = "Calling device method …";
 
-      const apiUrl = `${this.apiUrlBase}${
+      const apiUrl = `/api/device/${this.tile.deviceId}${
         this.tile.callType === "method"
           ? `/method/${this.tile.deviceMethod}`
           : "/message/"
       }`;
-
       const payloadExists =
-        this.tile.callPayload && this.tile.callPayload.length;
-      const body = payloadExists ? { callPayload: this.tile.callPayload } : {};
-      const headers = {
-        "Content-Type": "application/json"
+        this.tile.callPayload && this.tile.callPayload.length > 0;
+      const jsonPayload = payloadExists
+        ? { callPayload: this.tile.callPayload }
+        : {};
+
+      const fetchInit = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(jsonPayload)
       };
 
-      fetch(apiUrl, {
-        method: "POST",
-        headers,
-        body: JSON.stringify(body)
-      })
-        .then(r => {
-          if (r.ok) {
-            this.statusText = "done!";
-            this.statusClass = "status success";
-          } else {
-            this.statusText = "oops, that device method might not exist!";
-            this.statusClass = "status error";
-          }
-        })
-        .catch(error => (this.statusText = "something went wrong..."));
+      try {
+        const response = await fetch(apiUrl, fetchInit);
+
+        if (response.ok) {
+          this.statusText = "Done!";
+          this.statusClass = "success";
+        } else {
+          this.statusText = "Oops, that device method might not exist!";
+          this.statusClass = "error";
+        }
+      } catch (error) {
+        this.statusText = "Something went wrong …";
+        this.statusClass = "error";
+      }
     }
   }
 };
 </script>
+
+<style scoped>
+.button-card-status {
+  position: relative;
+  margin-top: 20px;
+  margin-bottom: 0;
+  font-size: 12px;
+}
+
+.button-card-status.error {
+  color: #da2727;
+}
+
+.button-card-status.success {
+  color: #048401;
+}
+</style>
