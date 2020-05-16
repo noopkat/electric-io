@@ -16,7 +16,7 @@
       >
         <span class="sr-only">
           {{ settingsPanelOpen ? "Close" : "Open" }}
-          settings panel
+          Settings panel
         </span>
 
         <span aria-hidden="true" class="emoji-font">
@@ -38,7 +38,7 @@
         </label>
 
         <label for="dashboard-settings-bgColor">
-          Background Color
+          Background color
 
           <input
             id="dashboard-settings-bgColor"
@@ -47,15 +47,15 @@
           />
         </label>
 
-        <color-picker
-          :uid="'dashboard-settings'"
+        <ElectricColorPicker
+          id="dashboard-settings"
           :color="dashboard.bgColor"
-          style="--cp-focus-color: var(--focus-color)"
-          @change="updateBackgroundColor"
+          style-attribute-value="--vacp-focus-color: var(--focus-color)"
+          @color-change="updateBackgroundColor"
         />
 
         <label for="dashboard-settings-background-image-url">
-          Background Image URL
+          Background image URL
 
           <input
             id="dashboard-settings-background-image-url"
@@ -83,11 +83,11 @@
         </button>
       </form>
 
-      <h3>New Card</h3>
+      <h3>New card</h3>
 
       <form @submit.prevent="onCreateCard">
         <label for="dashboard-settings-type">
-          Card Type
+          Card type
           <select id="dashboard-settings-type" name="type">
             <option value="button">button</option>
             <option value="lineChart">line chart</option>
@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import ColorPicker from "./ColorPicker";
+import ElectricColorPicker from "./ElectricColorPicker.vue";
 import { saveDashboard } from "../lib/configuration.js";
 import templates from "../lib/templates.js";
 import createGuid from "../lib/guid.js";
@@ -115,7 +115,7 @@ export default {
   name: "DashboardSettings",
 
   components: {
-    ColorPicker
+    ElectricColorPicker
   },
 
   props: {
@@ -172,8 +172,8 @@ export default {
       this.settingsPanelOpen = !this.settingsPanelOpen;
     },
 
-    updateBackgroundColor(value) {
-      this.dashboard.bgColor = value;
+    updateBackgroundColor(colorData) {
+      this.dashboard.bgColor = colorData.cssColor;
     }
   }
 };
