@@ -30,7 +30,8 @@
     "rhea-promise": "^1.0.0",
     "socket.io": "^2.3.0",
     "vue": "^2.6.11",
-    "vue-a11y-dialog": "^0.5.0"
+    "vue-a11y-dialog": "^0.5.0",
+    "vue-accessible-color-picker": "^1.0.0"
   },
   "engines": {
     "node": ">= 10"

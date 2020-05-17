@@ -33,25 +33,25 @@
       />
     </label>
 
-    <color-picker
-      :uid="tile.id"
+    <ElectricColorPicker
+      :id="tile.id"
       :color="lineColor"
-      style="--cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
-      @change="updateValue"
+      style-attribute-value="--vacp-focus-color: var(--focus-color); --vacp-color-space-width: var(--card-form-width)"
+      @color-change="updateValue"
     />
   </div>
 </template>
 
 <script>
-import ColorPicker from "./ColorPicker";
-import DataPropertyField from "./DataPropertyField";
+import DataPropertyField from "./DataPropertyField.vue";
+import ElectricColorPicker from "./ElectricColorPicker.vue";
 
 export default {
   name: "LineChartSettings",
 
   components: {
-    ColorPicker,
-    DataPropertyField
+    DataPropertyField,
+    ElectricColorPicker
   },
 
   props: {
@@ -59,6 +59,7 @@ export default {
       type: Object,
       required: true
     },
+
     deviceList: {
       type: Array,
       required: true
@@ -72,8 +73,8 @@ export default {
   },
 
   methods: {
-    updateValue(value) {
-      this.lineColor = value;
+    updateValue(colorData) {
+      this.lineColor = colorData.cssColor;
     }
   }
 };

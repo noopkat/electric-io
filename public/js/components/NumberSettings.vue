@@ -59,11 +59,11 @@
     />
 
     <template v-if="textColorMode === 'single'">
-      <color-picker
-        :uid="`textColor-${tile.id}`"
+      <ElectricColorPicker
+        :id="`textColor-${tile.id}`"
         :color="textColor"
-        style="--cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
-        @change="updateTextColor"
+        style-attribute-value="--vacp-focus-color: var(--focus-color); --vacp-color-space-width: var(--card-form-width)"
+        @color-change="updateTextColor"
       />
     </template>
 
@@ -109,12 +109,12 @@
                 </button>
                 <h2>Low Value Color</h2>
               </div>
-              <color-picker
+              <ElectricColorPicker
+                :id="`lowTextColor-${tile.id}`"
                 key="low"
-                :uid="`lowTextColor-${tile.id}`"
                 :color="lowTextColor"
-                style="--cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
-                @change="updateLowTextColor"
+                style-attribute-value="--vacp-focus-color: var(--focus-color); --vacp-color-space-width: var(--card-form-width)"
+                @color-change="updateLowTextColor"
               />
             </div>
           </div>
@@ -156,18 +156,20 @@
                     :id="`close-colorpicker-label-${tile.Id}`"
                     aria-hidden="true"
                     class="sr-only"
-                    >Close color picker</span
                   >
+                    Close color picker
+                  </span>
                   <span aria-hidden="true">×</span>
                 </button>
                 <h2>High Value Color</h2>
               </div>
-              <color-picker
+
+              <ElectricColorPicker
+                :id="`highTextColor-${tile.id}`"
                 key="high"
-                :uid="`highTextColor-${tile.id}`"
                 :color="highTextColor"
-                style="--cp-focus-color: var(--focus-color); --cp-width: var(--card-form-width)"
-                @change="updateHighTextColor"
+                style-attribute-value="--vacp-focus-color: var(--focus-color); --vacp-color-space-width: var(--card-form-width)"
+                @color-change="updateHighTextColor"
               />
             </div>
           </div>
@@ -178,15 +180,15 @@
 </template>
 
 <script>
-import ColorPicker from "./ColorPicker";
-import DataPropertyField from "./DataPropertyField";
+import DataPropertyField from "./DataPropertyField.vue";
+import ElectricColorPicker from "./ElectricColorPicker.vue";
 
 export default {
   name: "NumberSettings",
 
   components: {
-    ColorPicker,
-    DataPropertyField
+    DataPropertyField,
+    ElectricColorPicker
   },
 
   props: {
@@ -194,6 +196,7 @@ export default {
       type: Object,
       required: true
     },
+
     deviceList: {
       type: Array,
       required: true
@@ -213,14 +216,16 @@ export default {
   },
 
   methods: {
-    updateTextColor(value) {
-      this.textColor = value;
+    updateTextColor(colorData) {
+      this.textColor = colorData.cssColor;
     },
-    updateLowTextColor(value) {
-      this.lowTextColor = value;
+
+    updateLowTextColor(colorData) {
+      this.lowTextColor = colorData.cssColor;
     },
-    updateHighTextColor(value) {
-      this.highTextColor = value;
+
+    updateHighTextColor(colorData) {
+      this.highTextColor = colorData.cssColor;
     }
   }
 };
@@ -247,6 +252,7 @@ export default {
 
 .settings__number__gradient-container__colorpicker {
   position: absolute;
+  z-index: 1;
   width: 375px;
   height: 400px;
   margin-left: 10px;
