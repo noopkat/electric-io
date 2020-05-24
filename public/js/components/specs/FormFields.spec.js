@@ -25,15 +25,15 @@ describe("FormFields", () => {
   test("component can mount", () => {
     const wrapper = shallowMountComponent();
 
-    expect(wrapper.isVueInstance()).toBeTruthy();
+    expect(wrapper.html()).toBeTruthy();
   });
 
-  test("which component is rendered based upon the tile.type prop property", () => {
+  test("which component is rendered based upon the tile.type prop property", async () => {
     const wrapper = shallowMountComponent();
 
     expect(wrapper.vm.settingsCard).toEqual("line-chart-settings");
 
-    wrapper.setProps({
+    await wrapper.setProps({
       tile: {
         type: "button",
         callType: "method"
@@ -43,7 +43,7 @@ describe("FormFields", () => {
 
     expect(wrapper.vm.settingsCard).toEqual("button-settings");
 
-    wrapper.setProps({
+    await wrapper.setProps({
       tile: {
         type: "number",
         callType: "method"
@@ -53,7 +53,7 @@ describe("FormFields", () => {
 
     expect(wrapper.vm.settingsCard).toEqual("number-settings");
 
-    wrapper.setProps({
+    await wrapper.setProps({
       tile: {
         type: "sticker",
         callType: "method"
@@ -63,7 +63,7 @@ describe("FormFields", () => {
 
     expect(wrapper.vm.settingsCard).toEqual("sticker-settings");
 
-    wrapper.setProps({
+    await wrapper.setProps({
       tile: {
         type: "text",
         callType: "method"

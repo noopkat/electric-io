@@ -44,7 +44,7 @@ export default {
 
   watch: {
     messages() {
-      const lastMessage = this.messages.pop();
+      const lastMessage = this.messages[this.messages.length - 1];
       if (lastMessage) {
         const value = evaluatePath(this.tile.property, lastMessage);
         this.number = parseFloat(value).toFixed(1);

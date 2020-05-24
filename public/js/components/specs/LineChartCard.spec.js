@@ -45,7 +45,7 @@ describe("LineChartCard", () => {
   test("component can mount", () => {
     const wrapper = shallowMountComponent();
 
-    expect(wrapper.isVueInstance()).toBeTruthy();
+    expect(wrapper.html()).toBeTruthy();
   });
 
   test("new Chartist is called in mounted lifecycle hook", () => {
@@ -75,7 +75,7 @@ describe("LineChartCard", () => {
     });
   });
 
-  test("the update of messages data based upon the watcher", () => {
+  test("the update of messages data based upon the watcher", async () => {
     const spy = jest.spyOn(LineChartCard.watch, "messages");
     const wrapper = shallowMountComponent({
       messages: [],
@@ -95,7 +95,7 @@ describe("LineChartCard", () => {
 
     expect(spy).toHaveBeenCalledTimes(0);
 
-    wrapper.setProps({
+    await wrapper.setProps({
       messages: [
         {
           deviceId: "BU2802",

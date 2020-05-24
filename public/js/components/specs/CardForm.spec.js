@@ -3,8 +3,26 @@ import { axe, toHaveNoViolations } from "jest-axe";
 
 import CardForm from "../CardForm";
 
+/**
+ * Helper function for injecting a test element into the DOM
+ * This element can then be used as the mount point when using the [`attachTo`][1] option.
+ *
+ * [1]: https://vue-test-utils.vuejs.org/api/options.html#attachto
+ *
+ * @returns {string} a CSS selector that should be used as the value for the `attachTo` option
+ */
+function injectTestDiv() {
+  const id = "root";
+  const div = document.createElement("div");
+  div.id = id;
+  document.body.appendChild(div);
+  return `#${id}`;
+}
+
 function shallowMountComponent(props = {}) {
   return shallowMount(CardForm, {
+    attachTo: injectTestDiv(),
+
     propsData: {
       tile: {
         altText: "",
@@ -17,8 +35,7 @@ function shallowMountComponent(props = {}) {
       },
       deviceList: ["AZ3166", "Tessel2", "Jenn"],
       ...props
-    },
-    attachToDocument: true
+    }
   });
 }
 
@@ -28,13 +45,13 @@ describe("CardFrom", () => {
   test("Component can be mounted", () => {
     const wrapper = shallowMountComponent();
 
-    expect(wrapper.isVueInstance()).toBeTruthy();
+    expect(wrapper.html()).toBeTruthy();
   });
 
-  test("save-settings event is emitted", () => {
+  test("save-settings event is emitted", async () => {
     const wrapper = shallowMountComponent();
     const formData = document.querySelector(".card__form form");
-    wrapper.setProps({ editing: true });
+    await wrapper.setProps({ editing: true });
 
     const event = {
       target: formData

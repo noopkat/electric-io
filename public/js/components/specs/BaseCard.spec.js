@@ -3,9 +3,25 @@ import { axe, toHaveNoViolations } from "jest-axe";
 
 import BaseCard from "../BaseCard";
 
+/**
+ * Helper function for injecting a test element into the DOM
+ * This element can then be used as the mount point when using the [`attachTo`][1] option.
+ *
+ * [1]: https://vue-test-utils.vuejs.org/api/options.html#attachto
+ *
+ * @returns {string} a CSS selector that should be used as the value for the `attachTo` option
+ */
+function injectTestDiv() {
+  const id = "root";
+  const div = document.createElement("div");
+  div.id = id;
+  document.body.appendChild(div);
+  return `#${id}`;
+}
+
 function shallowMountComponent() {
   return shallowMount(BaseCard, {
-    attachToDocument: true,
+    attachTo: injectTestDiv(),
 
     propsData: {
       tile: {
@@ -63,7 +79,7 @@ describe("BaseCard", () => {
   test("component can mount", () => {
     const wrapper = shallowMountComponent();
 
-    expect(wrapper.isVueInstance()).toBeTruthy();
+    expect(wrapper.html()).toBeTruthy();
   });
 
   test("the initial state of the default data", () => {
@@ -111,12 +127,12 @@ describe("BaseCard", () => {
     );
   });
 
-  test("the computed value of cardComponentName", () => {
+  test("the computed value of cardComponentName", async () => {
     const wrapper = shallowMountComponent();
 
     expect(wrapper.vm.cardComponentName).toEqual("line-chart-card");
 
-    wrapper.setProps({
+    await wrapper.setProps({
       tile: {
         deviceId: "AZ3166",
         deviceMethod: "stop",
@@ -134,37 +150,38 @@ describe("BaseCard", () => {
     expect(wrapper.vm.cardComponentName).toEqual("button-card");
   });
 
-  test("the computed value of showControlers", () => {
+  test("the computed value of showControlers", async () => {
     const wrapper = shallowMountComponent();
 
     expect(wrapper.vm.showCardActions).toEqual(true);
 
-    wrapper.setProps({
+    await wrapper.setProps({
       editMode: "locked"
     });
 
     expect(wrapper.vm.showCardActions).toEqual(false);
   });
 
-  test("the isDraggingCard watcher", () => {
+  test("the isDraggingCard watcher", async () => {
     const spy = jest.spyOn(BaseCard.watch, "isDraggingCard");
-    const { vm } = shallowMountComponent();
+    const wrapper = shallowMountComponent();
     const event = {
       target: {
         tagName: "H2"
       }
     };
 
-    vm.editingCard = true;
+    wrapper.vm.editingCard = true;
 
-    vm.startDraggingCard(event);
+    wrapper.vm.startDraggingCard(event);
 
     expect(spy).not.toHaveBeenCalled();
 
-    vm.editingCard = false;
+    wrapper.vm.editingCard = false;
 
-    vm.startDraggingCard(event);
+    wrapper.vm.startDraggingCard(event);
 
+    await wrapper.vm.$nextTick();
     expect(spy).toHaveBeenCalled();
   });
 
@@ -199,7 +216,7 @@ describe("BaseCard", () => {
     expect(wrapper.vm.$emit("tile-delete")).toBeTruthy();
   });
 
-  test("the onSaveSettings method", () => {
+  test("the onSaveSettings method", async () => {
     const spy = jest.spyOn(BaseCard.methods, "onSaveSettings");
     const wrapper = shallowMountComponent();
 
@@ -207,11 +224,11 @@ describe("BaseCard", () => {
 
     const button = wrapper.find("[data-test='card-edit-button']");
 
-    button.trigger("click");
+    await button.trigger("click");
 
     expect(wrapper.vm.editingCard).toEqual(true);
 
-    wrapper.find({ name: "CardForm" }).vm.$emit("save-settings", {
+    wrapper.findComponent({ name: "CardForm" }).vm.$emit("save-settings", {
       bgColor: "#fff",
       bgImageRepeat: true,
       bgImageUrl: "",

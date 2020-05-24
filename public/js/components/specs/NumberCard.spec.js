@@ -31,7 +31,7 @@ describe("NumberCard", () => {
   test("component can mount", () => {
     const wrapper = shallowMountComponent();
 
-    expect(wrapper.isVueInstance()).toBeTruthy();
+    expect(wrapper.html()).toBeTruthy();
   });
 
   test("renders with color and number value", () => {
@@ -40,7 +40,7 @@ describe("NumberCard", () => {
     expect(wrapper.html()).toMatchSnapshot();
   });
 
-  test("the messages watch method", () => {
+  test("the messages watch method", async () => {
     const spy = jest.spyOn(NumberCard.watch, "messages");
     const wrapper = shallowMountComponent({
       messages: []
@@ -48,7 +48,7 @@ describe("NumberCard", () => {
 
     expect(spy).toHaveBeenCalledTimes(0);
 
-    wrapper.setProps({
+    await wrapper.setProps({
       messages: [
         {
           deviceId: "BU2802",

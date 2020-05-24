@@ -28,7 +28,7 @@ describe("LineChartSettings", () => {
   test("component can mount", () => {
     const wrapper = shallowMountComponent();
 
-    expect(wrapper.isVueInstance()).toBeTruthy();
+    expect(wrapper.html()).toBeTruthy();
   });
 
   test("the deviceList prop is populated", () => {
