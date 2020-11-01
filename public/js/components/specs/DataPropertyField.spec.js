@@ -24,7 +24,7 @@ describe("DataPropertyField", () => {
       tileId: ""
     });
 
-    expect(wrapper.isVueInstance()).toBeTruthy();
+    expect(wrapper.html()).toBeTruthy();
   });
 
   test("has one input element with the expected name", () => {

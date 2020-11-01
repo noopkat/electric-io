@@ -77,7 +77,7 @@ describe("App", () => {
   test("Component can be mounted", () => {
     const wrapper = shallowMount(App);
 
-    expect(wrapper.isVueInstance()).toBeTruthy();
+    expect(wrapper.html()).toBeTruthy();
   });
 
   test("Child components can be mounted", async () => {
@@ -85,8 +85,10 @@ describe("App", () => {
 
     await wrapper.vm.$nextTick();
 
-    expect(wrapper.find({ name: "DashboardSettings" }).exists()).toBe(true);
-    expect(wrapper.find({ name: "BaseCard" }).exists()).toBe(true);
+    expect(wrapper.findComponent({ name: "DashboardSettings" }).exists()).toBe(
+      true
+    );
+    expect(wrapper.findComponent({ name: "BaseCard" }).exists()).toBe(true);
   });
 
   test("Default data is clean", () => {
@@ -123,12 +125,18 @@ describe("App", () => {
     await wrapper.vm.$nextTick();
 
     expect(wrapper.vm.showSettings).toEqual(true);
-    expect(wrapper.find({ name: "DashboardSettings" }).exists()).toBe(true);
+    expect(wrapper.findComponent({ name: "DashboardSettings" }).exists()).toBe(
+      true
+    );
 
     wrapper.vm.dashboard.editMode = "locked";
 
+    await wrapper.vm.$nextTick();
+
     expect(wrapper.vm.showSettings).toEqual(false);
-    expect(wrapper.find({ name: "DashboardSettings" }).exists()).toBe(false);
+    expect(wrapper.findComponent({ name: "DashboardSettings" }).exists()).toBe(
+      false
+    );
   });
 
   test("compute the appTitle with or without an emoji using the TITLE_EMOJI_REGEX constant", () => {
@@ -149,12 +157,16 @@ describe("App", () => {
 
     wrapper.vm.dashboard.editMode = "unlocked";
 
-    wrapper.find({ name: "DashboardSettings" }).vm.$emit("save-settings", {
-      bgColor: "#fff",
-      bgImageRepeat: true,
-      bgImageUrl: "",
-      title: "\u2700 IoT Dashboard"
-    });
+    await wrapper.vm.$nextTick();
+
+    wrapper
+      .findComponent({ name: "DashboardSettings" })
+      .vm.$emit("save-settings", {
+        bgColor: "#fff",
+        bgImageRepeat: true,
+        bgImageUrl: "",
+        title: "\u2700 IoT Dashboard"
+      });
 
     expect(wrapper.vm.dashboard).toEqual(
       expect.objectContaining({
@@ -204,7 +216,7 @@ describe("App", () => {
     wrapper.vm.onTileDelete(tileId);
 
     expect(
-      wrapper.find({ name: "BaseCard" }).vm.$emit("tile-delete")
+      wrapper.findComponent({ name: "BaseCard" }).vm.$emit("tile-delete")
     ).toBeTruthy();
 
     expect(wrapper.vm.dashboard.tiles.length).toBe(1);
@@ -214,16 +226,18 @@ describe("App", () => {
     const wrapper = shallowMount(App);
     await wrapper.vm.$nextTick();
 
-    wrapper.find({ name: "DashboardSettings" }).vm.$emit("tile-create", {
-      deviceId: "",
-      id: "2ece272b-a403-46d6-b136-e35906fe1d0d",
-      lineColor: "#FF6384",
-      position: [0, 0],
-      property: "",
-      size: [2, 1.5],
-      title: "Line Chart",
-      type: "line-chart"
-    });
+    wrapper
+      .findComponent({ name: "DashboardSettings" })
+      .vm.$emit("tile-create", {
+        deviceId: "",
+        id: "2ece272b-a403-46d6-b136-e35906fe1d0d",
+        lineColor: "#FF6384",
+        position: [0, 0],
+        property: "",
+        size: [2, 1.5],
+        title: "Line Chart",
+        type: "line-chart"
+      });
 
     expect(configFns.saveDashboard).toHaveBeenCalled();
     expect(wrapper.vm.dashboard.tiles.length).toBe(3);

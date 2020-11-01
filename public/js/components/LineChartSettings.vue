@@ -34,6 +34,7 @@
     </label>
 
     <ElectricColorPicker
+      v-if="lineColor"
       :id="tile.id"
       :color="lineColor"
       style-attribute-value="--vacp-focus-color: var(--focus-color); --vacp-color-space-width: var(--card-form-width)"
@@ -68,8 +69,12 @@ export default {
 
   data() {
     return {
-      lineColor: this.tile.lineColor
+      lineColor: null
     };
+  },
+
+  created() {
+    this.lineColor = this.tile.lineColor;
   },
 
   methods: {

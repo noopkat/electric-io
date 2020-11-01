@@ -29,7 +29,7 @@ describe("ButtonSettings", () => {
   test("component can mount", () => {
     const wrapper = shallowMountComponent();
 
-    expect(wrapper.isVueInstance()).toBeTruthy();
+    expect(wrapper.html()).toBeTruthy();
   });
 
   test("the iniital state of the data object", () => {
