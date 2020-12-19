@@ -1,4 +1,9 @@
-require("dotenv").config();
+const dotenv = require("dotenv");
+
+if (process.env.NODE_ENV !== "test") {
+  dotenv.config();
+}
+
 const path = require("path");
 const http = require("http");
 const debug = require("debug")("server");
@@ -20,7 +25,7 @@ const consumerGroup = process.env.CONSUMER_GROUP || "$Default";
 const partitionFilter = process.env.PARTITION_FILTER || [];
 
 // server options
-const simulating = process.env.SIMULATING;
+const simulating = process.env.SIMULATING || "true";
 const platform = process.env.PLATFORM || "default";
 const port = process.env.PORT || 3000;
 
