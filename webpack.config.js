@@ -1,16 +1,15 @@
 const webpack = require("webpack");
 const path = require("path");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
-const mode =
-  process.env.NODE_ENV === "development" ? "development" : "production";
 
-module.exports = {
+const mode = process.env.NODE_ENV === "development" ? "development" : "production";
+
+const baseConfiguration = {
   mode: mode,
   entry: "./public/js/main.js",
   output: {
     path: path.resolve(__dirname, "public", "js", "dist"),
     publicPath: "/dist/",
-    chunkFilename: "[name].bundle.js",
     filename: "[name].bundle.js"
   },
   optimization: {
@@ -18,12 +17,14 @@ module.exports = {
       chunks: "all"
     }
   },
-  devtool: mode === "production" ? "" : "eval-source-map",
   resolve: {
     extensions: [".js", ".vue"],
     alias: {
       vue$: "vue/dist/vue.esm.js",
       chartist$: "chartist/dist/chartist.min.js"
+    },
+    fallback: {
+      fs: false
     }
   },
   module: {
@@ -51,8 +52,9 @@ module.exports = {
     new webpack.DefinePlugin({
       SIMULATING: process.env.SIMULATING
     })
-  ],
-  node: {
-    fs: "empty"
-  }
+  ]
 };
+
+module.exports = mode === "production"
+  ? baseConfiguration
+  : { ...baseConfiguration, devtool: "eval-source-map" };

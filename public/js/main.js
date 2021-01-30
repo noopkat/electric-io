@@ -1,5 +1,5 @@
 import Vue from "vue";
-import App from "./components/App";
+import App from "./components/App.vue";
 import VueA11yDialog from "vue-a11y-dialog";
 import "chartist/dist/chartist.min.css";
 

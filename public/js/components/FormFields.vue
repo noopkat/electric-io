@@ -7,11 +7,11 @@
 </template>
 
 <script>
-import ButtonSettings from "./ButtonSettings";
-import LineChartSettings from "./LineChartSettings";
-import NumberSettings from "./NumberSettings";
-import StickerSettings from "./StickerSettings";
-import TextSettings from "./TextSettings";
+import ButtonSettings from "./ButtonSettings.vue";
+import LineChartSettings from "./LineChartSettings.vue";
+import NumberSettings from "./NumberSettings.vue";
+import StickerSettings from "./StickerSettings.vue";
+import TextSettings from "./TextSettings.vue";
 
 export default {
   name: "FormFields",
