@@ -1,10 +1,12 @@
 import { shallowMount } from "@vue/test-utils";
 import { axe, toHaveNoViolations } from "jest-axe";
 
-import LineChartSettings from "../LineChartSettings";
+import LineChartSettings from "../LineChartSettings.vue";
+import { injectMainElement } from './inject-main-element.js'
 
-function shallowMountComponent(props = {}) {
+function shallowMountComponent(attachToDocument = false) {
   return shallowMount(LineChartSettings, {
+    attachTo: attachToDocument ? injectMainElement() : null,
     propsData: {
       tile: {
         deviceId: "AZ3166",
@@ -17,8 +19,7 @@ function shallowMountComponent(props = {}) {
         type: "line-chart"
       },
       deviceList: ["AZ3166", "Tessel2", "Jenn"]
-    },
-    ...props
+    }
   });
 }
 
@@ -72,9 +73,7 @@ describe("LineChartSettings", () => {
   });
 
   test("Axe doesn’t find any violations", async () => {
-    const wrapper = shallowMountComponent();
-    const html = wrapper.html();
-
-    expect(await axe(html)).toHaveNoViolations();
+    const wrapper = shallowMountComponent(true);
+    expect(await axe(wrapper.element)).toHaveNoViolations();
   });
 });

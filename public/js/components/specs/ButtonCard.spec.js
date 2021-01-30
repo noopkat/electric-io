@@ -1,10 +1,12 @@
 import { shallowMount } from "@vue/test-utils";
 import { axe, toHaveNoViolations } from "jest-axe";
 
-import ButtonCard from "../ButtonCard";
+import ButtonCard from "../ButtonCard.vue";
+import { injectMainElement } from './inject-main-element.js'
 
-function shallowMountComponent() {
+function shallowMountComponent(attachToDocument = false) {
   return shallowMount(ButtonCard, {
+    attachTo: attachToDocument ? injectMainElement() : null,
     propsData: {
       tile: {
         buttonText: "button-action",
@@ -123,9 +125,7 @@ describe("ButtonCard", () => {
   });
 
   test("Axe doesn’t find any violations", async () => {
-    const wrapper = shallowMountComponent();
-    const html = wrapper.html();
-
-    expect(await axe(html)).toHaveNoViolations();
+    const wrapper = shallowMountComponent(true);
+    expect(await axe(wrapper.element)).toHaveNoViolations();
   });
 });

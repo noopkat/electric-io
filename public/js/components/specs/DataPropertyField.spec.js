@@ -1,10 +1,12 @@
 import { shallowMount } from "@vue/test-utils";
 import { axe, toHaveNoViolations } from "jest-axe";
 
-import DataPropertyField from "../DataPropertyField";
+import DataPropertyField from "../DataPropertyField.vue";
+import { injectMainElement } from './inject-main-element.js'
 
-function shallowMountComponent(props = {}) {
+function shallowMountComponent(props = {}, attachToDocument = false) {
   return shallowMount(DataPropertyField, {
+    attachTo: attachToDocument ? injectMainElement() : null,
     propsData: {
       name: "property",
       value: "",
@@ -104,9 +106,7 @@ describe("DataPropertyField", () => {
       name: "property",
       value: "temperature",
       titleId: ""
-    });
-    const html = wrapper.html();
-
-    expect(await axe(html)).toHaveNoViolations();
+    }, true);
+    expect(await axe(wrapper.element)).toHaveNoViolations();
   });
 });

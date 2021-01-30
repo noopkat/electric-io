@@ -1,8 +1,8 @@
 import { shallowMount } from "@vue/test-utils";
 import { axe, toHaveNoViolations } from "jest-axe";
 
-import App from "../App";
-import * as configFns from "../../lib/configuration";
+import App from "../App.vue";
+import * as configFns from "../../lib/configuration.js";
 import { TITLE_EMOJI_REGEX } from "../../utils/constants.js";
 
 // Mock dashboard data
@@ -265,9 +265,6 @@ describe("App", () => {
   test("Axe doesn’t find any violations", async () => {
     const wrapper = shallowMount(App);
     await wrapper.vm.$nextTick();
-
-    const html = wrapper.html();
-
-    expect(await axe(html)).toHaveNoViolations();
+    expect(await axe(wrapper.element)).toHaveNoViolations();
   });
 });

@@ -1,7 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
 import { axe, toHaveNoViolations } from "jest-axe";
 
-import FormFields from "../FormFields";
+import FormFields from "../FormFields.vue";
 
 function shallowMountComponent() {
   return shallowMount(FormFields, {
@@ -76,8 +76,6 @@ describe("FormFields", () => {
 
   test("Axe doesn’t find any violations", async () => {
     const wrapper = shallowMountComponent();
-    const html = wrapper.html();
-
-    expect(await axe(html)).toHaveNoViolations();
+    expect(await axe(wrapper.element)).toHaveNoViolations();
   });
 });
