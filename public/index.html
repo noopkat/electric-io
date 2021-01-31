@@ -25,7 +25,12 @@
     <div id="app"></div>
     <div id="dialog-root" class="modal-wrapper"></div>
 
-    <script src="/js/dist/vendors~main.bundle.js"></script>
+    <!--
+      For whatever unholy reason, webpack 5 changed the deterministic bundle ID
+      from “vendors~main” to “166” for this bundle
+      and I can’t be bothered to figure out how to revert that.
+    -->
+    <script src="/js/dist/166.bundle.js"></script>
     <script src="/js/dist/main.bundle.js"></script>
   </body>
 </html>

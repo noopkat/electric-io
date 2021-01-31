@@ -8,6 +8,7 @@
 
 <script>
 import Chartist from "chartist";
+
 import { evaluatePath } from "../lib/messagePropertyEvaluation.js";
 
 export default {

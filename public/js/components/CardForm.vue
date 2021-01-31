@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import FormFields from "./FormFields";
+import FormFields from "./FormFields.vue";
 
 export default {
   name: "CardForm",

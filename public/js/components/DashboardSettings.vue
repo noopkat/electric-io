@@ -119,7 +119,6 @@
 
 <script>
 import ElectricColorPicker from "./ElectricColorPicker.vue";
-import { saveDashboard } from "../lib/configuration.js";
 import templates from "../lib/templates.js";
 import createGuid from "../lib/guid.js";
 
