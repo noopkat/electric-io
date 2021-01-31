@@ -1,5 +1,9 @@
 <template>
-  <div :id="chartId" class="chart" :style="chartStyle"></div>
+  <div
+    :id="chartId"
+    class="chart"
+    :style="chartStyle"
+  />
 </template>
 
 <script>

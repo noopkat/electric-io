@@ -1,17 +1,21 @@
 <template>
   <div class="dashboard">
     <header>
-      <h1 class="dashboard-title" :style="headingStyle">
+      <h1
+        class="dashboard-title"
+        :style="headingStyle"
+      >
         <template
           v-if="
             Array.isArray(dashboardTitleEmojified) &&
               dashboardTitleEmojified.length === 3
           "
         >
-          <span class="dashboard-title__hemoji emoji-font">{{
-            dashboardTitleEmojified[1]
-          }}</span
-          >{{ dashboardTitleEmojified[2] }}
+          <span class="dashboard-title__hemoji emoji-font">
+            {{ dashboardTitleEmojified[1] }}
+          </span>
+
+          {{ dashboardTitleEmojified[2] }}
         </template>
 
         <template v-else>

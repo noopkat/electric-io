@@ -1,10 +1,18 @@
 <template>
   <div>
-    <button class="thick-button" type="button" @click="onClick">
+    <button
+      class="thick-button"
+      type="button"
+      @click="onClick"
+    >
       {{ tile.buttonText }}
     </button>
 
-    <p v-if="statusText" class="button-card-status" :class="statusClass">
+    <p
+      v-if="statusText"
+      class="button-card-status"
+      :class="statusClass"
+    >
       {{ statusText }}
     </p>
   </div>

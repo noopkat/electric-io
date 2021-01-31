@@ -26,12 +26,18 @@
             {{ tile.title }}
           </template>
 
-          <span v-else class="sr-only">
+          <span
+            v-else
+            class="sr-only"
+          >
             Card
           </span>
         </h2>
 
-        <div v-if="showCardActions" class="card-header__actions">
+        <div
+          v-if="showCardActions"
+          class="card-header__actions"
+        >
           <button
             ref="editButton"
             class="card__action-button icon-button"
@@ -41,9 +47,10 @@
           >
             <span class="sr-only">Edit card</span>
 
-            <span class="emoji-font flip-horizontally" aria-hidden="true"
-              >✏</span
-            >
+            <span
+              class="emoji-font flip-horizontally"
+              aria-hidden="true"
+            >✏</span>
           </button>
 
           <button
@@ -90,7 +97,7 @@
       }"
       @dialog-ref="assignDialogRef"
     >
-      <template v-slot:closeButtonContent>
+      <template #closeButtonContent>
         <span class="sr-only">Close the "Remove card" dialog</span>
 
         <svg
@@ -107,7 +114,7 @@
         </svg>
       </template>
 
-      <template v-slot:title>
+      <template #title>
         <span>Remove card</span>
       </template>
 

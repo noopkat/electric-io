@@ -2,7 +2,12 @@
   <div>
     <label>
       Device Id
-      <select id="deviceSelect" name="deviceId" :value="tile.deviceId">
+
+      <select
+        id="deviceSelect"
+        name="deviceId"
+        :value="tile.deviceId"
+      >
         <option
           v-for="(device, index) in deviceList"
           :key="`device-list-option-${index}`"
@@ -15,9 +20,9 @@
 
     <label>
       Call Type
+
       <select
         id="callTypeSelect"
-        v-model="tile.callType"
         name="callType"
         :value="tile.callType"
       >
@@ -31,30 +36,41 @@
       </select>
     </label>
 
-    <label v-if="tile.callType === 'method'" for="deviceMethod">
+    <label
+      v-if="tile.callType === 'method'"
+      for="deviceMethod"
+    >
       Method Name
+
       <input
         id="deviceMethod"
         name="deviceMethod"
         type="text"
         :value="tile.deviceMethod"
-      />
+      >
     </label>
 
     <label for="callPayload">
       <span v-if="tile.callType === 'method'">Method</span>
+
       <span v-else>Message</span> Payload (must be valid JSON pls!)
-      <textarea id="callPayload" name="callPayload" :value="tile.callPayload" />
+
+      <textarea
+        id="callPayload"
+        name="callPayload"
+        :value="tile.callPayload"
+      />
     </label>
 
     <label for="buttonText">
       Button Text
+
       <input
         id="buttonText"
         name="buttonText"
         type="text"
         :value="tile.buttonText"
-      />
+      >
     </label>
   </div>
 </template>

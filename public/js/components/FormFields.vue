@@ -1,5 +1,9 @@
 <template>
-  <component :is="settingsCard" :tile="tile" :device-list="deviceList" />
+  <component
+    :is="settingsCard"
+    :tile="tile"
+    :device-list="deviceList"
+  />
 </template>
 
 <script>
