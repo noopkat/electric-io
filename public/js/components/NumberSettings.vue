@@ -44,19 +44,19 @@
       v-model="textColor"
       type="hidden"
       name="textColor"
-    />
+    >
     <input
       :id="`lowTextColor-${tile.id}`"
       v-model="lowTextColor"
       type="hidden"
       name="lowTextColor"
-    />
+    >
     <input
       :id="`highTextColor-${tile.id}`"
       v-model="highTextColor"
       type="hidden"
       name="highTextColor"
-    />
+    >
 
     <template v-if="textColorMode === 'single'">
       <ElectricColorPicker
@@ -76,7 +76,7 @@
             v-model="lowValue"
             name="lowValue"
             class="settings__number__gradient-container__value__input"
-          />
+          >
         </div>
         <div class="settings__number__gradient-container__color">
           <button
@@ -103,8 +103,9 @@
                     :id="`close-colorpicker-label-${tile.Id}`"
                     aria-hidden="true"
                     class="sr-only"
-                    >Close color picker</span
                   >
+                    Close color picker
+                  </span>
                   <span aria-hidden="true">×</span>
                 </button>
                 <h2>Low Value Color</h2>
@@ -129,7 +130,7 @@
             v-model="highValue"
             name="highValue"
             class="settings__number__gradient-container__value__input"
-          />
+          >
         </div>
         <div class="settings__number__gradient-container__color">
           <button

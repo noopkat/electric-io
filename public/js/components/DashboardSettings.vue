@@ -19,7 +19,10 @@
           Settings panel
         </span>
 
-        <span aria-hidden="true" class="emoji-font">
+        <span
+          aria-hidden="true"
+          class="emoji-font"
+        >
           {{ settingsPanelOpen ? "→" : "⚙️" }}
         </span>
       </button>
@@ -34,7 +37,7 @@
             id="dashboard-settings-title"
             type="text"
             :value="dashboard.title"
-          />
+          >
         </label>
 
         <label for="dashboard-settings-bgColor">
@@ -44,7 +47,7 @@
             id="dashboard-settings-bgColor"
             v-model="dashboard.bgColor"
             type="hidden"
-          />
+          >
         </label>
 
         <ElectricColorPicker
@@ -61,7 +64,7 @@
             id="dashboard-settings-background-image-url"
             v-model="dashboard.bgImageUrl"
             type="text"
-          />
+          >
         </label>
 
         <label
@@ -73,12 +76,15 @@
             v-model="dashboard.bgImageRepeat"
             class="settings__checkbox"
             type="checkbox"
-          />
+          >
 
           Repeat background image
         </label>
 
-        <button class="thick-button" type="submit">
+        <button
+          class="thick-button"
+          type="submit"
+        >
           save
         </button>
       </form>
@@ -88,7 +94,10 @@
       <form @submit.prevent="onCreateCard">
         <label for="dashboard-settings-type">
           Card type
-          <select id="dashboard-settings-type" name="type">
+          <select
+            id="dashboard-settings-type"
+            name="type"
+          >
             <option value="button">button</option>
             <option value="lineChart">line chart</option>
             <option value="number">number</option>
@@ -97,7 +106,10 @@
           </select>
         </label>
 
-        <button class="thick-button" type="submit">
+        <button
+          class="thick-button"
+          type="submit"
+        >
           create
         </button>
       </form>

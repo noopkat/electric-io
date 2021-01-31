@@ -6,9 +6,11 @@
   >
     Data Property (supports
 
-    <a href="http://jmespath.org/tutorial.html" target="_blank" rel="noopener"
-      >JMESPath</a
-    >)
+    <a
+      href="http://jmespath.org/tutorial.html"
+      target="_blank"
+      rel="noopener"
+    >JMESPath</a>)
 
     <input
       :id="`data-property-input-${tileId}`"
@@ -17,7 +19,7 @@
       :name="name"
       :aria-invalid="!isValid"
       data-test="data-prop-input"
-    />
+    >
 
     <span
       v-if="!isValid"

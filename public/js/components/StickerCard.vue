@@ -1,5 +1,10 @@
 <template>
-  <img :src="tile.url" :title="tile.altText" :alt="tile.altText" width="100%" />
+  <img
+    :src="tile.url"
+    :title="tile.altText"
+    :alt="tile.altText"
+    width="100%"
+  >
 </template>
 
 <script>

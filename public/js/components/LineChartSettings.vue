@@ -30,7 +30,7 @@
         v-model="lineColor"
         name="lineColor"
         type="hidden"
-      />
+      >
     </label>
 
     <ElectricColorPicker

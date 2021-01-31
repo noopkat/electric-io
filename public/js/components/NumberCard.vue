@@ -1,5 +1,10 @@
 <template>
-  <p class="number" :style="numberStyle">{{ numberValue }}</p>
+  <p
+    class="number"
+    :style="numberStyle"
+  >
+    {{ numberValue }}
+  </p>
 </template>
 
 <script>

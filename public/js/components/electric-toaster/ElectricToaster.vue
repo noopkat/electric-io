@@ -20,7 +20,10 @@
     >
       <h2>Toast notifications</h2>
 
-      <p v-for="toast in activeToasts" :key="toast.id">
+      <p
+        v-for="toast in activeToasts"
+        :key="toast.id"
+      >
         {{ toast.content }}
       </p>
     </div>

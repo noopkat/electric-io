@@ -3,7 +3,11 @@
     <h2>Settings</h2>
 
     <form @submit.prevent="onSubmit">
-      <input name="id" type="hidden" :value="tile.id" />
+      <input
+        name="id"
+        type="hidden"
+        :value="tile.id"
+      >
 
       <label for="title">
         Title
@@ -12,12 +16,18 @@
           type="text"
           name="title"
           :value="tile.title"
-        />
+        >
       </label>
 
-      <form-fields :tile="tile" :device-list="deviceList" />
+      <form-fields
+        :tile="tile"
+        :device-list="deviceList"
+      />
 
-      <button class="thick-button" type="submit">
+      <button
+        class="thick-button"
+        type="submit"
+      >
         save
       </button>
 

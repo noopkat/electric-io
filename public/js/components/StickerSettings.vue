@@ -2,7 +2,11 @@
   <div>
     <label>
       Picture URL
-      <input type="text" name="url" :value="tile.url" />
+      <input
+        type="text"
+        name="url"
+        :value="tile.url"
+      >
     </label>
 
     <label>
@@ -15,7 +19,11 @@
         (what's this?)
       </a>
 
-      <textarea name="altText" maxlength="150" :value="tile.altText" />
+      <textarea
+        name="altText"
+        maxlength="150"
+        :value="tile.altText"
+      />
 
       <span class="max-length-info">max length: 150 char</span>
     </label>
