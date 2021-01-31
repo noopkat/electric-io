@@ -1,10 +1,12 @@
 import { shallowMount } from "@vue/test-utils";
 import { axe, toHaveNoViolations } from "jest-axe";
 
-import NumberCard from "../NumberCard";
+import NumberCard from "../NumberCard.vue";
+import { injectMainElement } from './inject-main-element.js'
 
-function shallowMountComponent(props = {}) {
+function shallowMountComponent(props = {}, attachToDocument = false) {
   return shallowMount(NumberCard, {
+    attachTo: attachToDocument ? injectMainElement() : null,
     propsData: {
       tile: {
         id: "ac57912f-1a14-4cc2-a587-1bc116e8cc54",
@@ -69,9 +71,7 @@ describe("NumberCard", () => {
   });
 
   test("Axe doesn’t find any violations", async () => {
-    const wrapper = shallowMountComponent();
-    const html = wrapper.html();
-
-    expect(await axe(html)).toHaveNoViolations();
+    const wrapper = shallowMountComponent(undefined, true);
+    expect(await axe(wrapper.element)).toHaveNoViolations();
   });
 });

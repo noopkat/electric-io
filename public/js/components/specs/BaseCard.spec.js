@@ -1,27 +1,13 @@
 import { shallowMount } from "@vue/test-utils";
 import { axe, toHaveNoViolations } from "jest-axe";
 
-import BaseCard from "../BaseCard";
+import BaseCard from "../BaseCard.vue";
+import { injectMainElement } from './inject-main-element.js'
 
-/**
- * Helper function for injecting a test element into the DOM
- * This element can then be used as the mount point when using the [`attachTo`][1] option.
- *
- * [1]: https://vue-test-utils.vuejs.org/api/options.html#attachto
- *
- * @returns {string} a CSS selector that should be used as the value for the `attachTo` option
- */
-function injectTestDiv() {
-  const id = "root";
-  const div = document.createElement("div");
-  div.id = id;
-  document.body.appendChild(div);
-  return `#${id}`;
-}
 
-function shallowMountComponent() {
+function shallowMountComponent(attachToDocument = false) {
   return shallowMount(BaseCard, {
-    attachTo: injectTestDiv(),
+    attachTo: attachToDocument ? injectMainElement() : null,
 
     propsData: {
       tile: {
@@ -280,7 +266,7 @@ describe("BaseCard", () => {
 
   test("check and make sure the emitCardPosition method is called when stopDraggingCard or moveCardWithArrows are invoked", () => {
     const spy = jest.spyOn(BaseCard.methods, "emitCardPosition");
-    const { vm } = shallowMountComponent();
+    const { vm } = shallowMountComponent(true);
     const event = {
       preventDefault: jest.fn(),
       key: "ArrowUp"
@@ -435,9 +421,10 @@ describe("BaseCard", () => {
   });
 
   test("Axe doesn’t find any violations", async () => {
-    const wrapper = shallowMountComponent();
-    const html = wrapper.html();
+    // Make sure to clean up the DOM to avoid an axe regarding stray a11y-dialog nodes in the DOM.
+    Array.from(document.body.children).forEach((childElement) => childElement.remove())
 
-    expect(await axe(html)).toHaveNoViolations();
+    const wrapper = shallowMountComponent(true);
+    expect(await axe(wrapper.element)).toHaveNoViolations();
   });
 });

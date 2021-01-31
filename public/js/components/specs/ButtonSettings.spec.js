@@ -1,10 +1,12 @@
 import { shallowMount } from "@vue/test-utils";
 import { axe, toHaveNoViolations } from "jest-axe";
 
-import ButtonSettings from "../ButtonSettings";
+import ButtonSettings from "../ButtonSettings.vue";
+import { injectMainElement } from './inject-main-element.js'
 
-function shallowMountComponent() {
+function shallowMountComponent(attachToDocument = false) {
   return shallowMount(ButtonSettings, {
+    attachTo: attachToDocument ? injectMainElement() : null,
     propsData: {
       tile: {
         callType: "method",
@@ -26,6 +28,9 @@ function shallowMountComponent() {
 expect.extend(toHaveNoViolations);
 
 describe("ButtonSettings", () => {
+  beforeAll(() => {
+  })
+
   test("component can mount", () => {
     const wrapper = shallowMountComponent();
 
@@ -50,9 +55,8 @@ describe("ButtonSettings", () => {
   });
 
   test("Axe doesn’t find any violations", async () => {
-    const wrapper = shallowMountComponent();
-    const html = wrapper.html();
+    const wrapper = shallowMountComponent(true);
 
-    expect(await axe(html)).toHaveNoViolations();
+    expect(await axe(wrapper.element)).toHaveNoViolations();
   });
 });

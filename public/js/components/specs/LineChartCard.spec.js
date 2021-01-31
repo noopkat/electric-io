@@ -2,7 +2,7 @@ import { shallowMount } from "@vue/test-utils";
 import { axe, toHaveNoViolations } from "jest-axe";
 import Chartist from "chartist";
 
-import LineChartCard from "../LineChartCard";
+import LineChartCard from "../LineChartCard.vue";
 
 function shallowMountComponent(props = {}) {
   return shallowMount(LineChartCard, {
@@ -111,8 +111,6 @@ describe("LineChartCard", () => {
 
   test("Axe doesn’t find any violations", async () => {
     const wrapper = shallowMountComponent();
-    const html = wrapper.html();
-
-    expect(await axe(html)).toHaveNoViolations();
+    expect(await axe(wrapper.element)).toHaveNoViolations();
   });
 });
