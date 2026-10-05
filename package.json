@@ -31,7 +31,7 @@
     "marked": "^0.8.0",
     "rhea-promise": "^1.0.0",
     "socket.io": "^3.0.0",
-    "vue": "^2.6.12",
+    "vue": "^3.0.0",
     "vue-a11y-dialog": "^0.5.2",
     "vue-accessible-color-picker": "^1.1.2"
   },
